@@ -1,0 +1,143 @@
+package com.example.qunlphngtr.Adapter;
+
+import android.app.Dialog;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.qunlphngtr.Model.Customer;
+import com.example.qunlphngtr.R;
+
+import java.util.List;
+
+public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHolder> {
+    List<Customer> customerList;
+    Context context;
+
+    public AdapterCustomer(List<Customer> customerList, Context context) {
+        this.customerList = customerList;
+        this.context = context;
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.item_customer, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+        holder.Name.setText(customerList.get(position).getCustomerName());
+        holder.Phone.setText(customerList.get(position).getCustomerPhone());
+        startNewAsyncTask(customerList.get(position).getCustomerImage(),holder);
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogdetail(position);
+
+            }
+        });
+
+    }
+
+    private void dialogdetail(final int position) {
+        final Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialog_customer_detail);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation_2;
+        RelativeLayout btncancel;
+        TextView id;
+        EditText cmnd, phone, name;
+        ImageView avatar;
+        avatar = dialog.findViewById(R.id.avatar);
+        id = dialog.findViewById(R.id.tvid);
+        cmnd = dialog.findViewById(R.id.edtcmnd);
+        phone = dialog.findViewById(R.id.edtphone);
+        name = dialog.findViewById(R.id.edtname);
+        cmnd.setText(customerList.get(position).getCustomerCMND() + "");
+        id.setText(customerList.get(position).getCustomerID());
+        phone.setText(customerList.get(position).getCustomerPhone());
+        name.setText(customerList.get(position).getCustomerName());
+        cmnd.setEnabled(false);
+        phone.setEnabled(false);
+        name.setEnabled(false);
+        byte[] hinh = customerList.get(position).getCustomerImage();
+        Bitmap bitmap = BitmapFactory.decodeByteArray(hinh, 0, hinh.length);
+        avatar.setImageBitmap(bitmap);
+        btncancel = dialog.findViewById(R.id.back);
+        btncancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return customerList.size();
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView Name, Phone;
+        private ImageView Img;
+        private CardView cardView;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            Name = itemView.findViewById(R.id.tvcustomername);
+            Phone = itemView.findViewById(R.id.tvcustomerphone);
+            Img = itemView.findViewById(R.id.imgcustomer);
+            cardView = itemView.findViewById(R.id.cardView);
+        }
+    }
+    private class ImageAsynctask extends AsyncTask<Bitmap,Void,Bitmap>{
+        private byte[] img;
+        private ViewHolder holder;
+
+        private ImageAsynctask(byte[] img, ViewHolder holder) {
+            this.img = img;
+            this.holder = holder;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Bitmap... bitmaps) {
+            return BitmapFactory.decodeByteArray(this.img, 0, img.length);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+            {
+                holder.Img.setImageBitmap(bitmap);
+            }
+        }
+    }
+    public void startNewAsyncTask(byte[] image,ViewHolder
+            holder) {
+        ImageAsynctask asyncTask = new ImageAsynctask(image,holder);
+        asyncTask.execute();
+    }
+
+}

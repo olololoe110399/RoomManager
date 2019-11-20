@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_user"
+            android:checked="false"
+            android:icon="@drawable/ic_user"
+            android:title="Người dùng" />
+        <item
+            android:id="@+id/nav_bill"
+            android:checked="false"
+            android:icon="@drawable/ic_bill"
+            android:title="Hóa đơn" />
+        <item
+            android:id="@+id/nav_message"
+            android:checked="false"
+            android:icon="@drawable/ic_email_black_24dp"
+            android:title="Hộp thư" />
+        <item
+            android:id="@+id/nav_share"
+            android:checked="false"
+            android:icon="@drawable/ic_share"
+            android:title="Chia sẻ" />
+
+    </group>
+    <group
+        android:id="@+id/bottom"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_changePass"
+            android:checked="false"
+            android:icon="@drawable/ic_settings"
+            android:title="Đổi mật khẩu" />
+        <item
+            android:id="@+id/nav_logout"
+            android:checked="false"
+            android:icon="@drawable/ic_exit"
+            android:title="Đăng xuất" />
+        <item
+            android:id="@+id/nav_exit"
+            android:checked="false"
+            android:icon="@drawable/ic_exit_app"
+            android:title="Thoát" />
+    </group>
+
+</menu>
