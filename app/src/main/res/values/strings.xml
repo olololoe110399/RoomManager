@@ -2,58 +2,40 @@
     <string name="app_name">Quản Lý Phòng Trọ</string>
     <string name="map_key" translatable="false">
 AIzaSyAdYl5sPMCD1GC_A4yZsogPLoQo2lv9jSQ  </string>
-    <!-- colors -->
-    <color name="primary">#785447</color>
-    <color name="primaryDark">#5B3F36</color>
     <string name="signin">
-         <u>Sign in here</u>.
+         <u>Đăng nhập</u>.
     </string>
     //facebook
-    <string name="facebook_app_id">717522132085560</string>
-    <!-- dimensions -->
-    <dimen name="image_width">120dp</dimen>
-    <dimen name="image_final_width">32dp</dimen>
-    <dimen name="spacing_normal">16dp</dimen>
+    <string name="facebook_app_id">3243559705717088</string>
+    <string name="fb_login_protocol_scheme">fb3243559705717088</string>
 
     <!-- styles -->
 
     <!-- strings -->
     <string name="m2">m<sup>2</sup></string>
-    <string name="hint_name">Name</string>
+    <string name="hint_name">Tên</string>
     <string name="hint_email">Email</string>
-    <string name="hint_password">Password</string>
+    <string name="hint_password">Mật khẩu</string>
     <string name="hint_confirm_password">Confirm Password</string>
-    <string name="text_login">Login</string>
-    <string name="text_register">Register</string>
-    <string name="error_message_name">Enter Full Name</string>
-    <string name="error_message_namebook">Enter Name Book</string>
-    <string name="error_message_nxb">Enter NXB</string>
-    <string name="error_message_author">Enter Author</string>
-    <string name="error_message_Price">Enter Price</string>
-    <string name="error_message_amout">Enter Amout</string>
-    <string name="error_message_user">Enter User Name</string>
-    <string name="error_message_email">Enter Valid Email</string>
-    <string name="error_message_phone">Enter Valid Phone</string>
-    <string name="error_message_age">Enter Age</string>
-    <string name="error_message_password">Enter Password</string>
-    <string name="text_register_successful">Registration Successful</string>
-    <string name="text_not_member">No account yet? Create one</string>
-    <string name="text_already_member">Already a member? Login</string>
-    <string name="error_email_exists">Email Already Exists</string>
-    <string name="error_password_match">Password Does Not Matches</string>
-    <string name="error_valid_email_password">Wrong Email or Password</string>
-    <string name="error_valid_email">Wrong Email</string>
-    <string name="error_valid_phone">Wrong Phone</string>
-    <string name="text_member">Already a member? Login</string>
-    <string name="error_id_exists">ID Already Exists</string>
-    <string name="error_message_id">Enter Valid ID</string>
-    <string name="error_message_namecategory">Enter Valid Name Category</string>
-    <string name="error_message_description">Enter Valid Description </string>
-    <string name="error_message_location">Enter Valid Location</string>
-    <string name="successfully">Successfully</string>
-    <string name="error_internet">Please connect to internet!</string>
-    <string name="add_new_contract"><u>Tạo hợp đồng</u></string>
-    <string name="add_new_bill"><u>Tạo hóa đơn</u></string>
+    <string name="text_login">Đăng nhập</string>
+    <string name="text_register">Đăng kí</string>
+    <string name="error_message_name">Nhập họ và tên</string>
+
+    <string name="error_message_user">Nhập tên đăng nhập</string>
+    <string name="error_message_email">Nhập Email hợp lệ!</string>
+    <string name="error_message_phone">Nhập số điện thoại hợp lệ!</string>
+    <string name="error_message_age">Nhập tuổi</string>
+    <string name="error_message_password">Nhập mật khẩu</string>
+    <string name="text_register_successful">Đăng ký thành công!</string>
+    <string name="text_not_member">Chưa có tài khoản? Tạo một cái</string>
+    <string name="text_already_member">Đã là thành viên hay chưa? Đăng nhập</string>
+    <string name="error_email_exists">Email đã tồn tại!</string>
+    <string name="error_password_match">Mật khẩu không khớp!</string>
+    <string name="error_valid_email_password">Email hoặc mật khẩu sai!</string>
+    <string name="error_valid_email">Email sai!</string>
+    <string name="error_valid_phone">Điện thoại sai!</string>
+    <string name="successfully">Thành công</string>
+    <string name="error_internet">Vui lòng kiểm tra kết nối internet!</string>
     // Contract detail
     <string name="datebegin"><u>Ngày khách vào:</u></string>
     <string name="dateend"><u>Hạn hợp đồng:</u></string>

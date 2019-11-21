@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 'android-Q'
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.example.qunlphngtr"
@@ -22,6 +22,16 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://repo.eclipse.org/content/repositories/paho-releases/"
+    }
+    maven {
+        url "https://maven.google.com"
+    }
 }
 
 dependencies {
@@ -45,6 +55,8 @@ dependencies {
     implementation 'com.github.mohammadatif:Animatoo:master'
     //picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
-
+    //facebook
+    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
+    implementation 'com.facebook.fresco:fresco:2.0.0'
 
 }

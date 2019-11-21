@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/ColorWhite"
+    android:padding="5dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+        android:id="@+id/imgnotification"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/icon_person"></de.hdodenhof.circleimageview.CircleImageView>
+
+    <TextView
+        android:id="@+id/tvtitlenotification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/imgnotification"
+        android:text="Thông báo từ Quản lý phòng trọ"
+        android:textSize="15dp" />
+
+    <TextView
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:id="@+id/tvmessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvtitlenotification"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/imgnotification"
+        android:text="Thông báo nộp tiền" />
+</RelativeLayout>

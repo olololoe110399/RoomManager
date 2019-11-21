@@ -14,7 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
-import com.example.qunlphngtr.Adapter.AdapterBillService;
 import com.example.qunlphngtr.Fragment.FragmentService;
 import com.example.qunlphngtr.Model.Contract;
 import com.example.qunlphngtr.Model.Service;
@@ -155,7 +154,7 @@ public class ContractDetailActivity extends AppCompatActivity {
     }
 
     private Bitmap LoadingImg(byte[] img) {
-        return BitmapFactory.decodeByteArray(img, 0, contract.getCustomer().getCustomerImage().length);
+        return BitmapFactory.decodeByteArray(img, 0, img.length);
     }
 
 }

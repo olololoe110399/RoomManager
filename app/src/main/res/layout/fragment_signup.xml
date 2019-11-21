@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/liner"
+        android:layout_width="match_parent"
+        android:layout_height="370dp"
+        android:background="@color/Color3">
+
+
+        <LinearLayout
+
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/bgradius"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="30dp">
+
+            <EditText
+                android:id="@+id/edtuser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tên tài khoản hoặc Email"></EditText>
+
+            <EditText
+                android:inputType="textPassword"
+                android:id="@+id/edtpassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mật khẩu"></EditText>
+
+            <EditText
+                android:inputType="textPassword"
+                android:id="@+id/edtrepassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nhập lại mật khẩu"></EditText>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btnregisger"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:text="Đã có tài khoản?"></TextView>
+
+            <TextView
+                android:id="@+id/tvsignin"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:textColor="#00168A"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/signin"
+                ></TextView>
+
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <Button
+        android:layout_marginBottom="30dp"
+        android:id="@+id/btnregisger"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/liner"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-25dp"
+        android:background="@drawable/buttonbg"
+        android:text="Tạo tài khoản"
+        android:textColor="@color/ColorWhite" />
+
+
+
+</RelativeLayout></ScrollView>

@@ -4,26 +4,49 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.example.qunlphngtr.Database.ManagerUsers;
 import com.example.qunlphngtr.Fragment.FragmentCustomer;
 import com.example.qunlphngtr.Fragment.FragmentHome;
 import com.example.qunlphngtr.Fragment.FragmentRoom;
 import com.example.qunlphngtr.Fragment.FragmentService;
 import com.example.qunlphngtr.Fragment.FragmentUser;
+import com.example.qunlphngtr.Model.Notification;
+import com.example.qunlphngtr.Model.Users;
 import com.example.qunlphngtr.R;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     int startingPosition;
@@ -31,6 +54,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private BottomNavigationView bottomnavigation;
+    private View headerView;
+    private AccessToken token;
+    private ManagerUsers managerUsers;
+    private Users users;
+    private SharedPreferences pref;
+    private String UserNameSp;
+    TextView textNotificationItemCount;
+    int mNotificationItemCount;
+    int menuitemid;
 
 
     @Override
@@ -39,8 +71,49 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         initView();
+        initObject();
         initToolbar();
+        setProfileNavigationView();
         setupNavigation();
+        notification();
+
+
+    }
+
+    private void notification() {
+        if(managerUsers.checkInformatioNull(UserNameSp)>0){
+            NotificationActivity.notificationList.add(new Notification("Chúc mừng bạn vừa tạo tài khoản. Vui lòng cập nhật đầy đủ thông tin của! ",true));
+        }
+    }
+    private  void addcountNotification(){
+        if(check()<0){
+            mNotificationItemCount=0;
+        }else {
+            for (int i=0;i<NotificationActivity.notificationList.size();i++){
+                if(NotificationActivity.notificationList.get(i).isStatus()==true){
+                    mNotificationItemCount=mNotificationItemCount+1;
+                }
+            }
+        }
+        invalidateOptionsMenu();
+
+    }
+    private int check(){
+        int i=-1;
+        for (int j=0;j<NotificationActivity.notificationList.size();j++){
+            if(NotificationActivity.notificationList.get(j).isStatus()==true){
+               i=1;
+            }
+        }
+        return i;
+    }
+
+
+    private void initObject() {
+        managerUsers = new ManagerUsers(this);
+        users = new Users();
+        pref = getSharedPreferences("USER_FILE", MODE_PRIVATE);
+        UserNameSp = pref.getString("USERNAME", "");
 
     }
 
@@ -53,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void initView() {
+        token = AccessToken.getCurrentAccessToken();
         drawerLayout = findViewById(R.id.main_drawer);
         toolbar = findViewById(R.id.tool_bar);
         navigationView = findViewById(R.id.navigation_view);
@@ -67,10 +141,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             int newPositon = 0;
             Fragment fragment = null;
-
+            menuItem.setCheckable(true);
             switch (menuItem.getItemId()) {
                 case R.id.Home:
-                    menuItem.setCheckable(true);
+
                     uncheckednavigation();
                     getSupportActionBar().setTitle("Thống kê");
                     newPositon = 1;
@@ -79,7 +153,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     return true;
                 case R.id.Room:
-                    menuItem.setCheckable(true);
                     uncheckednavigation();
                     getSupportActionBar().setTitle("Quản lý phòng trọ");
                     newPositon = 2;
@@ -88,7 +161,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     return true;
                 case R.id.Customer:
-                    menuItem.setCheckable(true);
                     uncheckednavigation();
                     getSupportActionBar().setTitle("Quản lý khách trọ");
                     newPositon = 3;
@@ -97,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     return true;
                 case R.id.Service:
-                    menuItem.setCheckable(true);
                     uncheckednavigation();
                     getSupportActionBar().setTitle("Quản lý dịch vụ");
                     newPositon = 4;
@@ -134,10 +205,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem menuItem = menu.findItem(R.id.action_notification);
+        View actionView = menuItem.getActionView();
+        textNotificationItemCount = actionView.findViewById(R.id.notification_badge);
+        setupBadge();
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onOptionsItemSelected(menuItem);
+            }
+        });
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_bar, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
+    private void setupBadge() {
+
+        if (textNotificationItemCount != null) {
+            if (mNotificationItemCount == 0) {
+                if (textNotificationItemCount.getVisibility() != View.GONE) {
+                    textNotificationItemCount.setVisibility(View.GONE);
+                }
+            } else {
+                textNotificationItemCount.setText(String.valueOf(Math.min(mNotificationItemCount, 99)));
+                if (textNotificationItemCount.getVisibility() != View.VISIBLE) {
+                    textNotificationItemCount.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -146,7 +249,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
-            case R.id.action_setting:
+            case R.id.action_notification:
+               startActivity(new Intent(this,NotificationActivity.class));
+               Animatoo.animateSlideLeft(this);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -159,15 +264,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            if (getCheckedItem(navigationView) > -1) {
-                bottomnavigation.setSelectedItemId(R.id.Home);
-            } else {
+            if (menuitemid==R.id.menu_none) {
                 if (bottomnavigation.getSelectedItemId() == R.id.Home) {
                     dialogexit();
-
                 } else {
                     bottomnavigation.setSelectedItemId(R.id.Home);
                 }
+            } else {
+                bottomnavigation.setSelectedItemId(R.id.Home);
             }
 
 
@@ -181,45 +285,43 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Fragment fragment = null;
         switch (menuItem.getItemId()) {
             case R.id.nav_user:
-                menuItem.setChecked(true);
+                menuitemid=menuItem.getItemId();
                 uncheckedbottomnavigation();
                 getSupportActionBar().setTitle("Người dùng");
-                newPositon=5;
-                fragment=new FragmentUser();
-                loadFragment(fragment ,newPositon);
+                newPositon = 5;
+                fragment = new FragmentUser();
+                loadFragment(fragment, newPositon);
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             case R.id.nav_bill:
-                menuItem.setChecked(true);
+                menuitemid=menuItem.getItemId();
                 uncheckedbottomnavigation();
                 getSupportActionBar().setTitle("Hóa đơn");
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             case R.id.nav_message:
-                menuItem.setChecked(true);
+                menuitemid=menuItem.getItemId();
                 uncheckedbottomnavigation();
                 getSupportActionBar().setTitle("Hộp thư");
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             case R.id.nav_share:
-                menuItem.setChecked(true);
+                menuitemid=menuItem.getItemId();
                 uncheckedbottomnavigation();
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             case R.id.nav_changePass:
-                menuItem.setChecked(true);
+                menuitemid=menuItem.getItemId();
                 uncheckedbottomnavigation();
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             case R.id.nav_logout:
-                menuItem.setChecked(true);
-                uncheckedbottomnavigation();
-                drawerLayout.closeDrawer(GravityCompat.START);
+                menuitemid=menuItem.getItemId();
+                dialoglogout();
                 return true;
             case R.id.nav_exit:
-                menuItem.setChecked(true);
-                uncheckedbottomnavigation();
-                drawerLayout.closeDrawer(GravityCompat.START);
+                menuitemid=menuItem.getItemId();
+                dialogexit();
                 return true;
 
         }
@@ -227,11 +329,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return false;
     }
 
+    private void dialoglogout() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Thông báo");
+        builder.setMessage("Bạn có chắc chắn muốn đăng xuất?");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                uncheckednavigation();
+                dialogInterface.dismiss();
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+        builder.setNegativeButton("Đăng xuất", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (token == null) {
+                } else {
+                    LoginManager.getInstance().logOut();
+                }
+                logout();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                Animatoo.animateSlideRight(MainActivity.this);
+                finish();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
     private void uncheckednavigation() {
-        int size = navigationView.getMenu().size();
-        for (int i = 0; i < size; i++) {
-            navigationView.getMenu().getItem(i).setChecked(false);
-        }
+        navigationView.setCheckedItem(R.id.menu_none);
+        menuitemid=R.id.menu_none;
     }
 
     private void uncheckedbottomnavigation() {
@@ -241,17 +373,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private int getCheckedItem(NavigationView navigationView) {
-        Menu menu = navigationView.getMenu();
-        for (int i = 0; i < menu.size(); i++) {
-            MenuItem item = menu.getItem(i);
-            if (item.isChecked()) {
-                return i;
-            }
-        }
 
-        return -1;
-    }
 
     private void dialogexit() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -261,17 +383,98 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         builder.setPositiveButton("Không", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                uncheckednavigation();
                 dialogInterface.dismiss();
+                drawerLayout.closeDrawer(GravityCompat.START);
             }
         });
         builder.setNegativeButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-               finish();
+                finish();
             }
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
 
+    private void logout() {
+        SharedPreferences.Editor edit = pref.edit();
+        edit.clear();
+        edit.commit();
+    }
+
+    public void showImage(String profilePicUrl) {
+        ImageView imgAvater = headerView.findViewById(R.id.imgAvatar);
+        Picasso.get().load(profilePicUrl).placeholder(R.drawable.avatar)// Place holder image from drawable folder
+                .error(R.drawable.ic_launcher_background).resize(200, 200).centerCrop()
+                .into(imgAvater);
+    }
+
+    private void setProfileFb() {
+        TextView tvUserFullName = headerView.findViewById(R.id.tvUserFullName);
+        GraphRequest graphRequest = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+            @Override
+            public void onCompleted(JSONObject object, GraphResponse response) {
+                Log.d("JSON1", response.getJSONObject().toString());
+
+                try {
+                    showImage(response.getJSONObject().getJSONObject("picture")
+                            .getJSONObject("data").getString("url"));
+                    tvUserFullName.setText(object.getString("name"));
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,email,birthday,location,picture.width(200).height(200)");
+        graphRequest.setParameters(parameters);
+        graphRequest.executeAsync();
+    }
+
+    private void setProfileNavigationView() {
+        headerView = navigationView.inflateHeaderView(R.layout.navigation_header);
+
+        if (token == null) {
+            if (managerUsers.checkInformatioNull(UserNameSp) < 0) {
+                setProfileSqlite();
+            }
+
+        } else {
+            if (isOnline(this)) {
+                setProfileFb();
+            } else {
+                Toast.makeText(this, R.string.error_internet, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void setProfileSqlite() {
+        users = managerUsers.getUserById(UserNameSp);
+        TextView tvUserFullName = headerView.findViewById(R.id.tvUserFullName);
+        ImageView imgAvater = headerView.findViewById(R.id.imgAvatar);
+        tvUserFullName.setText(users.getUserFullName());
+        imgAvater.setImageBitmap(LoadingImgArayByte(users.getUserAvater()));
+
+    }
+
+    private boolean isOnline(Context context) {
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    private Bitmap LoadingImgArayByte(byte[] img) {
+        return BitmapFactory.decodeByteArray(img, 0, img.length);
+    }
+
+    @Override
+    protected void onResume() {
+        addcountNotification();
+        super.onResume();
+    }
 }

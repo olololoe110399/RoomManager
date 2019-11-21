@@ -19,7 +19,6 @@
         app:itemIconTint="@color/select2"
         app:itemTextColor="@color/select2"
         android:layout_gravity="start"
-        app:headerLayout="@layout/navigation_header"
         app:menu="@menu/navigation_item">
 
     </com.google.android.material.navigation.NavigationView>

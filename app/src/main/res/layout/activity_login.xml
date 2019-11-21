@@ -1,9 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.LoginActivity">
+    tools:context="Activities.LoginActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/useLogo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:elevation="5dp"
+        android:src="@color/Color1"
+        app:civ_border_color="@color/ColorWhite"
+        app:civ_border_width="1dp" />
+
+    <LinearLayout
+        android:elevation="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/useLogo"
+        android:layout_marginTop="20dp"
+        android:gravity="center">
+
+        <Button
+            android:onClick="onClick"
+            android:id="@+id/btnSignin"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btnsginin1"
+            android:elevation="5dp"
+            android:text="@string/text_login"
+            android:textColor="@color/ColorWhite"
+            android:textStyle="bold"></Button>
+
+        <Button
+            android:onClick="onClick"
+            android:id="@+id/btnSingnup"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_toRightOf="@+id/btnSignin"
+            android:background="@drawable/btnsignup2"
+            android:elevation="5dp"
+            android:text="@string/text_register"
+            android:textColor="@color/Color4"
+            android:textStyle="bold"></Button>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_container2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/useLogo"
+        android:layout_marginTop="50dp" />
+
+
+</RelativeLayout>
