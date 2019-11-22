@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 'android-Q'
+    compileSdkVersion 28
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.example.qunlphngtr"
@@ -47,7 +47,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
     implementation 'com.android.support:design:29.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-rc01'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.jakewharton:butterknife:10.2.0'
     //Image
     implementation 'de.hdodenhof:circleimageview:3.0.1'
@@ -56,7 +56,7 @@ dependencies {
     //picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
     //facebook
-    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
+    implementation 'com.facebook.android:facebook-android-sdk:5.11.0'
     implementation 'com.facebook.fresco:fresco:2.0.0'
 
-}
+}// olololoe//Hantinh1212
