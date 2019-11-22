@@ -474,7 +474,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onResume() {
-        addcountNotification();
+        if(managerUsers.checkInformatioNull(UserNameSp)>0){
+        addcountNotification();}
         super.onResume();
     }
 }
