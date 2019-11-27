@@ -13,6 +13,7 @@ import com.example.qunlphngtr.R;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class AdapterNotification extends BaseAdapter {
@@ -20,10 +21,12 @@ public class AdapterNotification extends BaseAdapter {
     Context context;
     int layout;
 
+
     public AdapterNotification(List<Notification> notificationList, Context context, int layout) {
         this.notificationList = notificationList;
         this.context = context;
         this.layout = layout;
+
     }
 
     @Override
@@ -47,6 +50,8 @@ public class AdapterNotification extends BaseAdapter {
         convertView=inflater.inflate(layout,null);
         TextView textView=convertView.findViewById(R.id.tvmessage);
         textView.setText(notificationList.get(position).getMessage());
+        TextView textView1=convertView.findViewById(R.id.tvdate);
+        textView1.setText(notificationList.get(position).getDate());
         return convertView;
     }
 }

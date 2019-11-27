@@ -6,11 +6,11 @@
     android:padding="5dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_centerVertical="true"
-        android:layout_margin="10dp"
         android:id="@+id/imgnotification"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
         android:background="@drawable/icon_person"></de.hdodenhof.circleimageview.CircleImageView>
 
     <TextView
@@ -25,13 +25,23 @@
         android:textSize="15dp" />
 
     <TextView
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="5dp"
         android:id="@+id/tvmessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvtitlenotification"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
         android:layout_toRightOf="@+id/imgnotification"
         android:text="Thông báo nộp tiền" />
+
+    <TextView
+        android:id="@+id/tvdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvmessage"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:text="10:20:10 20-10-1998"
+        android:textStyle="bold" />
 </RelativeLayout>

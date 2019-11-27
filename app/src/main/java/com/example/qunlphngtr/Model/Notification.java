@@ -2,12 +2,23 @@ package com.example.qunlphngtr.Model;
 
 public class Notification {
     private String Message;
-    private boolean Status;
+    private String date;
 
-    public Notification(String message, boolean status) {
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public Notification(String message, String date, boolean status) {
         Message = message;
+        this.date = date;
         Status = status;
     }
+
+    private boolean Status;
 
     public String getMessage() {
         return Message;
