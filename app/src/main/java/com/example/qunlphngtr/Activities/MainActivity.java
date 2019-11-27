@@ -48,8 +48,10 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    int startingPosition;
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -59,10 +61,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ManagerUsers managerUsers;
     private Users users;
     private SharedPreferences pref;
-    private String UserNameSp;
-    TextView textNotificationItemCount;
-    int mNotificationItemCount;
-    int menuitemid;
+    private String UserNameSp,messnotification;
+    private TextView textNotificationItemCount;
+    int mNotificationItemCount, menuitemid, startingPosition;
+    private SimpleDateFormat simpleDateFormat;
+
 
 
     @Override
@@ -81,28 +84,43 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void notification() {
-        if(managerUsers.checkInformatioNull(UserNameSp)>0){
-            NotificationActivity.notificationList.add(new Notification("Chúc mừng bạn vừa tạo tài khoản. Vui lòng cập nhật đầy đủ thông tin của! ",true));
+        if (managerUsers.checkInformatioNull(UserNameSp) > 0) {
+            if (checkmess() < 0) {
+                messnotification="Chúc mừng bạn vừa tạo tài khoản! Vui lòng cập nhật đầy đủ thông tin của bạn ! ";
+                NotificationActivity.notificationList.add(new Notification(messnotification, simpleDateFormat.format(Calendar.getInstance().getTime()), true));
+            }
         }
     }
-    private  void addcountNotification(){
-        if(check()<0){
-            mNotificationItemCount=0;
-        }else {
-            for (int i=0;i<NotificationActivity.notificationList.size();i++){
-                if(NotificationActivity.notificationList.get(i).isStatus()==true){
-                    mNotificationItemCount=mNotificationItemCount+1;
+
+    private void addcountNotification() {
+        if (checkstatus() < 0) {
+            mNotificationItemCount = 0;
+        } else {
+            for (int i = 0; i < NotificationActivity.notificationList.size(); i++) {
+                if (NotificationActivity.notificationList.get(i).isStatus() == true) {
+                    mNotificationItemCount = mNotificationItemCount + 1;
                 }
             }
         }
         invalidateOptionsMenu();
 
     }
-    private int check(){
-        int i=-1;
-        for (int j=0;j<NotificationActivity.notificationList.size();j++){
-            if(NotificationActivity.notificationList.get(j).isStatus()==true){
-               i=1;
+
+    private int checkstatus() {
+        int i = -1;
+        for (int j = 0; j < NotificationActivity.notificationList.size(); j++) {
+            if (NotificationActivity.notificationList.get(j).isStatus() == true) {
+                i = 1;
+            }
+        }
+        return i;
+    }
+
+    private int checkmess() {
+        int i = -1;
+        for (int j = 0; j < NotificationActivity.notificationList.size(); j++) {
+            if (NotificationActivity.notificationList.get(j).getMessage().equals(messnotification)) {
+                i = 1;
             }
         }
         return i;
@@ -110,10 +128,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void initObject() {
+
         managerUsers = new ManagerUsers(this);
         users = new Users();
         pref = getSharedPreferences("USER_FILE", MODE_PRIVATE);
         UserNameSp = pref.getString("USERNAME", "");
+        simpleDateFormat = new SimpleDateFormat("hh:mm:ss dd-MM-yyyy");
 
     }
 
@@ -250,8 +270,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
             case R.id.action_notification:
-               startActivity(new Intent(this,NotificationActivity.class));
-               Animatoo.animateSlideLeft(this);
+                startActivity(new Intent(this, NotificationActivity.class));
+                Animatoo.animateSlideLeft(this);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -264,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            if (menuitemid==R.id.menu_none) {
+            if (menuitemid == R.id.menu_none) {
                 if (bottomnavigation.getSelectedItemId() == R.id.Home) {
                     dialogexit();
                 } else {
@@ -285,7 +305,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Fragment fragment = null;
         switch (menuItem.getItemId()) {
             case R.id.nav_user:
-                menuitemid=menuItem.getItemId();
+                menuitemid = menuItem.getItemId();
                 uncheckedbottomnavigation();
                 getSupportActionBar().setTitle("Người dùng");
                 newPositon = 5;
@@ -294,33 +314,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             case R.id.nav_bill:
-                menuitemid=menuItem.getItemId();
+                menuitemid = menuItem.getItemId();
                 uncheckedbottomnavigation();
                 getSupportActionBar().setTitle("Hóa đơn");
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             case R.id.nav_message:
-                menuitemid=menuItem.getItemId();
+                menuitemid = menuItem.getItemId();
                 uncheckedbottomnavigation();
                 getSupportActionBar().setTitle("Hộp thư");
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             case R.id.nav_share:
-                menuitemid=menuItem.getItemId();
+                menuitemid = menuItem.getItemId();
                 uncheckedbottomnavigation();
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             case R.id.nav_changePass:
-                menuitemid=menuItem.getItemId();
+                menuitemid = menuItem.getItemId();
                 uncheckedbottomnavigation();
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             case R.id.nav_logout:
-                menuitemid=menuItem.getItemId();
+                menuitemid = menuItem.getItemId();
                 dialoglogout();
                 return true;
             case R.id.nav_exit:
-                menuitemid=menuItem.getItemId();
+                menuitemid = menuItem.getItemId();
                 dialogexit();
                 return true;
 
@@ -363,7 +383,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void uncheckednavigation() {
         navigationView.setCheckedItem(R.id.menu_none);
-        menuitemid=R.id.menu_none;
+        menuitemid = R.id.menu_none;
     }
 
     private void uncheckedbottomnavigation() {
@@ -372,7 +392,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             bottomnavigation.getMenu().getItem(i).setCheckable(false);
         }
     }
-
 
 
     private void dialogexit() {
@@ -474,8 +493,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onResume() {
-        if(managerUsers.checkInformatioNull(UserNameSp)>0){
-        addcountNotification();}
+        if (managerUsers.checkInformatioNull(UserNameSp) > 0) {
+            addcountNotification();
+        }
         super.onResume();
     }
 }
