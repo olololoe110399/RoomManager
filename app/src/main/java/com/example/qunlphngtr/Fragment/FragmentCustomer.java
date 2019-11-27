@@ -32,7 +32,8 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentCustomer extends Fragment {
+public class
+FragmentCustomer extends Fragment {
     private View view;
     private RecyclerView recyclerView;
     private ProgressBar myProgress;

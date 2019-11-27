@@ -1,5 +1,6 @@
 package com.example.qunlphngtr.Fragment;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,20 +15,25 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.qunlphngtr.Activities.AddRoomActivity;
 import com.example.qunlphngtr.Adapter.AdapterRoom;
+import com.example.qunlphngtr.Database.RoomDAO;
 import com.example.qunlphngtr.Model.Room;
 import com.example.qunlphngtr.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentRoom extends Fragment {
+public class FragmentRoom extends Fragment{
     private View view;
     private RecyclerView recyclerView;
     private ProgressBar myProgress;
     private List<Room> roomList;
     private AdapterRoom adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private FloatingActionButton fabroom;
+    private RoomDAO roomDAO;
 
     @Nullable
     @Override
@@ -39,6 +45,15 @@ public class FragmentRoom extends Fragment {
     }
 
     private void initView() {
+        fabroom=view.findViewById(R.id.fbroom);
+        fabroom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getActivity(),AddRoomActivity.class);
+                startActivity(intent);
+            }
+        });
+        roomDAO = new RoomDAO(getActivity());
         recyclerView = view.findViewById(R.id.rvroom);
         myProgress = view.findViewById(R.id.progress_bar);
         swipeRefreshLayout = view.findViewById(R.id.srlroom);
@@ -54,7 +69,11 @@ public class FragmentRoom extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         recyclerView.setAdapter(adapter);
+
     }
+
+
+
 
     private class Loading extends AsyncTask<Void, Void, List<Room>> {
         @Override
@@ -66,10 +85,7 @@ public class FragmentRoom extends Fragment {
 
         @Override
         protected List<Room> doInBackground(Void... voids) {
-            roomList.add(new Room(1, "Phòng 1", 2000000, 12, 5000, 10000));
-            roomList.add(new Room(2, "Phòng 2", 1000000, 12, 5000, 10000));
-            roomList.add(new Room(3, "Phòng 3", 800000, 12, 5000, 10000));
-            roomList.add(new Room(4, "Phòng 4", 1500000, 12, 5000, 10000));
+            roomList = roomDAO.getAllRoom();
             return roomList;
         }
 
@@ -86,5 +102,6 @@ public class FragmentRoom extends Fragment {
         new Loading().execute();
 
     }
+
 
 }

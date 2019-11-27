@@ -4,18 +4,10 @@ public class Room {
     private int RoomID;
     private String RoomName;
     private double RoomPrice;
-    private int Acreage;
+    private int RoomAcreage;
     private int RoomWaterPrice;
     private int RoomElectricPrice;
-
-    public Room(int roomID, String roomName, double roomPrice, int acreage, int roomWaterPrice, int roomElectricPrice) {
-        RoomID = roomID;
-        RoomName = roomName;
-        RoomPrice = roomPrice;
-        Acreage = acreage;
-        RoomWaterPrice = roomWaterPrice;
-        RoomElectricPrice = roomElectricPrice;
-    }
+    private byte[] RoomImage;
 
     public Room() {
     }
@@ -44,12 +36,12 @@ public class Room {
         RoomPrice = roomPrice;
     }
 
-    public int getAcreage() {
-        return Acreage;
+    public int getRoomAcreage() {
+        return RoomAcreage;
     }
 
-    public void setAcreage(int acreage) {
-        Acreage = acreage;
+    public void setRoomAcreage(int roomAcreage) {
+        RoomAcreage = roomAcreage;
     }
 
     public int getRoomWaterPrice() {
@@ -66,6 +58,24 @@ public class Room {
 
     public void setRoomElectricPrice(int roomElectricPrice) {
         RoomElectricPrice = roomElectricPrice;
+    }
+
+    public byte[] getRoomImage() {
+        return RoomImage;
+    }
+
+    public void setRoomImage(byte[] roomImage) {
+        RoomImage = roomImage;
+    }
+
+    public Room(int roomID, String roomName, double roomPrice, int roomAcreage, int roomWaterPrice, int roomElectricPrice, byte[] roomImage) {
+        RoomID = roomID;
+        RoomName = roomName;
+        RoomPrice = roomPrice;
+        RoomAcreage = roomAcreage;
+        RoomWaterPrice = roomWaterPrice;
+        RoomElectricPrice = roomElectricPrice;
+        RoomImage = roomImage;
     }
 
     @Override

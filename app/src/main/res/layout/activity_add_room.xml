@@ -1,9 +1,201 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.AddRoomActivity">
+    tools:context="Activities.AddRoomActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <include
+            android:id="@+id/app_bar"
+            layout="@layout/tool_bar"></include>
+    <ImageView
+        android:id="@+id/imgRoom"
+
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_below="@+id/app_bar"
+        />
+
+    <LinearLayout
+        android:id="@+id/tvRoomID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ECECEA"
+        android:layout_below="@+id/app_bar"
+        android:layout_toRightOf="@id/imgRoom"
+        android:padding="10dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tên phòng"
+            android:textSize="19dp"
+            android:textColor="#000000"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layoutEdtRoomID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:layout_below="@+id/tvRoomID"
+        android:layout_toRightOf="@+id/imgRoom">
+        <EditText
+            android:id="@+id/edtRoomName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập mã phòng"
+            android:textSize="18dp"
+            android:background="@null"
+            android:padding="10dp"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/tvRoomName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ECECEA"
+        android:layout_below="@+id/layoutEdtRoomID"
+        android:layout_toRightOf="@+id/imgRoom"
+        android:padding="10dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Giá phòng"
+            android:textSize="19dp"
+            android:textColor="#000000"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layoutEdtRoomName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:layout_below="@+id/tvRoomName"
+        android:layout_toRightOf="@id/imgRoom">
+        <EditText
+            android:id="@+id/edtRoomPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập tên phòng"
+            android:textSize="18dp"
+            android:background="@null"
+            android:padding="10dp"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/tvRoomPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ECECEA"
+        android:layout_below="@+id/layoutEdtRoomName"
+        android:padding="10dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Diện tích"
+            android:textSize="19dp"
+            android:textColor="#000000"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layoutEdtRoomPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:layout_below="@+id/tvRoomPrice">
+        <EditText
+            android:id="@+id/edtRoomAcreage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập diện tích"
+            android:textSize="18dp"
+            android:background="@null"
+            android:padding="10dp"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/tvRoomArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ECECEA"
+        android:layout_below="@+id/layoutEdtRoomPrice"
+        android:padding="10dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Giá điện"
+            android:textSize="19dp"
+            android:textColor="#000000"
+
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layoutEdtRoomArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:layout_below="@+id/tvRoomArea">
+        <EditText
+            android:id="@+id/edtRoomElectricPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập giá điện"
+            android:textSize="18dp"
+            android:background="@null"
+            android:padding="10dp"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/tvRoomElectric"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ECECEA"
+        android:layout_below="@+id/layoutEdtRoomArea"
+        android:padding="10dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Giá nước"
+            android:textSize="19dp"
+            android:textColor="#000000"
+
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layoutEdtRoomElectric"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:layout_below="@+id/tvRoomElectric">
+        <EditText
+            android:id="@+id/edtRoomWaterPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập giá nước"
+            android:textSize="18dp"
+            android:background="@null"
+            android:padding="10dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layoutEdtRoomElectric"
+        android:gravity="center_horizontal">
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="Lưu"/>
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/btnSave"
+            android:text="Hủy"/>
+    </LinearLayout>
+
+</RelativeLayout>

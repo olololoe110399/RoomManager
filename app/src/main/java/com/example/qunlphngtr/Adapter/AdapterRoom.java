@@ -42,7 +42,7 @@ public class AdapterRoom extends RecyclerView.Adapter<AdapterRoom.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.name.setText(roomList.get(position).getRoomName());
-        holder.acreage.setText(roomList.get(position).getAcreage()+" m\u00B2");
+        holder.acreage.setText(roomList.get(position).getRoomAcreage()+" m\u00B2");
         holder.price.setText(roomList.get(position).getRoomPrice()/1000000+" tr");
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
