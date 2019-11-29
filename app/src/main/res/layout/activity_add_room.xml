@@ -6,177 +6,192 @@
     android:layout_height="match_parent"
     tools:context="Activities.AddRoomActivity">
 
-        <include
-            android:id="@+id/app_bar"
-            layout="@layout/tool_bar"></include>
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/tool_bar"></include>
+
     <ImageView
         android:id="@+id/imgRoom"
 
         android:layout_width="180dp"
         android:layout_height="180dp"
-        android:layout_below="@+id/app_bar"
-        />
+        android:layout_below="@+id/app_bar" />
 
     <LinearLayout
         android:id="@+id/tvRoomID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ECECEA"
         android:layout_below="@+id/app_bar"
         android:layout_toRightOf="@id/imgRoom"
+        android:background="#ECECEA"
         android:padding="10dp">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Tên phòng"
-            android:textSize="19dp"
             android:textColor="#000000"
-            />
+            android:textSize="19dp" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/layoutEdtRoomID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
         android:layout_below="@+id/tvRoomID"
-        android:layout_toRightOf="@+id/imgRoom">
+        android:layout_toRightOf="@+id/imgRoom"
+        android:background="#FFFFFF">
+
         <EditText
             android:id="@+id/edtRoomName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nhập mã phòng"
-            android:textSize="18dp"
             android:background="@null"
+            android:hint="Nhập tên phòng"
             android:padding="10dp"
-            />
+            android:textSize="18dp" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/tvRoomName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ECECEA"
         android:layout_below="@+id/layoutEdtRoomID"
         android:layout_toRightOf="@+id/imgRoom"
+        android:background="#ECECEA"
         android:padding="10dp">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Giá phòng"
-            android:textSize="19dp"
             android:textColor="#000000"
-            />
+            android:textSize="19dp" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/layoutEdtRoomName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
         android:layout_below="@+id/tvRoomName"
-        android:layout_toRightOf="@id/imgRoom">
+        android:layout_toRightOf="@id/imgRoom"
+        android:background="#FFFFFF">
+
         <EditText
+            android:inputType="number"
             android:id="@+id/edtRoomPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nhập tên phòng"
-            android:textSize="18dp"
             android:background="@null"
+            android:hint="Nhập giá phòng"
             android:padding="10dp"
-            />
+            android:textSize="18dp" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/tvRoomPrice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ECECEA"
         android:layout_below="@+id/layoutEdtRoomName"
+        android:background="#ECECEA"
         android:padding="10dp">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Diện tích"
-            android:textSize="19dp"
             android:textColor="#000000"
-            />
+            android:textSize="19dp" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/layoutEdtRoomPrice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        android:layout_below="@+id/tvRoomPrice">
+        android:layout_below="@+id/tvRoomPrice"
+        android:background="#FFFFFF">
+
         <EditText
+            android:inputType="number"
             android:id="@+id/edtRoomAcreage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nhập diện tích"
-            android:textSize="18dp"
             android:background="@null"
+            android:hint="Nhập diện tích"
             android:padding="10dp"
-            />
+            android:textSize="18dp" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/tvRoomArea"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ECECEA"
         android:layout_below="@+id/layoutEdtRoomPrice"
+        android:background="#ECECEA"
         android:padding="10dp">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Giá điện"
-            android:textSize="19dp"
             android:textColor="#000000"
+            android:textSize="19dp"
 
             />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/layoutEdtRoomArea"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        android:layout_below="@+id/tvRoomArea">
+        android:layout_below="@+id/tvRoomArea"
+        android:background="#FFFFFF">
+
         <EditText
+            android:inputType="number"
             android:id="@+id/edtRoomElectricPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nhập giá điện"
-            android:textSize="18dp"
             android:background="@null"
+            android:hint="Nhập giá điện"
             android:padding="10dp"
-            />
+            android:textSize="18dp" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/tvRoomElectric"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ECECEA"
         android:layout_below="@+id/layoutEdtRoomArea"
+        android:background="#ECECEA"
         android:padding="10dp">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Giá nước"
-            android:textSize="19dp"
             android:textColor="#000000"
+            android:textSize="19dp"
 
             />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/layoutEdtRoomElectric"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        android:layout_below="@+id/tvRoomElectric">
+        android:layout_below="@+id/tvRoomElectric"
+        android:background="#FFFFFF">
+
         <EditText
+            android:inputType="number"
             android:id="@+id/edtRoomWaterPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nhập giá nước"
-            android:textSize="18dp"
             android:background="@null"
+            android:hint="Nhập giá nước"
             android:padding="10dp"
-            />
+            android:textSize="18dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -184,18 +199,19 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/layoutEdtRoomElectric"
         android:gravity="center_horizontal">
+
         <Button
             android:id="@+id/btnSave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Lưu" />
 
-            android:text="Lưu"/>
         <Button
             android:id="@+id/btnCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/btnSave"
-            android:text="Hủy"/>
+            android:text="Hủy" />
     </LinearLayout>
 
 </RelativeLayout>

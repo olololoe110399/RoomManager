@@ -3,7 +3,7 @@ package com.example.qunlphngtr.Model;
 public class Room {
     private int RoomID;
     private String RoomName;
-    private double RoomPrice;
+    private int RoomPrice;
     private int RoomAcreage;
     private int RoomWaterPrice;
     private int RoomElectricPrice;
@@ -28,11 +28,11 @@ public class Room {
         RoomName = roomName;
     }
 
-    public double getRoomPrice() {
+    public int getRoomPrice() {
         return RoomPrice;
     }
 
-    public void setRoomPrice(double roomPrice) {
+    public void setRoomPrice(int roomPrice) {
         RoomPrice = roomPrice;
     }
 
@@ -68,7 +68,7 @@ public class Room {
         RoomImage = roomImage;
     }
 
-    public Room(int roomID, String roomName, double roomPrice, int roomAcreage, int roomWaterPrice, int roomElectricPrice, byte[] roomImage) {
+    public Room(int roomID, String roomName, int roomPrice, int roomAcreage, int roomWaterPrice, int roomElectricPrice, byte[] roomImage) {
         RoomID = roomID;
         RoomName = roomName;
         RoomPrice = roomPrice;

@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.qunlphngtr.Adapter.AdapterCustomerSpinner;
+import com.example.qunlphngtr.Database.ContractDAO;
 import com.example.qunlphngtr.Fragment.FragmentService;
 import com.example.qunlphngtr.Model.Contract;
 import com.example.qunlphngtr.Model.Customer;
@@ -51,6 +52,7 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
     private Room room = RoomActivity.room;
     private List<Customer> customerList;
     private AdapterCustomerSpinner adapterCustomerSpinner;
+    private ContractDAO contractDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +91,7 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
         serviceList = new ArrayList<>();
         ConvertListtoArrayString();
         mServiceItems = new ArrayList<>();
+        contractDAO = new ContractDAO(this);
 
     }
 
@@ -323,10 +326,14 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
             contract.setContractVehicleNumber(Integer.parseInt(edtvehical.getText().toString()));
             contract.setContractstatus(0);
             contract.setContractDeposits(Double.parseDouble(edtdeposits.getText().toString()));
-            ContractActivity.contractList.add(contract);
-            ContractActivity.adapter.notifyDataSetChanged();
-            ContractActivity.checkcontract();
-            addbillservice(contract.getContractID());
+            if (contractDAO.addContract(contract) > 0) {
+                ContractActivity.contractList.add(contract);
+                ContractActivity.adapter.notifyDataSetChanged();
+                ContractActivity.checkcontract();
+                addbillservice(contract.getContractID());
+            } else {
+                Toast.makeText(this, "Chưa thêm được!", Toast.LENGTH_SHORT).show();
+            }
 
 
         }

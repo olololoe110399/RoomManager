@@ -65,9 +65,10 @@ public class FragmentRoom extends Fragment{
             }
         });
         recyclerView.setNestedScrollingEnabled(false);
-        adapter = new AdapterRoom(roomList, getActivity());
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        adapter = new AdapterRoom(roomList, getActivity());
         recyclerView.setAdapter(adapter);
 
     }
@@ -92,6 +93,8 @@ public class FragmentRoom extends Fragment{
         @Override
         protected void onPostExecute(List<Room> Rooms) {
             adapter.notifyDataSetChanged();
+            adapter = new AdapterRoom(roomList, getActivity());
+            recyclerView.setAdapter(adapter);
             myProgress.setVisibility(View.GONE);
             swipeRefreshLayout.setRefreshing(false);// set swipe refreshing
             super.onPostExecute(Rooms);

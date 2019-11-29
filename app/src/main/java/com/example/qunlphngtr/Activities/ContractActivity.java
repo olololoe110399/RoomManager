@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.qunlphngtr.Adapter.AdapterContract;
 
+import com.example.qunlphngtr.Database.ContractDAO;
 import com.example.qunlphngtr.Model.Contract;
 import com.example.qunlphngtr.Model.Customer;
 import com.example.qunlphngtr.Model.Room;
@@ -37,7 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 public class ContractActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private RecyclerView recyclerView;
@@ -47,7 +47,7 @@ public class ContractActivity extends AppCompatActivity {
     public static RelativeLayout relativeLayout;
     private Room room = RoomActivity.room;
     public static FloatingActionButton fbcontract;
-
+    private ContractDAO contractDAO;
 
 
     @Override
@@ -62,7 +62,7 @@ public class ContractActivity extends AppCompatActivity {
         fbcontract.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(ContractActivity.this,AddContractActivity.class);
+                Intent intent = new Intent(ContractActivity.this, AddContractActivity.class);
                 startActivity(intent);
                 Animatoo.animateSlideLeft(ContractActivity.this);
             }
@@ -83,24 +83,18 @@ public class ContractActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        fbcontract=findViewById(R.id.fbcontract);
+        contractDAO = new ContractDAO(this);
+        fbcontract = findViewById(R.id.fbcontract);
         relativeLayout = findViewById(R.id.rlcontractnull);
         toolbar = findViewById(R.id.tool_bar);
         recyclerView = findViewById(R.id.rvcontract);
         swipeRefreshLayout = findViewById(R.id.srlcontract);
         contractList = new ArrayList<>();
-        Drawable drawable = getDrawable(R.drawable.avatar);
-        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        final byte[] image = stream.toByteArray();
-           contractList.add(new Contract("HD01212019", "11/11/2019", "11/12/2019", 3, 2, room, new Customer("1", image, "0793333648", "Nguyễn Ngọc Duy", 201729145), 1, 0, 0, 1, 1,400000));
-          contractList.add(new Contract("HD01212019", "11/11/2019", "11/12/2019", 3, 2, room, new Customer("1", image, "0793333648", "Nguyễn Ngọc Duy", 201729145), 1, 0, 0, 2, 0,400000));
-          contractList.add(new Contract("HD01212019", "11/11/2019", "11/12/2019", 3, 2, room, new Customer("1", image, "0793333648", "Nguyễn Ngọc Duy", 201729145), 1, 0, 0, 1, 1,400000));
+        contractList = contractDAO.getAllContract(room.getRoomID());
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-               checkContract();
+                checkContract();
                 swipeRefreshLayout.setRefreshing(false);// set swipe refreshing
             }
         });
@@ -128,8 +122,6 @@ public class ContractActivity extends AppCompatActivity {
     }
 
 
-
-
     @SuppressLint("RestrictedApi")
     public static void checkContract() {
         if (contractList.size() > 0) {
@@ -137,7 +129,7 @@ public class ContractActivity extends AppCompatActivity {
                 if (contractList.get(i).getContractstatus() == 0) {
                     fbcontract.setVisibility(View.GONE);
                     break;
-                }else {
+                } else {
                     fbcontract.setVisibility(View.VISIBLE);
                 }
             }
@@ -152,6 +144,7 @@ public class ContractActivity extends AppCompatActivity {
         super.onResume();
         checkContract();
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

@@ -10,6 +10,16 @@ public class Customer {
     private byte[] CustomerCMNDImgBefore;
     private byte[] CustomerCMNdImgAfter;
 
+    public Customer(String customerID, byte[] customerImage, String customerPhone, String customerName, int customerCMND, byte[] customerCMNDImgBefore, byte[] customerCMNdImgAfter) {
+        CustomerID = customerID;
+        CustomerImage = customerImage;
+        CustomerPhone = customerPhone;
+        CustomerName = customerName;
+        CustomerCMND = customerCMND;
+        CustomerCMNDImgBefore = customerCMNDImgBefore;
+        CustomerCMNdImgAfter = customerCMNdImgAfter;
+    }
+
     @Override
     public String toString() {
         return CustomerName;
