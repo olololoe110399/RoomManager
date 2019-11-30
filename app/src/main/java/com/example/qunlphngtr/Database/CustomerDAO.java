@@ -7,4 +7,5 @@ public class CustomerDAO {
     public CustomerDAO(Context context) {
         databaseHelper = new DatabaseHelper(context);
     }
+
 }
