@@ -7,7 +7,7 @@ public class Service {
 
     private int ServiceID;
     private String ServiceName;
-    private double ServicePrice;
+    private int ServicePrice;
     private String ContracID;
     private String BillID;
 
@@ -43,15 +43,15 @@ public class Service {
         ServiceName = serviceName;
     }
 
-    public double getServicePrice() {
+    public int getServicePrice() {
         return ServicePrice;
     }
 
-    public void setServicePrice(double servicePrice) {
+    public void setServicePrice(int servicePrice) {
         ServicePrice = servicePrice;
     }
 
-    public Service(int serviceID, String serviceName, double servicePrice) {
+    public Service(int serviceID, String serviceName, int servicePrice) {
         ServiceID = serviceID;
         ServiceName = serviceName;
         ServicePrice = servicePrice;

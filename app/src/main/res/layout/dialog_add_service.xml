@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="350dp"
+    android:layout_height="match_parent"
+    app:cardCornerRadius="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/Color1"
+            android:fontFamily="sans-serif-medium"
+            android:padding="10dp"
+            android:text="THÊM DỊCH VỤ"
+            android:textAlignment="center"
+            android:textColor="@color/ColorWhite"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+
+        <EditText
+            android:id="@+id/edtServiceName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/edt_bg_stroke"
+            android:hint="Tên dịch vụ"
+            android:inputType="text"
+            android:maxLines="1"
+            android:padding="8dp"
+            android:textColor="@color/colorBlack" />
+
+
+        <EditText
+            android:id="@+id/edtServicePrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/edt_bg_stroke"
+            android:hint="Giá dịch vụ"
+            android:inputType="number"
+            android:maxLines="1"
+            android:padding="8dp"
+            android:textColor="@color/colorBlack" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/btnadd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/buttonbg_1"
+                android:fontFamily="sans-serif-medium"
+                android:text="Thêm"
+                android:textColor="@color/ColorWhite"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnback"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/buttonbg_1"
+                android:fontFamily="sans-serif-medium"
+                android:text="trở về"
+                android:textColor="@color/ColorWhite"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
