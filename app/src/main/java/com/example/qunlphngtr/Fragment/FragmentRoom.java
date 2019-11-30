@@ -86,15 +86,13 @@ public class FragmentRoom extends Fragment{
 
         @Override
         protected List<Room> doInBackground(Void... voids) {
-            roomList = roomDAO.getAllRoom();
+            roomList.addAll(roomDAO.getAllRoom());
             return roomList;
         }
 
         @Override
         protected void onPostExecute(List<Room> Rooms) {
             adapter.notifyDataSetChanged();
-            adapter = new AdapterRoom(roomList, getActivity());
-            recyclerView.setAdapter(adapter);
             myProgress.setVisibility(View.GONE);
             swipeRefreshLayout.setRefreshing(false);// set swipe refreshing
             super.onPostExecute(Rooms);
@@ -105,6 +103,7 @@ public class FragmentRoom extends Fragment{
         new Loading().execute();
 
     }
+
 
 
 }
