@@ -45,7 +45,7 @@ public class ContractDAO {
         List<Contract> contractList = new ArrayList<>();
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
         String sSQL="SELECT contractID,contractDateBegin,contractDateEnd,contractPeopleNumber,contractVehicleNumber," +
-                "room.roomID,room.roomName,room.roomPrice,room.roomAcreage,room.roomWaterPrice,room.roomElectricPrice,room.roomImage," +
+        "room.roomID,room.roomName,room.roomPrice,room.roomAcreage,room.roomWaterPrice,room.roomElectricPrice,room.roomImage," +
                 "customer.customerID,customer.customerImage,customer.customerPhone,customer.customerName,customer.customerCMND,customer.customerCMNDImgBefore,customer.customerCMNdImgAfter," +
                 "contractMonthPeriodic,contractWaterNumberBegin,contracElectricNumberBegin,contractDateTerm,contractStatus,contractDeposits" +
                 " FROM contract INNER JOIN room ON contract.roomID = room.roomID INNER JOIN customer on contract.customerID=customer.customerID WHERE contract.roomID ='" +

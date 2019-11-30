@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.qunlphngtr.Adapter.AdapterCustomerSpinner;
 import com.example.qunlphngtr.Database.ContractDAO;
+import com.example.qunlphngtr.Database.ServiceDAO;
 import com.example.qunlphngtr.Fragment.FragmentService;
 import com.example.qunlphngtr.Model.Contract;
 import com.example.qunlphngtr.Model.Customer;
@@ -40,6 +41,7 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
     private Toolbar toolbar;
     private Spinner spinner;
     private SimpleDateFormat simpleDateFormat;
+    private List<Service> billServiceList;
     private List<Service> serviceList;
     private TextView tvbillservice;
     private EditText edtdatebegin, edtdateend, edtmonthperiodic, edtdateterm, edtnumberelectric, edtnumberwater, edtpeople, edtvehical, edtdeposits;
@@ -53,6 +55,7 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
     private List<Customer> customerList;
     private AdapterCustomerSpinner adapterCustomerSpinner;
     private ContractDAO contractDAO;
+    private ServiceDAO serviceDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,8 +90,11 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initObject() {
+        serviceDAO=new ServiceDAO(this);
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        billServiceList = new ArrayList<>();
         serviceList = new ArrayList<>();
+        serviceList=serviceDAO.getAllService();
         ConvertListtoArrayString();
         mServiceItems = new ArrayList<>();
         contractDAO = new ContractDAO(this);
@@ -96,9 +102,9 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void ConvertListtoArrayString() {
-        array = new String[FragmentService.serviceList.size()];
+        array = new String[serviceList.size()];
         int index = 0;
-        for (Object value : FragmentService.serviceList) {
+        for (Object value : serviceList) {
             array[index] = String.valueOf(value);
             index++;
         }
@@ -342,7 +348,7 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
 
     private void addbillservice(String contractID) {
         try {
-            for (Service service : serviceList) {
+            for (Service service : billServiceList) {
                 service.setContracID(contractID);
                 //lưu hoá đơn dịch vụ
             }
@@ -371,7 +377,7 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void checkmServiceText(boolean check, int position) {
-        String a = FragmentService.serviceList.get(position).getServiceName();
+        String a = serviceList.get(position).getServiceName();
         if (check == true) {
             int pos = -1;
             for (int i = 0; i < mServiceItems.size(); i++) {
@@ -381,7 +387,7 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
                 }
             }
             if (pos == -1) {
-                mServiceItems.add(FragmentService.serviceList.get(position).getServiceName());
+                mServiceItems.add(serviceList.get(position).getServiceName());
             }
 
         } else {
@@ -396,23 +402,23 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void checkServiceItems(boolean check, int position) {
-        Service service = FragmentService.serviceList.get(position);
+        Service service = serviceList.get(position);
         if (check == true) {
             int pos = -1;
-            for (int i = 0; i < serviceList.size(); i++) {
-                if (serviceList.get(i).getServiceID() == service.getServiceID()) {
+            for (int i = 0; i < billServiceList.size(); i++) {
+                if (billServiceList.get(i).getServiceID() == service.getServiceID()) {
                     pos = 1;
                     break;
                 }
             }
             if (pos == -1) {
-                serviceList.add(new Service(service.getServiceID(), service.getServiceName(), service.getServicePrice()));
+                billServiceList.add(new Service(service.getServiceID(), service.getServiceName(), service.getServicePrice()));
             }
 
         } else {
-            for (int i = 0; i < serviceList.size(); i++) {
-                if (serviceList.get(i).getServiceID() == service.getServiceID()) {
-                    serviceList.remove(i);
+            for (int i = 0; i < billServiceList.size(); i++) {
+                if (billServiceList.get(i).getServiceID() == service.getServiceID()) {
+                    billServiceList.remove(i);
                 }
 
             }
