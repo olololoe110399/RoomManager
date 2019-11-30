@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.qunlphngtr.Adapter.AdapterCustomer;
+import com.example.qunlphngtr.Database.CustomerDAO;
 import com.example.qunlphngtr.Helper.SwipeController;
 import com.example.qunlphngtr.Helper.SwipeControllerActions;
 import com.example.qunlphngtr.Model.Customer;
@@ -40,17 +41,21 @@ FragmentCustomer extends Fragment {
     private List<Customer> customerList;
     private AdapterCustomer adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private SwipeController controller;
     byte[] img;
+    private CustomerDAO customerDAO;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_customer, container, false);
         initView();
+        innitObject();
         new Loading().execute();
-        setupcontroler();
         return view;
+    }
+
+    private void innitObject() {
+        customerDAO = new CustomerDAO(getActivity());
     }
 
     private void dialogdelete(final int position) {
@@ -78,28 +83,6 @@ FragmentCustomer extends Fragment {
         alertDialog.show();
     }
 
-    private void setupcontroler() {
-        controller = new SwipeController(new SwipeControllerActions() {
-            @Override
-            public void onRightClicked(int position) {
-                dialogdelete(position);
-            }
-
-            @Override
-            public void onLeftClicked(int position) {
-                Toast.makeText(getActivity(), "You cannot edit information other users!", Toast.LENGTH_SHORT).show();
-            }
-        });
-        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(controller);
-        itemTouchhelper.attachToRecyclerView(recyclerView);
-        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-                controller.onDraw(c);
-            }
-        });
-
-    }
 
     private void initView() {
         recyclerView = view.findViewById(R.id.rvcustomer);
@@ -117,7 +100,7 @@ FragmentCustomer extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
-        img=LoadingImg(R.drawable.avatar);
+        img = LoadingImg(R.drawable.avatar);
     }
 
     private void refreshRecyclerView() {
@@ -135,11 +118,7 @@ FragmentCustomer extends Fragment {
 
         @Override
         protected List<Customer> doInBackground(Void... voids) {
-
-            customerList.add(new Customer("1", img, "0793333648", "Nguyễn Ngọc Duy", 201729145));
-            customerList.add(new Customer("2", img, "0983164856", "Bùi Nguyễn Quế Anh", 201729145));
-            customerList.add(new Customer("3", img, "0326243624", "Nguyễn Quốc Việt", 201729145));
-            customerList.add(new Customer("4", img, "0904194212", "Trần Phương Nam", 201729145));
+            customerList.addAll(customerDAO.getAllCustomer());
             return customerList;
         }
 
@@ -157,6 +136,6 @@ FragmentCustomer extends Fragment {
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        return stream.toByteArray() ;
+        return stream.toByteArray();
     }
 }
