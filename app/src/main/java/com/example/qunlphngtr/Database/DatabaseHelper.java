@@ -46,14 +46,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "\tPRIMARY KEY(\"contractID\")\n" +
                 ");");
         db.execSQL("CREATE TABLE \"customer\" (\n" +
-                "\t\"customerID\"\tTEXT,\n" +
+                "\t\"customerID\"\tINTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n" +
                 "\t\"customerImage\"\tBLOB,\n" +
                 "\t\"customerPhone\"\tTEXT,\n" +
                 "\t\"customerName\"\tTEXT,\n" +
                 "\t\"customerCMND\"\tINTEGER,\n" +
                 "\t\"customerCMNDImgBefore\"\tBLOB,\n" +
-                "\t\"customerCMNdImgAfter\"\tBLOB,\n" +
-                "\tPRIMARY KEY(\"customerID\")\n" +
+                "\t\"customerCMNdImgAfter\"\tBLOB\n" +
                 ");");
         db.execSQL("CREATE TABLE \"service\" (\n" +
                 "\t\"serviceID\"\tINTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n" +
@@ -67,6 +66,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("Drop table if exists " + ManagerUsers.TABLE_NAME);
         db.execSQL("Drop table if exists " + TABLE_ROOM);
-
+        db.execSQL("Drop table if exists " + TABLE_CUSTOMER);
     }
 }

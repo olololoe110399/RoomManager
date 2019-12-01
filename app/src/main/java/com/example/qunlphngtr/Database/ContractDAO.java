@@ -60,7 +60,7 @@ public class ContractDAO {
             contract.setContractPeopleNumber(cursor.getInt(3));
             contract.setContractVehicleNumber(cursor.getInt(4));
             contract.setRoom(new Room(cursor.getInt(5),cursor.getString(6),cursor.getInt(7),cursor.getInt(8),cursor.getInt(9),cursor.getInt(10),cursor.getBlob(11)));
-            contract.setCustomer(new Customer(cursor.getString(12),cursor.getBlob(13),cursor.getString(14),cursor.getString(15),cursor.getInt(16),cursor.getBlob(17),cursor.getBlob(18)));
+            contract.setCustomer(new Customer(cursor.getInt(12),cursor.getBlob(13),cursor.getString(14),cursor.getString(15),cursor.getInt(16),cursor.getBlob(17),cursor.getBlob(18)));
             contract.setContractMonthPeriodic(cursor.getInt(19));
             contract.setContracNumberElectricBegin(cursor.getInt(20));
             contract.setContracNumberWaterBegin(cursor.getInt(21));

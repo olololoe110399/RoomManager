@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.qunlphngtr.Model.Customer;
+import com.example.qunlphngtr.Model.Room;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,6 @@ public class CustomerDAO {
     public int addCustomer(Customer customer) {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("customerID", customer.getCustomerID());
         values.put("customerImage", customer.getCustomerImage());
         values.put("customerPhone", customer.getCustomerPhone());
         values.put("customerName", customer.getCustomerName());
@@ -38,7 +38,7 @@ public class CustomerDAO {
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             Customer customer = new Customer();
-            customer.setCustomerID(cursor.getString(0));
+            customer.setCustomerID(cursor.getInt(0));
             customer.setCustomerImage(cursor.getBlob(1));
             customer.setCustomerPhone(cursor.getString(2));
             customer.setCustomerName(cursor.getString(3));
@@ -50,5 +50,25 @@ public class CustomerDAO {
         }
         cursor.close();
         return list;
+    }
+    public int deleteCustomer(int customer){
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        int result = db.delete(databaseHelper.TABLE_CUSTOMER, "customerID" + "=?", new String[]{String.valueOf(customer)});
+        if (result == 0) {
+            return -1;
+        }
+        return 1;
+    }
+    public void updateCustomer(Customer customer){
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("customerImage", customer.getCustomerImage());
+        values.put("customerPhone", customer.getCustomerPhone());
+        values.put("customerName", customer.getCustomerName());
+        values.put("customerCMND", customer.getCustomerCMND());
+        values.put("customerCMNDImgBefore", customer.getCustomerCMNDImgBefore());
+        values.put("customerCMNDImgAfter", customer.getCustomerCMNdImgAfter());
+        db.update(databaseHelper.TABLE_CUSTOMER,values, "customerID" + "=?", new String[]{String.valueOf(customer.getCustomerID())});
+        db.close();
     }
 }

@@ -2,6 +2,7 @@ package com.example.qunlphngtr.Fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -22,12 +23,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.qunlphngtr.Activities.AddCustomerActivity;
 import com.example.qunlphngtr.Adapter.AdapterCustomer;
 import com.example.qunlphngtr.Database.CustomerDAO;
 import com.example.qunlphngtr.Helper.SwipeController;
 import com.example.qunlphngtr.Helper.SwipeControllerActions;
 import com.example.qunlphngtr.Model.Customer;
 import com.example.qunlphngtr.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -43,6 +46,7 @@ FragmentCustomer extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     byte[] img;
     private CustomerDAO customerDAO;
+    private FloatingActionButton fbCustomer;
 
     @Nullable
     @Override
@@ -101,7 +105,17 @@ FragmentCustomer extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
         img = LoadingImg(R.drawable.avatar);
+
+        fbCustomer = view.findViewById(R.id.fbcustomer);
+        fbCustomer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), AddCustomerActivity.class);
+                startActivity(intent);
+            }
+        });
     }
+
 
     private void refreshRecyclerView() {
         new Loading().execute();

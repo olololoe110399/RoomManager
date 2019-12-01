@@ -133,10 +133,6 @@ public class BillActivity extends AppCompatActivity {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] image = stream.toByteArray();
-        contractList.add(new Contract("HD01212019", "18/11/2019", "11/11/2020", 3, 2, room, new Customer("1", image, "0793333648", "Bùi Nguyễn Quế Anh", 201729145), 1, 0, 0, 1, 0,400000));
-        contractList.add(new Contract("HD01212019", "18/11/2019", "11/11/2020", 3, 2, room, new Customer("1", image, "0793333648", "Bùi Nguyễn Quế Anh", 201729145), 1, 0, 0, 1, 1,400000));
-        contractList.add(new Contract("HD01212019", "18/11/2019", "11/11/2020", 3, 2, room, new Customer("1", image, "0793333648", "Bùi Nguyễn Quế Anh", 201729145), 1, 0, 0, 1, 1,400000));
-        contractList.add(new Contract("HD01212019", "18/11/2019", "11/11/2020", 3, 2, room, new Customer("1", image, "0793333648", "Bùi Nguyễn Quế Anh", 201729145), 1, 0, 0, 1, 1,400000));
 
     }
 

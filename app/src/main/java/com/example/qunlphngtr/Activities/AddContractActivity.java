@@ -158,10 +158,6 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
         @Override
         protected List<Customer> doInBackground(Void... voids) {
 
-            customerList.add(new Customer("1", LoadingImg(R.drawable.avatar), "0793333648", "Nguyễn Ngọc Duy", 201729145));
-            customerList.add(new Customer("2", LoadingImg(R.drawable.avatar), "0983164856", "Bùi Nguyễn Quế Anh", 201729145));
-            customerList.add(new Customer("3", LoadingImg(R.drawable.avatar), "0326243624", "Nguyễn Quốc Việt", 201729145));
-            customerList.add(new Customer("4", LoadingImg(R.drawable.avatar), "0904194212", "Trần Phương Nam", 201729145));
             return customerList;
         }
 

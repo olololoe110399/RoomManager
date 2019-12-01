@@ -80,7 +80,6 @@ public class AddRoomActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Thêm phòng");
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     @Override

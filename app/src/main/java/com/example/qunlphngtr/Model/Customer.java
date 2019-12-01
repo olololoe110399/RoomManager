@@ -2,7 +2,7 @@ package com.example.qunlphngtr.Model;
 
 
 public class Customer {
-    private String CustomerID;
+    private int CustomerID;
     private byte[] CustomerImage;
     private String CustomerPhone;
     private String CustomerName;
@@ -10,7 +10,7 @@ public class Customer {
     private byte[] CustomerCMNDImgBefore;
     private byte[] CustomerCMNdImgAfter;
 
-    public Customer(String customerID, byte[] customerImage, String customerPhone, String customerName, int customerCMND, byte[] customerCMNDImgBefore, byte[] customerCMNdImgAfter) {
+    public Customer(int customerID, byte[] customerImage, String customerPhone, String customerName, int customerCMND, byte[] customerCMNDImgBefore, byte[] customerCMNdImgAfter) {
         CustomerID = customerID;
         CustomerImage = customerImage;
         CustomerPhone = customerPhone;
@@ -25,11 +25,11 @@ public class Customer {
         return CustomerName;
     }
 
-    public String getCustomerID() {
+    public int getCustomerID() {
         return CustomerID;
     }
 
-    public void setCustomerID(String customerID) {
+    public void setCustomerID(int customerID) {
         CustomerID = customerID;
     }
 
@@ -81,7 +81,7 @@ public class Customer {
         CustomerCMNdImgAfter = customerCMNdImgAfter;
     }
 
-    public Customer(String customerID, byte[] customerImage, String customerPhone, String customerName, int customerCMND) {
+    public Customer(int customerID, byte[] customerImage, String customerPhone, String customerName, int customerCMND) {
         CustomerID = customerID;
         CustomerImage = customerImage;
         CustomerPhone = customerPhone;

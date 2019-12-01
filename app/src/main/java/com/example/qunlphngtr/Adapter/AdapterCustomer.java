@@ -46,11 +46,14 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.Name.setText(customerList.get(position).getCustomerName());
         holder.Phone.setText(customerList.get(position).getCustomerPhone());
-        startNewAsyncTask(customerList.get(position).getCustomerImage(),holder);
+        if (!(customerList.get(position).getCustomerImage() == null)) {
+            startNewAsyncTask(customerList.get(position).getCustomerImage(), holder);
+        }
+
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogdetail(position);
+               // dialogdetail(position);
 
             }
         });
@@ -112,7 +115,8 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
             cardView = itemView.findViewById(R.id.cardView);
         }
     }
-    private class ImageAsynctask extends AsyncTask<Bitmap,Void,Bitmap>{
+
+    private class ImageAsynctask extends AsyncTask<Bitmap, Void, Bitmap> {
         private byte[] img;
         private ViewHolder holder;
 
@@ -134,9 +138,10 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
             }
         }
     }
-    public void startNewAsyncTask(byte[] image,ViewHolder
+
+    public void startNewAsyncTask(byte[] image, ViewHolder
             holder) {
-        ImageAsynctask asyncTask = new ImageAsynctask(image,holder);
+        ImageAsynctask asyncTask = new ImageAsynctask(image, holder);
         asyncTask.execute();
     }
 
