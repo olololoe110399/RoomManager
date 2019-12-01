@@ -22,7 +22,9 @@ import android.widget.Toast;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.qunlphngtr.Adapter.AdapterCustomerSpinner;
+import com.example.qunlphngtr.Database.BillServiceDAO;
 import com.example.qunlphngtr.Database.ContractDAO;
+import com.example.qunlphngtr.Database.CustomerDAO;
 import com.example.qunlphngtr.Database.ServiceDAO;
 import com.example.qunlphngtr.Fragment.FragmentService;
 import com.example.qunlphngtr.Model.Contract;
@@ -55,7 +57,9 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
     private List<Customer> customerList;
     private AdapterCustomerSpinner adapterCustomerSpinner;
     private ContractDAO contractDAO;
+    private CustomerDAO customerDAO;
     private ServiceDAO serviceDAO;
+    private BillServiceDAO billServiceDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +94,8 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initObject() {
+        billServiceDAO=new BillServiceDAO(this);
+        customerDAO=new CustomerDAO(this);
         serviceDAO=new ServiceDAO(this);
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         billServiceList = new ArrayList<>();
@@ -135,6 +141,7 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
     private void spinnercustomer() {
         spinner = findViewById(R.id.spncustomer);
         customerList = new ArrayList<>();
+        customerList=customerDAO.getAllCustomer();
         adapterCustomerSpinner = new AdapterCustomerSpinner(customerList, this, R.layout.item_spinner_customer);
         spinner.setAdapter(adapterCustomerSpinner);
         new spinnercustomer().execute();
@@ -345,8 +352,11 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
     private void addbillservice(String contractID) {
         try {
             for (Service service : billServiceList) {
-                service.setContracID(contractID);
-                //lưu hoá đơn dịch vụ
+                Service servicebill=new Service();
+                servicebill.setContracID(contractID);
+                servicebill.setServiceName(service.getServiceName());
+                servicebill.setServicePrice(service.getServicePrice());
+                billServiceDAO.addServiceBill(servicebill);
             }
         } catch (Exception e) {
             Log.e("Error", e.toString());

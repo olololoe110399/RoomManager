@@ -3,10 +3,7 @@ package com.example.qunlphngtr.Model;
 import java.util.Date;
 
 public class Bill {
-    private String BillID;
-
-
-
+    private int BillID;
     private Room Room;
     private String BillCustomerName;
     private String BillDateBegin;
@@ -15,7 +12,7 @@ public class Bill {
     private int BillElectricNumber;
     private int BillWaterNumber;
     private Date BillPaymentDate;
-    private double BIllTotal;
+    private int BillTotal;
     public String getBillCustomerName() {
         return BillCustomerName;
     }
@@ -24,11 +21,11 @@ public class Bill {
         BillCustomerName = billCustomerName;
     }
 
-    public String getBillID() {
+    public int getBillID() {
         return BillID;
     }
 
-    public void setBillID(String billID) {
+    public void setBillID(int billID) {
         BillID = billID;
     }
     public com.example.qunlphngtr.Model.Room getRoom() {
@@ -89,16 +86,15 @@ public class Bill {
         BillPaymentDate = billPaymentDate;
     }
 
-    public double getBIllTotal() {
-        return BIllTotal;
+    public int getBIllTotal() {
+        return BillTotal;
     }
 
-    public void setBIllTotal(double BIllTotal) {
-        this.BIllTotal = BIllTotal;
+    public void setBIllTotal(int BillTotal) {
+        this.BillTotal = BillTotal;
     }
 
-    public Bill(String billID, com.example.qunlphngtr.Model.Room room, String billCustomerName, String billDateBegin,String billDateEnd, String contractID, int billElectricNumber, int billWaterNumber, Date billPaymentDate, double BIllTotal) {
-        BillID = billID;
+    public Bill( com.example.qunlphngtr.Model.Room room, String billCustomerName, String billDateBegin,String billDateEnd, String contractID, int billElectricNumber, int billWaterNumber, Date billPaymentDate, int billTotal) {
         Room = room;
         BillCustomerName = billCustomerName;
         BillDateBegin = billDateBegin;
@@ -107,7 +103,7 @@ public class Bill {
         BillElectricNumber = billElectricNumber;
         BillWaterNumber = billWaterNumber;
         BillPaymentDate = billPaymentDate;
-        this.BIllTotal = BIllTotal;
+        BillTotal = billTotal;
     }
 
     public Bill() {

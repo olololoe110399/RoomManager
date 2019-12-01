@@ -9,7 +9,6 @@ public class Service {
     private String ServiceName;
     private int ServicePrice;
     private String ContracID;
-    private String BillID;
 
     public String getContracID() {
         return ContracID;
@@ -19,13 +18,6 @@ public class Service {
         ContracID = contracID;
     }
 
-    public String getBillID() {
-        return BillID;
-    }
-
-    public void setBillID(String billID) {
-        BillID = billID;
-    }
 
     public int getServiceID() {
         return ServiceID;

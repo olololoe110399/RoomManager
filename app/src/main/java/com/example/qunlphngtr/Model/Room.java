@@ -2,6 +2,11 @@ package com.example.qunlphngtr.Model;
 
 public class Room {
     private int RoomID;
+
+    public Room(int roomID) {
+        RoomID = roomID;
+    }
+
     private String RoomName;
     private int RoomPrice;
     private int RoomAcreage;

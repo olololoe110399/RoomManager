@@ -11,6 +11,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_CONTRACT = "contract";
     public static final String TABLE_CUSTOMER = "customer";
     public static final String TABLE_SERVICE = "service";
+    public static final String TABLE_SERVICE_BILL = "serviceBill";
+    public static final String TABLE_BILL = "bill";
     public static final int VERSION = 1;
 
     public DatabaseHelper(Context context) {
@@ -58,6 +60,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "\t\"serviceID\"\tINTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n" +
                 "\t\"serviceName\"\tTEXT,\n" +
                 "\t\"servicePrice\"\tINTEGER\n" +
+                ");");
+        db.execSQL("CREATE TABLE \"serviceBill\" (\n" +
+                "\t\"serviceBillID\"\tINTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n" +
+                "\t\"serviceBillName\"\tTEXT,\n" +
+                "\t\"serviceBillPrice\"\tINTEGER,\n" +
+                "\t\"contractID\"\tTEXT\n" +
+                ");");
+        db.execSQL("CREATE TABLE \"bill\" (\n" +
+                "\t\"billID\"\tINTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t\"roomID\"\tINTEGER,\n" +
+                "\t\"billCustomerName\"\tTEXT,\n" +
+                "\t\"billDateBegin\"\tTEXT,\n" +
+                "\t\"billDateEnd\"\tTEXT,\n" +
+                "\t\"contractID\"\tTEXT,\n" +
+                "\t\"billElectricNumber\"\tINTEGER,\n" +
+                "\t\"billWaterNumber\"\tINTEGER,\n" +
+                "\t\"billPaymentDate\"\tDATE,\n" +
+                "\t\"billTotal\"\tINTEGER\n" +
                 ");");
 
     }

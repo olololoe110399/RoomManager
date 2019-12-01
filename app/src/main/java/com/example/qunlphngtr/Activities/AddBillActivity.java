@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.example.qunlphngtr.Database.BillDAO;
 import com.example.qunlphngtr.Model.Bill;
 import com.example.qunlphngtr.Model.Contract;
 import com.example.qunlphngtr.Model.Customer;
@@ -41,7 +43,8 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
     private SimpleDateFormat simpleDateFormat;
     NumberFormat formatter;
     private Room room = RoomActivity.room;
-    private double billroomprice = 0;
+    private int billroomprice = 0;
+    private BillDAO billDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,7 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
 
 
     private void initObject() {
+        billDAO=new BillDAO(this);
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         formatter = new DecimalFormat("#,###");
     }
@@ -77,6 +81,7 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
             }
         }
         if (billLists.size() > 0) {
+
             Bill bill = billLists.get(billLists.size() - 1);
             settextNewbill(bill.getBillDateEnd(), contract.getContractDateTerm(), contract.getContractMonthPeriodic(), contract.getCustomer().getCustomerName());
             edtbillroomprice.setText(formatter.format(contract.getRoom().getRoomPrice()) + " VND");
@@ -96,7 +101,7 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    private void addBill(final double billroomprice, final int numberwaterbegin, final int numberwatersum, final int numberelectricbegin, final int numberelctricsum, final String contractID) {
+    private void addBill(final int billroomprice, final int numberwaterbegin, final int numberwatersum, final int numberelectricbegin, final int numberelctricsum, final String contractID) {
 
         btnadd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,8 +122,8 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
                         } else {
                             int bw = Integer.parseInt(edtnumberwater.getText().toString().trim()) - w;
                             int be = Integer.parseInt(edtnumberelectric.getText().toString().trim()) - e;
-                            double Toatal = billroomprice + bw * room.getRoomWaterPrice() + be * room.getRoomElectricPrice();
-                            dialogTotal(new Bill("HD07678", room, edtbillcustomername.getText().toString(), edtdatebegin.getText().toString(), edtdateend.getText().toString(), contractID, be, bw, Calendar.getInstance().getTime(), Toatal));
+                            int Toatal = billroomprice + bw * room.getRoomWaterPrice() + be * room.getRoomElectricPrice();
+                            dialogTotal(new Bill( room, edtbillcustomername.getText().toString(), edtdatebegin.getText().toString(), edtdateend.getText().toString(), contractID, be, bw, Calendar.getInstance().getTime(), Toatal));
                         }
 
                     }
@@ -138,6 +143,7 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
                 .setMessage("Tổng số tiền của hóa đơn là: " + formatter.format(bill.getBIllTotal()) + " VND")
                 .setPositiveButton("Thanh toán", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        billDAO.addBill(bill);
                         BillActivity.billList.add(bill);
                         BillActivity.adapter.notifyDataSetChanged();
                         BillActivity.checkbill();
@@ -162,15 +168,25 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
             calendar.setTime(billdatebegin);
             int month = calendar.get(Calendar.MONTH);
             int year = calendar.get(Calendar.YEAR);
+            int date = calendar.get(Calendar.DATE);
             calendar.set(year, month, dateterm);
             edtdateend.setText(simpleDateFormat.format(addMonth(calendar.getTime(), monthperiodic)));
             edtroomprice.setText(formatter.format(room.getRoomPrice()) + " VND");
-            double roompriceofdate = room.getRoomPrice() / getlenthmonth(calendar.getTime());
-            Date billdateend = addMonth(calendar.getTime(), monthperiodic);
-            long day = (billdateend.getTime() - billdatebegin.getTime()) / (24 * 60 * 60 * 1000) + 1;
-            billroomprice = roompriceofdate * day;
-            edtbillroomprice.setText(formatter.format(billroomprice) + " VND");
+            if (date == dateterm) {
+                edtbillroomprice.setText(formatter.format(room.getRoomPrice()) + " VND");
+            } else {
+
+                int roompriceofdate = room.getRoomPrice() / getlenthmonth(calendar.getTime());
+                Log.i("Addbill", "lenth: " + getlenthmonth(calendar.getTime()));
+                Date billdateend = addMonth(calendar.getTime(), monthperiodic);
+                long day = (billdateend.getTime() - billdatebegin.getTime()) / (24 * 60 * 60 * 1000) + 1;
+                billroomprice = (int) (roompriceofdate * day);
+                edtbillroomprice.setText(formatter.format(billroomprice) + " VND");
+                Log.i("Addbill", "settextNewbill: " + roompriceofdate + "," + day);
+            }
             edtbillcustomername.setText(name);
+
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -227,6 +243,7 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
         Animatoo.animateSlideRight(this);
         return true;
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

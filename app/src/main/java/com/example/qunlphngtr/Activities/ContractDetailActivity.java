@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.example.qunlphngtr.Database.BillServiceDAO;
 import com.example.qunlphngtr.Database.ServiceDAO;
 import com.example.qunlphngtr.Fragment.FragmentService;
 import com.example.qunlphngtr.Model.Contract;
@@ -35,6 +36,7 @@ public class ContractDetailActivity extends AppCompatActivity {
     private String[] array;
     private String item = "";
     private ServiceDAO serviceDAO;
+    private BillServiceDAO billServiceDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class ContractDetailActivity extends AppCompatActivity {
 
     private void initObject() {
         serviceDAO=new ServiceDAO(this);
+        billServiceDAO=new BillServiceDAO(this);
     }
 
     private void getDetailmodel() {
@@ -62,7 +65,7 @@ public class ContractDetailActivity extends AppCompatActivity {
         tvnumberelectric.setText(contract.getContracNumberElectricBegin() + "");
         imgcustomer.setImageBitmap(LoadingImg(contract.getCustomer().getCustomerImage()));
         serviceList = new ArrayList<>();
-        serviceList = serviceDAO.getAllService();
+        serviceList = billServiceDAO.getsServiceBillByID(contract.getContractID());
         ConvertListtoArrayString(serviceList);
         StringServiceItem(serviceList);
         tvcontractservice.setText(item);

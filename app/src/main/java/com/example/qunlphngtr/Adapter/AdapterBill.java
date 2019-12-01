@@ -1,15 +1,16 @@
 package com.example.qunlphngtr.Adapter;
 
-import android.animation.Animator;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.text.style.UnderlineSpan;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.Window;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.qunlphngtr.Activities.BillActivity;
-import com.example.qunlphngtr.Activities.BillDetailActiviy;
 import com.example.qunlphngtr.Model.Bill;
 import com.example.qunlphngtr.R;
 
@@ -55,9 +55,7 @@ public class AdapterBill extends RecyclerView.Adapter<AdapterBill.ViewHolder> {
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(context, BillDetailActiviy.class);
-                context.startActivity(i);
-                Animatoo.animateSlideLeft(context);
+
             }
         });
 
@@ -105,5 +103,12 @@ public class AdapterBill extends RecyclerView.Adapter<AdapterBill.ViewHolder> {
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+    private void dialogBillDetail(int pos){
+        final Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialog_customer_detail);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation_2;
     }
 }
