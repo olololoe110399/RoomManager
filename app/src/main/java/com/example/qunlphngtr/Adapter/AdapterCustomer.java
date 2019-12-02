@@ -1,7 +1,9 @@
 package com.example.qunlphngtr.Adapter;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -20,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.qunlphngtr.Database.CustomerDAO;
 import com.example.qunlphngtr.Model.Customer;
 import com.example.qunlphngtr.R;
 
@@ -28,10 +31,12 @@ import java.util.List;
 public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHolder> {
     List<Customer> customerList;
     Context context;
+    CustomerDAO customerDAO;
 
     public AdapterCustomer(List<Customer> customerList, Context context) {
         this.customerList = customerList;
         this.context = context;
+        this.customerDAO = new CustomerDAO(context);
     }
 
     @NonNull
@@ -49,12 +54,35 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
         if (!(customerList.get(position).getCustomerImage() == null)) {
             startNewAsyncTask(customerList.get(position).getCustomerImage(), holder);
         }
-
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                // dialogdetail(position);
-
+            }
+        });
+        holder.imgDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("");
+                builder.setMessage("Bạn có muốn xóa phòng này?");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        customerDAO.deleteCustomer(customerList.get(position).getCustomerID());
+                        customerList.remove(position);
+                        notifyDataSetChanged();
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         });
 
@@ -104,7 +132,7 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView Name, Phone;
-        private ImageView Img;
+        private ImageView Img, imgDelete;
         private CardView cardView;
 
         public ViewHolder(@NonNull View itemView) {
@@ -113,6 +141,7 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
             Phone = itemView.findViewById(R.id.tvcustomerphone);
             Img = itemView.findViewById(R.id.imgcustomer);
             cardView = itemView.findViewById(R.id.cardView);
+            imgDelete = itemView.findViewById(R.id.imgDelete);
         }
     }
 

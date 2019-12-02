@@ -1,6 +1,8 @@
 package com.example.qunlphngtr.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 
 import com.example.qunlphngtr.Activities.RoomActivity;
+import com.example.qunlphngtr.Database.RoomDAO;
 import com.example.qunlphngtr.Model.Room;
 import com.example.qunlphngtr.R;
 
@@ -23,9 +26,11 @@ import java.util.List;
 public class AdapterRoom extends RecyclerView.Adapter<AdapterRoom.ViewHolder> {
     List<Room> roomList;
     Context context;
+    RoomDAO roomDAO;
     public AdapterRoom(List<Room> roomList, Context context) {
         this.roomList = roomList;
         this.context = context;
+        this.roomDAO = new RoomDAO(context);
     }
 
     public AdapterRoom() {
@@ -52,6 +57,32 @@ public class AdapterRoom extends RecyclerView.Adapter<AdapterRoom.ViewHolder> {
                 RoomActivity.room=roomList.get(position);
                 context.startActivity(i);
                 Animatoo.animateSlideLeft(context);
+            }
+        });
+        holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("");
+                builder.setMessage("Bạn có muốn xóa phòng này?");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        roomDAO.deleteRoomByID(roomList.get(position).getRoomID());
+                        roomList.remove(position);
+                        notifyDataSetChanged();
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                return true;
             }
         });
     }

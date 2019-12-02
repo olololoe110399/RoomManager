@@ -50,7 +50,15 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvcustomername"
                 android:text="0793333648"
-                android:textSize="18dp" /></RelativeLayout>
+                android:textSize="18dp" />
+            <ImageView
+                android:id="@+id/imgDelete"
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:src="@drawable/delete_icon_simple1"
+                android:layout_alignParentRight="true"
+                />
+        </RelativeLayout>
 
 
     </RelativeLayout>
