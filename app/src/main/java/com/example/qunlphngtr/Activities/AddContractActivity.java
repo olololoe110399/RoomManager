@@ -323,7 +323,6 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
             Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
         } else {
             Contract contract = new Contract();
-            contract.setContractID("HD" + room.getRoomID() + customer.getCustomerID() + idate + iyear);
             contract.setContractDateBegin(edtdatebegin.getText().toString());
             contract.setContractDateEnd(edtdateend.getText().toString());
             contract.setContractMonthPeriodic(monthperiodic);
@@ -349,7 +348,7 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    private void addbillservice(String contractID) {
+    private void addbillservice(int contractID) {
         try {
             for (Service service : billServiceList) {
                 Service servicebill=new Service();

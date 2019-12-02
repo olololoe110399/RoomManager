@@ -8,11 +8,11 @@ public class Bill {
     private String BillCustomerName;
     private String BillDateBegin;
     private String BillDateEnd;
-    private String ContractID;
+    private int ContractID;
     private int BillElectricNumber;
     private int BillWaterNumber;
     private Date BillPaymentDate;
-    private int BillTotal;
+    private double BillTotal;
     public String getBillCustomerName() {
         return BillCustomerName;
     }
@@ -54,11 +54,11 @@ public class Bill {
     }
 
 
-    public String getContractID() {
+    public int getContractID() {
         return ContractID;
     }
 
-    public void setContractID(String contractID) {
+    public void setContractID(int contractID) {
         ContractID = contractID;
     }
 
@@ -86,15 +86,15 @@ public class Bill {
         BillPaymentDate = billPaymentDate;
     }
 
-    public int getBIllTotal() {
+    public double getBIllTotal() {
         return BillTotal;
     }
 
-    public void setBIllTotal(int BillTotal) {
+    public void setBIllTotal(double BillTotal) {
         this.BillTotal = BillTotal;
     }
 
-    public Bill( com.example.qunlphngtr.Model.Room room, String billCustomerName, String billDateBegin,String billDateEnd, String contractID, int billElectricNumber, int billWaterNumber, Date billPaymentDate, int billTotal) {
+    public Bill( com.example.qunlphngtr.Model.Room room, String billCustomerName, String billDateBegin,String billDateEnd, int contractID, int billElectricNumber, int billWaterNumber, Date billPaymentDate, double billTotal) {
         Room = room;
         BillCustomerName = billCustomerName;
         BillDateBegin = billDateBegin;

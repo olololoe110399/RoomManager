@@ -31,21 +31,32 @@ import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 
 import com.example.qunlphngtr.Activities.ContractActivity;
 import com.example.qunlphngtr.Activities.ContractDetailActivity;
+import com.example.qunlphngtr.Database.BillServiceDAO;
+import com.example.qunlphngtr.Database.ContractDAO;
 import com.example.qunlphngtr.Model.Contract;
 import com.example.qunlphngtr.Model.Customer;
+import com.example.qunlphngtr.Model.Service;
 import com.example.qunlphngtr.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHolder> implements View.OnClickListener {
     List<Contract> contractList;
     Context context;
     BottomSheetDialog mBottomDialogNotificationAction;
+    ContractDAO contractDAO;
+    BillServiceDAO billServiceDAO;
+    List<Service> serviceList;
 
     public AdapterContract(List<Contract> contractList, Context context) {
         this.contractList = contractList;
         this.context = context;
+        contractDAO = new ContractDAO(context);
+        billServiceDAO=new BillServiceDAO(context);
+        serviceList=new ArrayList<>();
+
     }
 
     @NonNull
@@ -128,10 +139,44 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
         builder.setNegativeButton("có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                contractDAO.deleteContractByID(contractList.get(position).getContractID());
                 contractList.remove(position);
                 notifyItemRangeChanged(position, contractList.size());
                 notifyItemRemoved(position);
                 notifyItemChanged(position);
+                ContractActivity.checkcontract();
+                ContractActivity.checkContract();
+                mBottomDialogNotificationAction.dismiss();
+
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void dialogiquidation(final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Lưu ý");
+        builder.setMessage("Bạn chắc chắn muốn thanh lý hợp đồng này?");
+        builder.setCancelable(false);
+        builder.setPositiveButton("trở về", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setNegativeButton("có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                contractDAO.updateContractStatus(contractList.get(position).getContractID());
+                contractList.get(position).setContractstatus(1);
+                notifyItemRangeChanged(position, contractList.size());
+                notifyItemInserted(position);
+                notifyItemChanged(position);
+                serviceList=billServiceDAO.getsServiceBillByID(contractList.get(position).getContractID());
+                for (int j=0;j<serviceList.size();j++){
+                    billServiceDAO.deleteBillServiceByID(serviceList.get(j).getServiceID());
+                }
                 ContractActivity.checkcontract();
                 ContractActivity.checkContract();
                 mBottomDialogNotificationAction.dismiss();
@@ -160,7 +205,7 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
             lnliquidation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    dialogiquidation(pos);
                 }
             });
             lndismiss.setOnClickListener(new View.OnClickListener() {

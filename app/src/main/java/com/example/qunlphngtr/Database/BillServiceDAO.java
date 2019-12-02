@@ -28,14 +28,21 @@ public class BillServiceDAO {
         }
         return 1;
     }
-    public List<Service> getsServiceBillByID(String contractID) {
+    public int deleteBillServiceByID(int billServiceID) {
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        int result = db.delete(databaseHelper.TABLE_SERVICE_BILL, "serviceBillID=?", new String[]{String.valueOf(billServiceID)});
+        if (result == 0)
+            return -1;
+        return 1;
+    }
+    public List<Service> getsServiceBillByID(int contractID) {
         List<Service> list=new ArrayList<>();
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 //WHERE clause
         Service s=null;
         String selection = "contractID=?";
 //WHERE clause arguments
-        String[] selectionArgs = {contractID};
+        String[] selectionArgs = {String.valueOf(contractID)};
         Cursor c = db.query(databaseHelper.TABLE_SERVICE_BILL, null, selection, selectionArgs, null, null, null);
         c.moveToFirst();
         while (c.isAfterLast() == false) {
@@ -43,7 +50,7 @@ public class BillServiceDAO {
             s.setServiceID(c.getInt(0));
             s.setServiceName(c.getString(1));
             s.setServicePrice(c.getInt(2));
-            s.setContracID(c.getString(3));
+            s.setContracID(c.getInt(3));
             list.add(s);
             c.moveToNext();
         }

@@ -19,10 +19,12 @@ import android.widget.Toast;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.qunlphngtr.Database.BillDAO;
+import com.example.qunlphngtr.Database.BillServiceDAO;
 import com.example.qunlphngtr.Model.Bill;
 import com.example.qunlphngtr.Model.Contract;
 import com.example.qunlphngtr.Model.Customer;
 import com.example.qunlphngtr.Model.Room;
+import com.example.qunlphngtr.Model.Service;
 import com.example.qunlphngtr.R;
 
 import java.io.ByteArrayOutputStream;
@@ -34,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Stack;
 
 public class AddBillActivity extends AppCompatActivity implements View.OnClickListener {
     private Toolbar toolbar;
@@ -43,8 +46,15 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
     private SimpleDateFormat simpleDateFormat;
     NumberFormat formatter;
     private Room room = RoomActivity.room;
-    private int billroomprice = 0;
+    private double billroomprice = 0;
+    private int totalBillService = 0;
     private BillDAO billDAO;
+    private String TAG = "a";
+    private List<Bill> billLists;
+    private Contract contract;
+    private List<Service> billServiceList;
+    private BillServiceDAO billServiceDAO;
+    private String item = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,28 +68,26 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
 
 
     private void initObject() {
-        billDAO=new BillDAO(this);
+        billLists = new ArrayList<>();
+        billServiceList = new ArrayList<>();
+        billServiceDAO = new BillServiceDAO(this);
+        billDAO = new BillDAO(this);
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         formatter = new DecimalFormat("#,###");
+        contract = new Contract();
     }
 
     private void checkBilllist() {
         int sumnumberwater = 0;
         int sumnumberelectric = 0;
-        Contract contract = new Contract();
         for (int i = 0; i < BillActivity.contractList.size(); i++) {
             if (BillActivity.contractList.get(i).getContractstatus() == 0) {
+                Log.i(TAG, "checkBilllist: trạng thái hợp đồng là có");
                 contract = BillActivity.contractList.get(i);
             }
         }
+        billLists = billDAO.getBillByContractID(contract.getContractID());
 
-
-        List<Bill> billLists = new ArrayList<>();
-        for (int j = 0; j < BillActivity.billList.size(); j++) {
-            if (BillActivity.billList.get(j).getContractID() == contract.getContractID()) {
-                billLists.add(BillActivity.billList.get(j));
-            }
-        }
         if (billLists.size() > 0) {
 
             Bill bill = billLists.get(billLists.size() - 1);
@@ -101,7 +109,7 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    private void addBill(final int billroomprice, final int numberwaterbegin, final int numberwatersum, final int numberelectricbegin, final int numberelctricsum, final String contractID) {
+    private void addBill(final double billroomprice, final int numberwaterbegin, final int numberwatersum, final int numberelectricbegin, final int numberelctricsum, final int contractID) {
 
         btnadd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,8 +130,9 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
                         } else {
                             int bw = Integer.parseInt(edtnumberwater.getText().toString().trim()) - w;
                             int be = Integer.parseInt(edtnumberelectric.getText().toString().trim()) - e;
-                            int Toatal = billroomprice + bw * room.getRoomWaterPrice() + be * room.getRoomElectricPrice();
-                            dialogTotal(new Bill( room, edtbillcustomername.getText().toString(), edtdatebegin.getText().toString(), edtdateend.getText().toString(), contractID, be, bw, Calendar.getInstance().getTime(), Toatal));
+                            Log.i(TAG, "Total Bill service: " + totalBillService);
+                            double Toatal = billroomprice + bw * room.getRoomWaterPrice() + be * room.getRoomElectricPrice() + totalBillService;
+                            dialogTotal(new Bill(room, edtbillcustomername.getText().toString(), edtdatebegin.getText().toString(), edtdateend.getText().toString(), contractID, be, bw, Calendar.getInstance().getTime(), Toatal));
                         }
 
                     }
@@ -135,6 +144,23 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
 
 
     }
+
+    private String StringServiceItem(List<Service> services) {
+        if (services.size() > 0) {
+
+
+            for (int j = 0; j < services.size(); j++) {
+                item = item + services.get(j).getServiceName();
+                if (j != services.size() - 1) {
+                    item = item + ", ";
+                }
+            }
+        } else {
+            item = "Không có dịch vụ nào khác";
+        }
+        return item;
+    }
+
 
     private void dialogTotal(final Bill bill) {
         new AlertDialog.Builder(this)
@@ -173,18 +199,24 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
             edtdateend.setText(simpleDateFormat.format(addMonth(calendar.getTime(), monthperiodic)));
             edtroomprice.setText(formatter.format(room.getRoomPrice()) + " VND");
             if (date == dateterm) {
+                billroomprice=contract.getRoom().getRoomPrice();
                 edtbillroomprice.setText(formatter.format(room.getRoomPrice()) + " VND");
             } else {
 
-                int roompriceofdate = room.getRoomPrice() / getlenthmonth(calendar.getTime());
+                double roompriceofdate = room.getRoomPrice() / getlenthmonth(calendar.getTime());
                 Log.i("Addbill", "lenth: " + getlenthmonth(calendar.getTime()));
                 Date billdateend = addMonth(calendar.getTime(), monthperiodic);
-                long day = (billdateend.getTime() - billdatebegin.getTime()) / (24 * 60 * 60 * 1000) + 1;
-                billroomprice = (int) (roompriceofdate * day);
+                long day = (billdateend.getTime() - billdatebegin.getTime()) / (24 * 60 * 60 * 1000);
+                billroomprice = (roompriceofdate * day);
                 edtbillroomprice.setText(formatter.format(billroomprice) + " VND");
                 Log.i("Addbill", "settextNewbill: " + roompriceofdate + "," + day);
             }
             edtbillcustomername.setText(name);
+            billServiceList = billServiceDAO.getsServiceBillByID(contract.getContractID());
+            for (int i = 0; i < billServiceList.size(); i++) {
+                totalBillService = billServiceList.get(i).getServicePrice();
+            }
+            tvbillservice.setText(StringServiceItem(billServiceList));
 
 
         } catch (ParseException e) {
@@ -218,6 +250,7 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
 
 
     private void initView() {
+        tvbillservice = findViewById(R.id.tvbillservice);
         edtdatebegin = findViewById(R.id.edtdatebegin);
         edtdateend = findViewById(R.id.edtdateend);
         edtroomprice = findViewById(R.id.edtroomprice);

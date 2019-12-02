@@ -32,7 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "\t\"roomImage\"\tBLOB\n" +
                 ");");
         db.execSQL("CREATE TABLE \"contract\" (\n" +
-                "\t\"contractID\"\tTEXT,\n" +
+                "\t\"contractID\"\tINTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n" +
                 "\t\"contractDateBegin\"\tDATE,\n" +
                 "\t\"contractDateEnd\"\tDATE,\n" +
                 "\t\"contractPeopleNumber\"\tINTEGER,\n" +
@@ -44,8 +44,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "\t\"contracElectricNumberBegin\"\tINTEGER,\n" +
                 "\t\"contractDateTerm\"\tINTEGER,\n" +
                 "\t\"contractStatus\"\tINTEGER,\n" +
-                "\t\"contractDeposits\"\tINTEGER,\n" +
-                "\tPRIMARY KEY(\"contractID\")\n" +
+                "\t\"contractDeposits\"\tINTEGER\n" +
                 ");");
         db.execSQL("CREATE TABLE \"customer\" (\n" +
                 "\t\"customerID\"\tINTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n" +
@@ -65,7 +64,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "\t\"serviceBillID\"\tINTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n" +
                 "\t\"serviceBillName\"\tTEXT,\n" +
                 "\t\"serviceBillPrice\"\tINTEGER,\n" +
-                "\t\"contractID\"\tTEXT\n" +
+                "\t\"contractID\"\tINTEGER\n" +
                 ");");
         db.execSQL("CREATE TABLE \"bill\" (\n" +
                 "\t\"billID\"\tINTEGER PRIMARY KEY AUTOINCREMENT,\n" +
@@ -73,11 +72,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "\t\"billCustomerName\"\tTEXT,\n" +
                 "\t\"billDateBegin\"\tTEXT,\n" +
                 "\t\"billDateEnd\"\tTEXT,\n" +
-                "\t\"contractID\"\tTEXT,\n" +
+                "\t\"contractID\"\tINTEGER,\n" +
                 "\t\"billElectricNumber\"\tINTEGER,\n" +
                 "\t\"billWaterNumber\"\tINTEGER,\n" +
                 "\t\"billPaymentDate\"\tDATE,\n" +
-                "\t\"billTotal\"\tINTEGER\n" +
+                "\t\"billTotal\"\tDOUBLE\n" +
                 ");");
 
     }

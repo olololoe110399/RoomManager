@@ -3,7 +3,7 @@ package com.example.qunlphngtr.Model;
 import java.util.Date;
 
 public class Contract {
-    private String ContractID;
+    private int ContractID;
     private String ContractDateBegin;
     private String ContractDateEnd;
     private int ContractPeopleNumber;
@@ -41,7 +41,7 @@ public class Contract {
         ContractDateTerm = contractDateTerm;
     }
 
-    public Contract(String contractID, String contractDateBegin, String contractDateEnd, int contractPeopleNumber, int contractVehicleNumber, com.example.qunlphngtr.Model.Room room, Customer customer, int contractMonthPeriodic, int contracNumberWaterBegin, int contracNumberElectricBegin, int contractDateTerm, int contractstatus,double contractDeposits) {
+    public Contract(int contractID, String contractDateBegin, String contractDateEnd, int contractPeopleNumber, int contractVehicleNumber, com.example.qunlphngtr.Model.Room room, Customer customer, int contractMonthPeriodic, int contracNumberWaterBegin, int contracNumberElectricBegin, int contractDateTerm, int contractstatus,double contractDeposits) {
         ContractID = contractID;
         ContractDateBegin = contractDateBegin;
         ContractDateEnd = contractDateEnd;
@@ -57,11 +57,11 @@ public class Contract {
         ContractDeposits=contractDeposits;
     }
 
-    public String getContractID() {
+    public int getContractID() {
         return ContractID;
     }
 
-    public void setContractID(String contractID) {
+    public void setContractID(int contractID) {
         ContractID = contractID;
     }
 

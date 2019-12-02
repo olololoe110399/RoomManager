@@ -8,13 +8,13 @@ public class Service {
     private int ServiceID;
     private String ServiceName;
     private int ServicePrice;
-    private String ContracID;
+    private int ContracID;
 
-    public String getContracID() {
+    public int getContracID() {
         return ContracID;
     }
 
-    public void setContracID(String contracID) {
+    public void setContracID(int contracID) {
         ContracID = contracID;
     }
 
