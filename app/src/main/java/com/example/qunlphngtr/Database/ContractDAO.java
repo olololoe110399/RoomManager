@@ -31,7 +31,7 @@ public class ContractDAO {
         values.put("customerID", contract.getCustomer().getCustomerID());
         values.put("contractMonthPeriodic", contract.getContractMonthPeriodic());
         values.put("contractWaterNumberBegin", contract.getContracNumberWaterBegin());
-        values.put("contracElectricNumberBegin", contract.getContracNumberElectricBegin());
+        values.put("contractElectricNumberBegin", contract.getContracNumberElectricBegin());
         values.put("contractDateTerm", contract.getContractDateTerm());
         values.put("contractStatus", contract.getContractstatus());
         values.put("contractDeposits", contract.getContractDeposits());
@@ -52,7 +52,7 @@ public class ContractDAO {
     }
     public int deleteContractByID(int contractID) {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
-        int result = db.delete(databaseHelper.TABLE_CONTRACT, "contragitctID=?", new String[]{String.valueOf(contractID)});
+        int result = db.delete(databaseHelper.TABLE_CONTRACT, "contractID=?", new String[]{String.valueOf(contractID)});
         if (result == 0)
             return -1;
         return 1;
@@ -64,7 +64,7 @@ public class ContractDAO {
         String sSQL = "SELECT contractID,contractDateBegin,contractDateEnd,contractPeopleNumber,contractVehicleNumber," +
                 "room.roomID,room.roomName,room.roomPrice,room.roomAcreage,room.roomWaterPrice,room.roomElectricPrice,room.roomImage," +
                 "customer.customerID,customer.customerImage,customer.customerPhone,customer.customerName,customer.customerCMND,customer.customerCMNDImgBefore,customer.customerCMNdImgAfter," +
-                "contractMonthPeriodic,contractWaterNumberBegin,contracElectricNumberBegin,contractDateTerm,contractStatus,contractDeposits" +
+                "contractMonthPeriodic,contractWaterNumberBegin,contractElectricNumberBegin,contractDateTerm,contractStatus,contractDeposits" +
                 " FROM contract INNER JOIN room ON contract.roomID = room.roomID INNER JOIN customer on contract.customerID=customer.customerID WHERE contract.roomID ='" +
                 roomID + "'";
         Cursor cursor = db.rawQuery(sSQL, null);

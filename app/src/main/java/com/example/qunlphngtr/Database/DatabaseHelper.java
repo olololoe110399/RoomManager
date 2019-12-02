@@ -41,7 +41,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "\t\"customerID\"\tTEXT,\n" +
                 "\t\"contractMonthPeriodic\"\tINTEGER,\n" +
                 "\t\"contractWaterNumberBegin\"\tINTEGER,\n" +
-                "\t\"contracElectricNumberBegin\"\tINTEGER,\n" +
+                "\t\"contractElectricNumberBegin\"\tINTEGER,\n" +
                 "\t\"contractDateTerm\"\tINTEGER,\n" +
                 "\t\"contractStatus\"\tINTEGER,\n" +
                 "\t\"contractDeposits\"\tINTEGER\n" +

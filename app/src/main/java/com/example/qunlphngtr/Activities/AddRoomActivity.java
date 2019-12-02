@@ -30,12 +30,7 @@ public class AddRoomActivity extends AppCompatActivity {
     }
 
     private void setBtnOnclick() {
-        btncancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+
         btnsave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +66,6 @@ public class AddRoomActivity extends AppCompatActivity {
         edtroomWaterNumber = findViewById(R.id.edtRoomWaterPrice);
         edtroomElectricNumber = findViewById(R.id.edtRoomElectricPrice);
         btnsave = findViewById(R.id.btnSave);
-        btncancel = findViewById(R.id.btnCancel);
     }
 
     private void initToolbar() {
