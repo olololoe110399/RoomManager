@@ -52,9 +52,10 @@
                 android:text="0793333648"
                 android:textSize="18dp" />
             <ImageView
+                android:layout_marginRight="5dp"
                 android:id="@+id/imgDelete"
-                android:layout_width="20dp"
-                android:layout_height="60dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:src="@drawable/delete_icon_simple1"
                 android:layout_alignParentRight="true"
                 />

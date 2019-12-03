@@ -50,6 +50,7 @@ public class ContractDAO {
         }
         return 1;
     }
+
     public int deleteContractByID(int contractID) {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         int result = db.delete(databaseHelper.TABLE_CONTRACT, "contractID=?", new String[]{String.valueOf(contractID)});
@@ -90,4 +91,118 @@ public class ContractDAO {
         cursor.close();
         return contractList;
     }
+
+    public int getContractByStatus(int status) {
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+//WHERE clause
+        int contractID = -1;
+        String sSQL = "SELECT contractID FROM contract WHERE contractStatus= '" + status + "'";
+//WHERE clause arguments
+        Cursor c = db.rawQuery(sSQL, null);
+        c.moveToFirst();
+        while (c.isAfterLast() == false) {
+            contractID = c.getInt(0);
+            break;
+        }
+        c.close();
+        return contractID;
+    }
+
+    public int getStatusRoom(int roomID) {
+
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+//WHERE clause
+        int status = -1;
+        String sSQL = "SELECT * FROM contract WHERE roomID = '" + roomID + "'";
+//WHERE clause arguments
+        Cursor c = db.rawQuery(sSQL, null);
+        c.moveToFirst();
+        while (c.isAfterLast() == false) {
+            if (c.getInt(11) == 0) {
+                status = 1;
+                break;
+            }
+            c.moveToNext();
+        }
+        c.close();
+        return status;
+    }
+
+    public int getpeopleNumberRoom(int roomID) {
+
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+//WHERE clause
+        int peopleNumberRoom = 0;
+        String sSQL = "SELECT * FROM contract WHERE roomID = '" + roomID + "'";
+//WHERE clause arguments
+        Cursor c = db.rawQuery(sSQL, null);
+        c.moveToFirst();
+        while (c.isAfterLast() == false) {
+            if (c.getInt(11) == 0) {
+                peopleNumberRoom = c.getInt(3);
+                break;
+            }
+            c.moveToNext();
+        }
+        c.close();
+        return peopleNumberRoom;
+    }
+
+    public int getvehicleNumberRoom(int roomID) {
+
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+//WHERE clause
+        int vehicleNumberRoom = 0;
+        String sSQL = "SELECT * FROM contract WHERE roomID = '" + roomID + "'";
+//WHERE clause arguments
+        Cursor c = db.rawQuery(sSQL, null);
+        c.moveToFirst();
+        while (c.isAfterLast() == false) {
+            if (c.getInt(11) == 0) {
+                vehicleNumberRoom = c.getInt(4);
+                break;
+            }
+            c.moveToNext();
+        }
+        c.close();
+        return vehicleNumberRoom;
+    }
+
+    public int getallPeopleNumberRoom() {
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+//WHERE clause
+        int peopleNumberRoom = 0;
+        String sSQL = "SELECT * FROM contract";
+//WHERE clause arguments
+        Cursor c = db.rawQuery(sSQL, null);
+        c.moveToFirst();
+        while (c.isAfterLast() == false) {
+            if (c.getInt(11) == 0) {
+                peopleNumberRoom = peopleNumberRoom + c.getInt(3);
+            }
+            c.moveToNext();
+        }
+        c.close();
+        return peopleNumberRoom;
+    }
+
+    public int getallNumberRoomNotNull() {
+
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+//WHERE clause
+        int status = 0;
+        String sSQL = "SELECT * FROM contract ";
+//WHERE clause arguments
+        Cursor c = db.rawQuery(sSQL, null);
+        c.moveToFirst();
+        while (c.isAfterLast() == false) {
+            if (c.getInt(11) == 0) {
+                status = status + 1;
+            }
+            c.moveToNext();
+        }
+        c.close();
+        return status;
+    }
+
 }

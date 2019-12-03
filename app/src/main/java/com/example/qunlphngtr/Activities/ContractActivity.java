@@ -57,8 +57,8 @@ public class ContractActivity extends AppCompatActivity {
 
         initView();
         initToolbar();
-        checkcontract();
-        checkContract();
+        checkContractlistNull();
+        checkContractHideAndShowFAB();
         fbcontract.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,7 +70,7 @@ public class ContractActivity extends AppCompatActivity {
     }
 
 
-    public static void checkcontract() {
+    public static void checkContractlistNull() {
         if (contractList.size() > 0) {
             relativeLayout.setVisibility(View.GONE);
             swipeRefreshLayout.setVisibility(View.VISIBLE);
@@ -94,7 +94,9 @@ public class ContractActivity extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                checkContract();
+                loadRecycerview();
+                checkContractlistNull();
+                checkContractHideAndShowFAB();
                 swipeRefreshLayout.setRefreshing(false);// set swipe refreshing
             }
         });
@@ -123,7 +125,7 @@ public class ContractActivity extends AppCompatActivity {
 
 
     @SuppressLint("RestrictedApi")
-    public static void checkContract() {
+    public static void checkContractHideAndShowFAB() {
         if (contractList.size() > 0) {
             for (int i = 0; i < contractList.size(); i++) {
                 if (contractList.get(i).getContractstatus() == 0) {
@@ -142,13 +144,20 @@ public class ContractActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        checkContract();
+        loadRecycerview();
+        checkContractlistNull();
+        checkContractHideAndShowFAB();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         Animatoo.animateSlideRight(this);
+    }
+    private void loadRecycerview(){
+        contractList.clear();
+        contractList.addAll(contractDAO.getAllContract(room.getRoomID()));
+        adapter.notifyDataSetChanged();
     }
 
 }

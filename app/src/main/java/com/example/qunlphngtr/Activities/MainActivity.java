@@ -63,7 +63,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SharedPreferences pref;
     private String UserNameSp,messnotification;
     private TextView textNotificationItemCount;
-    int mNotificationItemCount, menuitemid, startingPosition;
+    int  menuitemid, startingPosition;
+    public static int mNotificationItemCount;
     private SimpleDateFormat simpleDateFormat;
 
 
@@ -78,22 +79,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initToolbar();
         setProfileNavigationView();
         setupNavigation();
-        notification();
+        addNotificationUpdateInformationUser();
+        CheckcountNotification();
 
 
     }
 
-    private void notification() {
+    private void addNotificationUpdateInformationUser() {
         if (managerUsers.checkInformatioNull(UserNameSp) > 0) {
-            if (checkmess() < 0) {
+            if (checkmessNotification() < 0) {
                 messnotification="Chúc mừng bạn vừa tạo tài khoản! Vui lòng cập nhật đầy đủ thông tin của bạn ! ";
                 NotificationActivity.notificationList.add(new Notification(messnotification, simpleDateFormat.format(Calendar.getInstance().getTime()), true));
             }
         }
     }
 
-    private void addcountNotification() {
-        if (checkstatus() < 0) {
+    public static void CheckcountNotification() {
+        if (checkstatusNotification() < 0) {
             mNotificationItemCount = 0;
         } else {
             for (int i = 0; i < NotificationActivity.notificationList.size(); i++) {
@@ -102,11 +104,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         }
-        invalidateOptionsMenu();
 
     }
 
-    private int checkstatus() {
+    public static int checkstatusNotification() {
         int i = -1;
         for (int j = 0; j < NotificationActivity.notificationList.size(); j++) {
             if (NotificationActivity.notificationList.get(j).isStatus() == true) {
@@ -116,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return i;
     }
 
-    private int checkmess() {
+    private int checkmessNotification() {
         int i = -1;
         for (int j = 0; j < NotificationActivity.notificationList.size(); j++) {
             if (NotificationActivity.notificationList.get(j).getMessage().equals(messnotification)) {
@@ -493,9 +494,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onResume() {
-        if (managerUsers.checkInformatioNull(UserNameSp) > 0) {
-            addcountNotification();
-        }
+        invalidateOptionsMenu();
         super.onResume();
     }
 }

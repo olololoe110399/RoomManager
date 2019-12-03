@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.qunlphngtr.Activities.AddRoomActivity;
 import com.example.qunlphngtr.Adapter.AdapterRoom;
+import com.example.qunlphngtr.Database.ContractDAO;
 import com.example.qunlphngtr.Database.RoomDAO;
 import com.example.qunlphngtr.Model.Room;
 import com.example.qunlphngtr.R;
@@ -25,15 +27,18 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentRoom extends Fragment{
+public class FragmentRoom extends Fragment {
     private View view;
     private RecyclerView recyclerView;
     private ProgressBar myProgress;
-    private List<Room> roomList;
-    private AdapterRoom adapter;
+    public static List<Room> roomList;
+    public static AdapterRoom adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private FloatingActionButton fabroom;
-    private RoomDAO roomDAO;
+    public static RoomDAO roomDAO;
+    public static TextView tvroomNull;
+    public static TextView tvsizeRoom, tvNumberRoomNull, tvpeolpeNumberRoom;
+    public static ContractDAO contractDAO;
 
     @Nullable
     @Override
@@ -44,12 +49,27 @@ public class FragmentRoom extends Fragment{
         return view;
     }
 
+    public static void setTextRoomManager() {
+        tvsizeRoom.setText(roomList.size()+"");
+        int PeopleNumberRoom=contractDAO.getallPeopleNumberRoom();
+        tvpeolpeNumberRoom.setText(PeopleNumberRoom+"");
+        int sum= (roomList.size()-contractDAO.getallNumberRoomNotNull());
+        tvNumberRoomNull.setText(sum+"");
+
+
+    }
+
     private void initView() {
-        fabroom=view.findViewById(R.id.fbroom);
+        contractDAO=new ContractDAO(getActivity());
+        tvroomNull = view.findViewById(R.id.tvroomNull);
+        tvsizeRoom = view.findViewById(R.id.tvsizeRoom);
+        tvNumberRoomNull = view.findViewById(R.id.tvNumberRoomNull);
+        tvpeolpeNumberRoom = view.findViewById(R.id.tvpeolpeNumberRoom);
+        fabroom = view.findViewById(R.id.fbroom);
         fabroom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getActivity(),AddRoomActivity.class);
+                Intent intent = new Intent(getActivity(), AddRoomActivity.class);
                 startActivity(intent);
             }
         });
@@ -73,7 +93,13 @@ public class FragmentRoom extends Fragment{
 
     }
 
-
+    public static void checkRoomListNull() {
+        if (roomList.size() > 0) {
+            tvroomNull.setVisibility(View.GONE);
+        } else {
+            tvroomNull.setVisibility(View.VISIBLE);
+        }
+    }
 
 
     private class Loading extends AsyncTask<Void, Void, List<Room>> {
@@ -93,6 +119,8 @@ public class FragmentRoom extends Fragment{
         @Override
         protected void onPostExecute(List<Room> Rooms) {
             adapter.notifyDataSetChanged();
+            checkRoomListNull();
+            setTextRoomManager();
             myProgress.setVisibility(View.GONE);
             swipeRefreshLayout.setRefreshing(false);// set swipe refreshing
             super.onPostExecute(Rooms);
@@ -104,6 +132,17 @@ public class FragmentRoom extends Fragment{
 
     }
 
+    public static void LoadRecyclerview() {
+        roomList.clear();
+        roomList.addAll(roomDAO.getAllRoom());
+        adapter.notifyDataSetChanged();
 
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setTextRoomManager();
+        LoadRecyclerview();
+    }
 }

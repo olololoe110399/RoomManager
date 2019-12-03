@@ -331,15 +331,12 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
             contract.setContracNumberWaterBegin(Integer.parseInt(edtnumberwater.getText().toString()));
             contract.setRoom(room);
             contract.setCustomer(customer);
-            contract.setContractPeopleNumber(Integer.parseInt(edtnumberwater.getText().toString()));
+            contract.setContractPeopleNumber(Integer.parseInt(edtpeople.getText().toString()));
             contract.setContractVehicleNumber(Integer.parseInt(edtvehical.getText().toString()));
             contract.setContractstatus(0);
             contract.setContractDeposits(Double.parseDouble(edtdeposits.getText().toString()));
             if (contractDAO.addContract(contract) > 0) {
-                ContractActivity.contractList.add(contract);
-                ContractActivity.adapter.notifyDataSetChanged();
-                ContractActivity.checkcontract();
-                addbillservice(contract.getContractID());
+                addbillservice(contractDAO.getContractByStatus(0));
             } else {
                 Toast.makeText(this, "Chưa thêm được!", Toast.LENGTH_SHORT).show();
             }

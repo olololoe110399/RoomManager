@@ -71,6 +71,7 @@
             </LinearLayout>
 
             <EditText
+                android:inputType="number"
                 android:textSize="18dp"
                 android:paddingLeft="10dp"
                 android:background="@drawable/edt_bg"
@@ -98,6 +99,7 @@
             </LinearLayout>
 
             <EditText
+                android:inputType="text"
                 android:textSize="18dp"
                 android:paddingLeft="10dp"
                 android:background="@drawable/edt_bg"
@@ -126,6 +128,8 @@
             </LinearLayout>
 
             <EditText
+                android:maxLength="9"
+                android:inputType="number"
                 android:textSize="18dp"
                 android:paddingLeft="10dp"
                 android:background="@drawable/edt_bg"

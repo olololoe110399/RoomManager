@@ -170,9 +170,6 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
                 .setPositiveButton("Thanh toán", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         billDAO.addBill(bill);
-                        BillActivity.billList.add(bill);
-                        BillActivity.adapter.notifyDataSetChanged();
-                        BillActivity.checkbill();
                         finish();
                         Animatoo.animateDiagonal(AddBillActivity.this);
                     }

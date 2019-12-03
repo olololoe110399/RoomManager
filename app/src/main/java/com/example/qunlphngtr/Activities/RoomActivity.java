@@ -7,19 +7,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.example.qunlphngtr.Database.ContractDAO;
 import com.example.qunlphngtr.Model.Room;
 import com.example.qunlphngtr.R;
 
 
 public class RoomActivity extends AppCompatActivity implements View.OnClickListener {
     private Toolbar toolbar;
-    String roomid;
     Intent i;
     RelativeLayout rlupdate, rlcontract, rlbill;
     public static Room room = new Room();
+    private ContractDAO contractDAO;
+    private TextView tvpeolpeNumberRoom, tvstatusRoom, tvvehicalNumberRoom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +31,24 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
         initView();
         initToolbar();
         setupOnclick();
+        setTextRoom();
+    }
+
+    private void setTextRoom() {
+        if(contractDAO.getStatusRoom(room.getRoomID())>0){
+            tvstatusRoom.setText("Đang ở");
+        }else {
+            tvstatusRoom.setText("Trống");
+        }
+            tvpeolpeNumberRoom.setText(contractDAO.getpeopleNumberRoom(room.getRoomID())+"");
+            tvvehicalNumberRoom.setText(contractDAO.getvehicleNumberRoom(room.getRoomID())+"");
     }
 
     public void initView() {
+        tvpeolpeNumberRoom = findViewById(R.id.tvpeolpeNumberRoom);
+        tvvehicalNumberRoom = findViewById(R.id.tvvehicalNumberRoom);
+        tvstatusRoom = findViewById(R.id.tvstatusRoom);
+        contractDAO = new ContractDAO(this);
         toolbar = findViewById(R.id.tool_bar);
         i = getIntent();
         rlcontract = findViewById(R.id.rlcontract);
@@ -66,13 +84,13 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
         Intent i;
         switch (v.getId()) {
             case R.id.rlbill:
-                i =new Intent(this,BillActivity.class);
+                i = new Intent(this, BillActivity.class);
                 startActivity(i);
                 Animatoo.animateSlideLeft(this);
 
                 break;
             case R.id.rlcontract:
-                i =new Intent(this,ContractActivity.class);
+                i = new Intent(this, ContractActivity.class);
                 startActivity(i);
                 Animatoo.animateSlideLeft(this);
 
@@ -87,5 +105,11 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
     public void onBackPressed() {
         super.onBackPressed();
         Animatoo.animateSlideRight(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setTextRoom();
     }
 }

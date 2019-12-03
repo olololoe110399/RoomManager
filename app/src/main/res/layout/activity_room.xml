@@ -37,6 +37,7 @@
                 android:src="@drawable/icon_person"></ImageView>
 
             <TextView
+                android:id="@+id/tvpeolpeNumberRoom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/tv3"
@@ -77,7 +78,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/tv2"
+                android:layout_above="@+id/tvstatusRoom"
                 android:gravity="center"
                 android:text="Trạng thái"
                 android:textColor="@color/ColorWhite"
@@ -85,7 +86,7 @@
 
             <TextView
                 android:layout_marginBottom="20dp"
-                android:id="@+id/tv2"
+                android:id="@+id/tvstatusRoom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -112,6 +113,7 @@
                 android:src="@drawable/icon_motorcycle"></ImageView>
 
             <TextView
+                android:id="@+id/tvvehicalNumberRoom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/tv1"

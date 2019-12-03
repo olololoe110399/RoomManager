@@ -148,6 +148,7 @@
 
 
                 <EditText
+                    android:inputType="text"
                     android:text="Nguyễn Ngọc Duy"
                     android:id="@+id/edtbillcustomername"
                     android:layout_width="match_parent"
