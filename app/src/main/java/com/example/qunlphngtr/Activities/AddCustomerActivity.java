@@ -76,6 +76,12 @@ public class AddCustomerActivity extends AppCompatActivity implements View.OnCli
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Animatoo.animateSlideRight(this);
+    }
+
     private void setBtnOnclick() {
         btnsave.setOnClickListener(this);
         rlCMNDBefore.setOnClickListener(this);
@@ -116,6 +122,7 @@ public class AddCustomerActivity extends AppCompatActivity implements View.OnCli
                     FragmentCustomer.LoadRecyclerview();
                     FragmentCustomer.checkCustomernull();
                     finish();
+                    Animatoo.animateSlideRight(this);
                 } else {
                     Toast.makeText(this, "Không thêm được", Toast.LENGTH_SHORT).show();
                 }

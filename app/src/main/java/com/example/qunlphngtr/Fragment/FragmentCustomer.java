@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.qunlphngtr.Activities.AddCustomerActivity;
 import com.example.qunlphngtr.Adapter.AdapterCustomer;
 import com.example.qunlphngtr.Database.CustomerDAO;
@@ -87,6 +88,7 @@ FragmentCustomer extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AddCustomerActivity.class);
                 startActivity(intent);
+                Animatoo.animateSlideLeft(getActivity());
             }
         });
     }

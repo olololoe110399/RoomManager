@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.qunlphngtr.Database.ContractDAO;
+import com.example.qunlphngtr.Fragment.FragmentRoom;
 import com.example.qunlphngtr.Model.Room;
 import com.example.qunlphngtr.R;
 
@@ -73,9 +74,9 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onSupportNavigateUp() {
+        FragmentRoom.LoadRecyclerview();
         finish();
         Animatoo.animateSlideRight(this);
-
         return true;
     }
 
@@ -103,6 +104,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
+        FragmentRoom.LoadRecyclerview();
         super.onBackPressed();
         Animatoo.animateSlideRight(this);
     }

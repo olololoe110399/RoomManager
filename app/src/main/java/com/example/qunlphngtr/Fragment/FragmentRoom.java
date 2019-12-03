@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.qunlphngtr.Activities.AddRoomActivity;
 import com.example.qunlphngtr.Adapter.AdapterRoom;
 import com.example.qunlphngtr.Database.ContractDAO;
@@ -71,6 +72,7 @@ public class FragmentRoom extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AddRoomActivity.class);
                 startActivity(intent);
+                Animatoo.animateSlideLeft(getActivity());
             }
         });
         roomDAO = new RoomDAO(getActivity());
@@ -143,6 +145,5 @@ public class FragmentRoom extends Fragment {
     public void onResume() {
         super.onResume();
         setTextRoomManager();
-        LoadRecyclerview();
     }
 }

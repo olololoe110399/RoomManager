@@ -171,7 +171,7 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
                     public void onClick(DialogInterface dialog, int which) {
                         billDAO.addBill(bill);
                         finish();
-                        Animatoo.animateDiagonal(AddBillActivity.this);
+                        Animatoo.animateSlideRight(AddBillActivity.this);
                     }
                 })
                 .setNegativeButton("Không", new DialogInterface.OnClickListener() {

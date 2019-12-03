@@ -55,6 +55,7 @@ public class AddRoomActivity extends AppCompatActivity {
                 FragmentRoom.checkRoomListNull();
                 Toast.makeText(this, "Thêm thành công" , Toast.LENGTH_SHORT).show();
                 finish();
+                Animatoo.animateSlideRight(this);
             } else {
                 Toast.makeText(this, "Không thêm được", Toast.LENGTH_SHORT).show();
             }
@@ -85,5 +86,11 @@ public class AddRoomActivity extends AppCompatActivity {
         finish();
         Animatoo.animateSlideRight(this);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Animatoo.animateSlideRight(this);
     }
 }

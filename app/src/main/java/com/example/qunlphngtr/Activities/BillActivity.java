@@ -146,7 +146,7 @@ public class BillActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent i = new Intent(BillActivity.this, ContractActivity.class);
                         startActivity(i);
-                        Animatoo.animateDiagonal(BillActivity.this);
+                        Animatoo.animateSlideRight(BillActivity.this);
                         finish();
                     }
                 });
@@ -163,7 +163,7 @@ public class BillActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     Intent i = new Intent(BillActivity.this, ContractActivity.class);
                     startActivity(i);
-                    Animatoo.animateDiagonal(BillActivity.this);
+                    Animatoo.animateCard(BillActivity.this);
                     finish();
                 }
             });

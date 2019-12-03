@@ -64,7 +64,6 @@ public class ContractActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ContractActivity.this, AddContractActivity.class);
                 startActivity(intent);
-                Animatoo.animateSlideLeft(ContractActivity.this);
             }
         });
     }
