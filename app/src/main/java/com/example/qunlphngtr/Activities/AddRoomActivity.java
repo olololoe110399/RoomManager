@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.qunlphngtr.Database.RoomDAO;
+import com.example.qunlphngtr.Fragment.FragmentRoom;
 import com.example.qunlphngtr.Model.Room;
 import com.example.qunlphngtr.R;
 
@@ -50,7 +51,11 @@ public class AddRoomActivity extends AppCompatActivity {
             room.setRoomWaterPrice(Integer.parseInt(edtroomWaterNumber.getText().toString().trim()));
             room.setRoomPrice(Integer.parseInt(edtroomPrice.getText().toString().trim()));
             if (roomDAO.addRoom(room) > 0) {
+                FragmentRoom.LoadRecyclerview();
+                FragmentRoom.checkRoomListNull();
+                Toast.makeText(this, "Thêm thành công" , Toast.LENGTH_SHORT).show();
                 finish();
+                Animatoo.animateSlideRight(this);
             } else {
                 Toast.makeText(this, "Không thêm được", Toast.LENGTH_SHORT).show();
             }
@@ -81,5 +86,11 @@ public class AddRoomActivity extends AppCompatActivity {
         finish();
         Animatoo.animateSlideRight(this);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Animatoo.animateSlideRight(this);
     }
 }

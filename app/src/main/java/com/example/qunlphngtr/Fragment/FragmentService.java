@@ -12,6 +12,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,6 +40,7 @@ public class FragmentService extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private FloatingActionButton button;
     private ServiceDAO serviceDAO;
+    public static TextView tvServiceNull;
 
     @Nullable
     @Override
@@ -51,6 +53,7 @@ public class FragmentService extends Fragment {
     }
 
     private void initView() {
+        tvServiceNull=view.findViewById(R.id.tvServiceNull);
         recyclerView = view.findViewById(R.id.rvservice);
         myProgress = view.findViewById(R.id.progress_bar);
         swipeRefreshLayout = view.findViewById(R.id.srlservice);
@@ -80,6 +83,13 @@ public class FragmentService extends Fragment {
         new Loading().execute();
 
     }
+    public  static void checkServicelistNull(){
+        if(serviceList.size()>0){
+            tvServiceNull.setVisibility(View.GONE);
+        }else {
+            tvServiceNull.setVisibility(View.VISIBLE);
+        }
+    }
 
     private class Loading extends AsyncTask<Void, Void, List<Service>> {
         @Override
@@ -99,6 +109,7 @@ public class FragmentService extends Fragment {
         protected void onPostExecute(List<Service> services) {
             adapter.notifyDataSetChanged();
             myProgress.setVisibility(View.GONE);
+            checkServicelistNull();
             swipeRefreshLayout.setRefreshing(false);// set swipe refreshing
             super.onPostExecute(services);
         }
@@ -133,8 +144,9 @@ public class FragmentService extends Fragment {
                     service.setServicePrice(Integer.parseInt(edtServicePrice.getText().toString()));
                     if (serviceDAO.addService(service) > 0) {
                         Toast.makeText(getActivity(), R.string.successfully, Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
                         refreshRecyclerView();
+                        checkServicelistNull();
+                        dialog.dismiss();
                     } else {
                         Toast.makeText(getActivity(), R.string.error, Toast.LENGTH_SHORT).show();
                     }
@@ -142,5 +154,10 @@ public class FragmentService extends Fragment {
             }
         });
         dialog.show();
+    }
+    private void LoadRecyclerview(){
+        serviceList.clear();
+        serviceList.addAll(serviceDAO.getAllService());
+        adapter.notifyDataSetChanged();
     }
 }

@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.qunlphngtr.Activities.AddCustomerActivity;
 import com.example.qunlphngtr.Adapter.AdapterCustomer;
 import com.example.qunlphngtr.Database.CustomerDAO;
@@ -41,12 +43,12 @@ FragmentCustomer extends Fragment {
     private View view;
     private RecyclerView recyclerView;
     private ProgressBar myProgress;
-    private List<Customer> customerList;
-    private AdapterCustomer adapter;
+    public static List<Customer> customerList;
+    public static AdapterCustomer adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
-    byte[] img;
-    private CustomerDAO customerDAO;
+    public static CustomerDAO customerDAO;
     private FloatingActionButton fbCustomer;
+    public static TextView tvcustomerNull;
 
     @Nullable
     @Override
@@ -62,33 +64,9 @@ FragmentCustomer extends Fragment {
         customerDAO = new CustomerDAO(getActivity());
     }
 
-    private void dialogdelete(final int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Warning");
-        builder.setMessage("Are you sure delete?");
-        builder.setCancelable(false);
-        builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        builder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                customerList.remove(position);
-                adapter.notifyItemRangeChanged(position, customerList.size());
-                adapter.notifyItemRemoved(position);
-                adapter.notifyItemChanged(position);
-
-            }
-        });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
-
 
     private void initView() {
+        tvcustomerNull=view.findViewById(R.id.tvcustomerNull);
         recyclerView = view.findViewById(R.id.rvcustomer);
         myProgress = view.findViewById(R.id.progress_bar);
         swipeRefreshLayout = view.findViewById(R.id.srlcustomer);
@@ -104,14 +82,13 @@ FragmentCustomer extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
-        img = LoadingImg(R.drawable.avatar);
-
         fbCustomer = view.findViewById(R.id.fbcustomer);
         fbCustomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AddCustomerActivity.class);
                 startActivity(intent);
+                Animatoo.animateSlideLeft(getActivity());
             }
         });
     }
@@ -120,6 +97,11 @@ FragmentCustomer extends Fragment {
     private void refreshRecyclerView() {
         new Loading().execute();
 
+    }
+    public  static void checkCustomernull(){
+        if(customerList.size()>0){
+            tvcustomerNull.setVisibility(View.GONE);
+        }else {tvcustomerNull.setVisibility(View.VISIBLE);}
     }
 
     private class Loading extends AsyncTask<Void, Void, List<Customer>> {
@@ -140,16 +122,15 @@ FragmentCustomer extends Fragment {
         protected void onPostExecute(List<Customer> customers) {
             adapter.notifyDataSetChanged();
             myProgress.setVisibility(View.GONE);
+            checkCustomernull();
             swipeRefreshLayout.setRefreshing(false);// set swipe refreshing
             super.onPostExecute(customers);
         }
     }
-
-    private byte[] LoadingImg(int IDImg) {
-        Drawable drawable = getActivity().getDrawable(IDImg);
-        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        return stream.toByteArray();
+    public static void LoadRecyclerview(){
+        customerList.clear();
+        customerList.addAll(customerDAO.getAllCustomer());
+        adapter.notifyDataSetChanged();
     }
+
 }

@@ -45,10 +45,11 @@
         android:background="#FFFFFF">
 
         <EditText
+            android:inputType="text"
             android:id="@+id/edtRoomName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
+            android:background="@drawable/bgradiuswhite"
             android:hint="Nhập tên phòng"
             android:padding="10dp"
             android:textSize="18dp" />
@@ -84,7 +85,7 @@
             android:id="@+id/edtRoomPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
+            android:background="@drawable/bgradiuswhite"
             android:hint="Nhập giá phòng"
             android:padding="10dp"
             android:textSize="18dp" />
@@ -118,7 +119,7 @@
             android:id="@+id/edtRoomAcreage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
+            android:background="@drawable/bgradiuswhite"
             android:hint="Nhập diện tích"
             android:padding="10dp"
             android:textSize="18dp" />
@@ -154,7 +155,7 @@
             android:id="@+id/edtRoomElectricPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
+            android:background="@drawable/bgradiuswhite"
             android:hint="Nhập giá điện"
             android:padding="10dp"
             android:textSize="18dp" />
@@ -190,7 +191,7 @@
             android:id="@+id/edtRoomWaterPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
+            android:background="@drawable/bgradiuswhite"
             android:hint="Nhập giá nước"
             android:padding="10dp"
             android:textSize="18dp" />

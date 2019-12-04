@@ -54,8 +54,8 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
         this.contractList = contractList;
         this.context = context;
         contractDAO = new ContractDAO(context);
-        billServiceDAO=new BillServiceDAO(context);
-        serviceList=new ArrayList<>();
+        billServiceDAO = new BillServiceDAO(context);
+        serviceList = new ArrayList<>();
 
     }
 
@@ -120,23 +120,23 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
             Id = itemView.findViewById(R.id.tvstatus);
             date = itemView.findViewById(R.id.tvcontractdate);
             name = itemView.findViewById(R.id.tvcontractcustomer);
-            btndelete = itemView.findViewById(R.id.btndelete);
+            btndelete = itemView.findViewById(R.id.btnmenu);
             cardView = itemView.findViewById(R.id.cardView);
         }
     }
 
     private void dialogdelete(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Cảnh báo");
+        builder.setTitle("Lưu ý");
         builder.setMessage("Bạn chắc chắn muốn xóa hợp đồng này?");
         builder.setCancelable(false);
-        builder.setPositiveButton("trở về", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
         });
-        builder.setNegativeButton("có", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Xóa", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 contractDAO.deleteContractByID(contractList.get(position).getContractID());
@@ -144,8 +144,8 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
                 notifyItemRangeChanged(position, contractList.size());
                 notifyItemRemoved(position);
                 notifyItemChanged(position);
-                ContractActivity.checkcontract();
-                ContractActivity.checkContract();
+                ContractActivity.checkContractHideAndShowFAB();
+                ContractActivity.checkContractlistNull();
                 mBottomDialogNotificationAction.dismiss();
 
             }
@@ -157,7 +157,9 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
     private void dialogiquidation(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Lưu ý");
-        builder.setMessage("Bạn chắc chắn muốn thanh lý hợp đồng này?");
+        builder.setMessage("Tiền cọc phải trả lại cho khách là: " + contractList.get(position).getContractDeposits() +
+                "\nBạn chắc chắn muốn thanh lý hợp đồng này?"
+        );
         builder.setCancelable(false);
         builder.setPositiveButton("trở về", new DialogInterface.OnClickListener() {
             @Override
@@ -173,12 +175,12 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
                 notifyItemRangeChanged(position, contractList.size());
                 notifyItemInserted(position);
                 notifyItemChanged(position);
-                serviceList=billServiceDAO.getsServiceBillByID(contractList.get(position).getContractID());
-                for (int j=0;j<serviceList.size();j++){
+                serviceList = billServiceDAO.getsServiceBillByID(contractList.get(position).getContractID());
+                for (int j = 0; j < serviceList.size(); j++) {
                     billServiceDAO.deleteBillServiceByID(serviceList.get(j).getServiceID());
                 }
-                ContractActivity.checkcontract();
-                ContractActivity.checkContract();
+                ContractActivity.checkContractHideAndShowFAB();
+                ContractActivity.checkContractlistNull();
                 mBottomDialogNotificationAction.dismiss();
 
             }
@@ -205,6 +207,7 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
             lnliquidation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    mBottomDialogNotificationAction.dismiss();
                     dialogiquidation(pos);
                 }
             });
@@ -217,6 +220,7 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
             lndelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    mBottomDialogNotificationAction.dismiss();
                     dialogdelete(pos);
                 }
             });

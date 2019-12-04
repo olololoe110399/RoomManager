@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.qunlphngtr.Database.CustomerDAO;
 import com.example.qunlphngtr.Database.RoomDAO;
+import com.example.qunlphngtr.Fragment.FragmentCustomer;
 import com.example.qunlphngtr.Model.Customer;
 import com.example.qunlphngtr.Model.Room;
 import com.example.qunlphngtr.R;
@@ -75,6 +76,12 @@ public class AddCustomerActivity extends AppCompatActivity implements View.OnCli
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Animatoo.animateSlideRight(this);
+    }
+
     private void setBtnOnclick() {
         btnsave.setOnClickListener(this);
         rlCMNDBefore.setOnClickListener(this);
@@ -112,7 +119,10 @@ public class AddCustomerActivity extends AppCompatActivity implements View.OnCli
 
                 if (customerDAO.addCustomer(customer) > 0) {
                     Toast.makeText(this, "Thêm thành công", Toast.LENGTH_SHORT).show();
+                    FragmentCustomer.LoadRecyclerview();
+                    FragmentCustomer.checkCustomernull();
                     finish();
+                    Animatoo.animateSlideRight(this);
                 } else {
                     Toast.makeText(this, "Không thêm được", Toast.LENGTH_SHORT).show();
                 }

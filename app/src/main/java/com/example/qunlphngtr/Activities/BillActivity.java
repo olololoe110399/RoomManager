@@ -55,7 +55,7 @@ public class BillActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bill);
         initView();
         initToolbar();
-        checkbill();
+        checkBillNull();
         fbbill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +78,8 @@ public class BillActivity extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                checkbill();
+                loadRecycerview();
+                checkBillNull();
                 swipeRefreshLayout.setRefreshing(false);// set swipe refreshing
             }
         });
@@ -105,7 +106,7 @@ public class BillActivity extends AppCompatActivity {
         return true;
     }
 
-    public static void checkbill() {
+    public static void checkBillNull() {
         if (billList.size() > 0) {
             relativeLayout.setVisibility(View.GONE);
             swipeRefreshLayout.setVisibility(View.VISIBLE);
@@ -118,16 +119,39 @@ public class BillActivity extends AppCompatActivity {
 
     }
 
+    private int checckContractlistStatus() {
+        int status=-1;
+        for (int i = 0; i < contractList.size(); i++) {
+            if (contractList.get(i).getContractstatus() == 0) {
+                status=1;
+                break;
+            }
+        }
+        return status;
+    }
 
     private void checkContract() {
         if (contractList.size() > 0) {
-            for (int i = 0; i < contractList.size(); i++) {
-                if (contractList.get(i).getContractstatus() == 0) {
-                    Intent intent = new Intent(this, AddBillActivity.class);
-                    startActivity(intent);
-                    Animatoo.animateSlideLeft(this);
-                    break;
-                }
+            if(checckContractlistStatus()>0){
+                Intent intent = new Intent(this, AddBillActivity.class);
+                startActivity(intent);
+                Animatoo.animateSlideLeft(this);
+
+            }  else {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+                mBuilder.setTitle("Thông báo");
+                mBuilder.setMessage("Chưa có hợp đồng nào đang ở. Vui lòng một tạo hợp đồng trước khi tạo hóa đơn!");
+                mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i = new Intent(BillActivity.this, ContractActivity.class);
+                        startActivity(i);
+                        Animatoo.animateSlideRight(BillActivity.this);
+                        finish();
+                    }
+                });
+                AlertDialog mDialog = mBuilder.create();
+                mDialog.show();
             }
 
         } else {
@@ -139,7 +163,7 @@ public class BillActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     Intent i = new Intent(BillActivity.this, ContractActivity.class);
                     startActivity(i);
-                    Animatoo.animateDiagonal(BillActivity.this);
+                    Animatoo.animateCard(BillActivity.this);
                     finish();
                 }
             });
@@ -155,4 +179,16 @@ public class BillActivity extends AppCompatActivity {
         Animatoo.animateSlideRight(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadRecycerview();
+        checkBillNull();
+    }
+
+    private void loadRecycerview() {
+        billList.clear();
+        billList.addAll(billDAO.getBillByID(room.getRoomID()));
+        adapter.notifyDataSetChanged();
+    }
 }

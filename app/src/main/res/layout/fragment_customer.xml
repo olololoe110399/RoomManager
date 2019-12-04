@@ -1,35 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:id="@+id/srlcustomer"
     android:layout_height="match_parent"
-    android:clipToPadding="false"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <RelativeLayout
-        android:clipToPadding="false"
+    >
+
+    <TextView
+        android:id="@+id/tvcustomerNull"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:text="Chưa có khách thuê trọ nào. Vui lòng tạo khách thuê trọ trước khi tạo hợp đồng"
+        android:textSize="18dp" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+
+        android:id="@+id/srlcustomer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
         <androidx.recyclerview.widget.RecyclerView
-            android:clipToPadding="false"
-            android:padding="5dp"
             android:id="@+id/rvcustomer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"></ProgressBar>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_margin="20dp"
-            android:id="@+id/fbcustomer"
-            android:layout_width="40dp"
-            app:fabCustomSize="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:src="@drawable/ic_add"
-            android:layout_above="@+id/navigation">
-        </com.google.android.material.floatingactionbutton.FloatingActionButton>
-    </RelativeLayout>
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="5dp" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"></ProgressBar>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fbcustomer"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_above="@+id/navigation"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:src="@drawable/ic_add"
+        app:fabCustomSize="40dp"></com.google.android.material.floatingactionbutton.FloatingActionButton>
+</RelativeLayout>

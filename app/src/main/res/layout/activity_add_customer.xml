@@ -71,13 +71,13 @@
             </LinearLayout>
 
             <EditText
+                android:inputType="number"
                 android:textSize="18dp"
                 android:paddingLeft="10dp"
                 android:background="@drawable/edt_bg"
                 android:id="@+id/edtPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
                  />
             <LinearLayout
                 android:layout_width="match_parent"
@@ -99,6 +99,7 @@
             </LinearLayout>
 
             <EditText
+                android:inputType="text"
                 android:textSize="18dp"
                 android:paddingLeft="10dp"
                 android:background="@drawable/edt_bg"
@@ -127,13 +128,14 @@
             </LinearLayout>
 
             <EditText
+                android:maxLength="9"
+                android:inputType="number"
                 android:textSize="18dp"
                 android:paddingLeft="10dp"
                 android:background="@drawable/edt_bg"
                 android:id="@+id/edtCMND"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
                  />
 
             <LinearLayout

@@ -45,7 +45,7 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
     private SimpleDateFormat simpleDateFormat;
     private List<Service> billServiceList;
     private List<Service> serviceList;
-    private TextView tvbillservice;
+    private TextView tvbillservice, tvRoomName;
     private EditText edtdatebegin, edtdateend, edtmonthperiodic, edtdateterm, edtnumberelectric, edtnumberwater, edtpeople, edtvehical, edtdeposits;
     private boolean[] checkedItems;
     private ArrayList<String> mServiceItems;
@@ -76,6 +76,7 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void setupText() {
+        tvRoomName.setText(room.getRoomName());
         edtmonthperiodic.setText("1 tháng");
         monthperiodic = 1;
         edtdateterm.setText("1");
@@ -94,13 +95,13 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initObject() {
-        billServiceDAO=new BillServiceDAO(this);
-        customerDAO=new CustomerDAO(this);
-        serviceDAO=new ServiceDAO(this);
+        billServiceDAO = new BillServiceDAO(this);
+        customerDAO = new CustomerDAO(this);
+        serviceDAO = new ServiceDAO(this);
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         billServiceList = new ArrayList<>();
         serviceList = new ArrayList<>();
-        serviceList=serviceDAO.getAllService();
+        serviceList = serviceDAO.getAllService();
         ConvertListtoArrayString();
         mServiceItems = new ArrayList<>();
         contractDAO = new ContractDAO(this);
@@ -128,6 +129,7 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
         tvbillservice = findViewById(R.id.tvbillservice);
         edtdatebegin = findViewById(R.id.edtdatebegin);
         edtdateend = findViewById(R.id.edtdateend);
+        tvRoomName = findViewById(R.id.tvroomname);
     }
 
     private void setupOnclick() {
@@ -141,7 +143,7 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
     private void spinnercustomer() {
         spinner = findViewById(R.id.spncustomer);
         customerList = new ArrayList<>();
-        customerList=customerDAO.getAllCustomer();
+        customerList = customerDAO.getAllCustomer();
         adapterCustomerSpinner = new AdapterCustomerSpinner(customerList, this, R.layout.item_spinner_customer);
         spinner.setAdapter(adapterCustomerSpinner);
         new spinnercustomer().execute();
@@ -322,26 +324,27 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
         ) {
             Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
         } else {
-            Contract contract = new Contract();
-            contract.setContractDateBegin(edtdatebegin.getText().toString());
-            contract.setContractDateEnd(edtdateend.getText().toString());
-            contract.setContractMonthPeriodic(monthperiodic);
-            contract.setContractDateTerm(dateterm);
-            contract.setContracNumberElectricBegin(Integer.parseInt(edtnumberelectric.getText().toString()));
-            contract.setContracNumberWaterBegin(Integer.parseInt(edtnumberwater.getText().toString()));
-            contract.setRoom(room);
-            contract.setCustomer(customer);
-            contract.setContractPeopleNumber(Integer.parseInt(edtnumberwater.getText().toString()));
-            contract.setContractVehicleNumber(Integer.parseInt(edtvehical.getText().toString()));
-            contract.setContractstatus(0);
-            contract.setContractDeposits(Double.parseDouble(edtdeposits.getText().toString()));
-            if (contractDAO.addContract(contract) > 0) {
-                ContractActivity.contractList.add(contract);
-                ContractActivity.adapter.notifyDataSetChanged();
-                ContractActivity.checkcontract();
-                addbillservice(contract.getContractID());
+            if (customer == null) {
+                dialogNotificationAddCustomer();
             } else {
-                Toast.makeText(this, "Chưa thêm được!", Toast.LENGTH_SHORT).show();
+                Contract contract = new Contract();
+                contract.setContractDateBegin(edtdatebegin.getText().toString());
+                contract.setContractDateEnd(edtdateend.getText().toString());
+                contract.setContractMonthPeriodic(monthperiodic);
+                contract.setContractDateTerm(dateterm);
+                contract.setContracNumberElectricBegin(Integer.parseInt(edtnumberelectric.getText().toString()));
+                contract.setContracNumberWaterBegin(Integer.parseInt(edtnumberwater.getText().toString()));
+                contract.setRoom(room);
+                contract.setCustomer(customer);
+                contract.setContractPeopleNumber(Integer.parseInt(edtpeople.getText().toString()));
+                contract.setContractVehicleNumber(Integer.parseInt(edtvehical.getText().toString()));
+                contract.setContractstatus(0);
+                contract.setContractDeposits(Double.parseDouble(edtdeposits.getText().toString()));
+                if (contractDAO.addContract(contract) > 0) {
+                    addbillservice(contractDAO.getContractByStatus(0));
+                } else {
+                    Toast.makeText(this, "Chưa thêm được!", Toast.LENGTH_SHORT).show();
+                }
             }
 
 
@@ -351,7 +354,7 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
     private void addbillservice(int contractID) {
         try {
             for (Service service : billServiceList) {
-                Service servicebill=new Service();
+                Service servicebill = new Service();
                 servicebill.setContracID(contractID);
                 servicebill.setServiceName(service.getServiceName());
                 servicebill.setServicePrice(service.getServicePrice());
@@ -372,7 +375,22 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 finish();
-                Animatoo.animateDiagonal(AddContractActivity.this);
+                Animatoo.animateSlideRight(AddContractActivity.this);
+            }
+        });
+        AlertDialog mDialog = mBuilder.create();
+        mDialog.show();
+
+
+    } private void dialogNotificationAddCustomer() {
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+        mBuilder.setTitle("Lưu ý");
+        mBuilder.setMessage("Bạn phải tạo khách thuê trước khi tạo hợp đồng!");
+        mBuilder.setPositiveButton("Tôi biết rồi", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+                Animatoo.animateCard(AddContractActivity.this);
             }
         });
         AlertDialog mDialog = mBuilder.create();

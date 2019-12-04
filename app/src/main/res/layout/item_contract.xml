@@ -40,7 +40,7 @@
                     android:textStyle="bold"
                     android:textSize="20dp" />
                 <ImageButton
-                    android:id="@+id/btndelete"
+                    android:id="@+id/btnmenu"
                     android:layout_width="33dp"
                     android:layout_height="33dp"
                     android:layout_alignParentRight="true"

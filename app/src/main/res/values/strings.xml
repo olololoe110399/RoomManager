@@ -34,8 +34,8 @@ AIzaSyAdYl5sPMCD1GC_A4yZsogPLoQo2lv9jSQ  </string>
     <string name="error_valid_email_password">Email hoặc mật khẩu sai!</string>
     <string name="error_valid_email">Email sai!</string>
     <string name="error_valid_phone">Điện thoại sai!</string>
-    <string name="successfully">Thành công</string>
-    <string name="error">Thành công</string>
+    <string name="successfully">Thêm thành công</string>
+    <string name="error">Thêm thất bại</string>
     <string name="error_internet">Vui lòng kiểm tra kết nối internet!</string>
     // Contract detail
     <string name="datebegin"><u>Ngày khách vào:</u></string>

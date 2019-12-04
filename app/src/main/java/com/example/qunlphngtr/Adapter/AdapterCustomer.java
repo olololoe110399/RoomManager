@@ -24,6 +24,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.qunlphngtr.Database.CustomerDAO;
+import com.example.qunlphngtr.Fragment.FragmentCustomer;
 import com.example.qunlphngtr.Model.Customer;
 import com.example.qunlphngtr.R;
 
@@ -65,8 +66,8 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
             @Override
             public void onClick(View view) {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("");
-                builder.setMessage("Bạn có muốn xóa phòng này?");
+                builder.setTitle("Lưu ý");
+                builder.setMessage("Bạn có muốn xóa khách thuê \""+customerList.get(position).getCustomerName()+"\" này?");
                 builder.setCancelable(false);
                 builder.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
                     @Override
@@ -74,12 +75,13 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
                         dialogInterface.cancel();
                     }
                 });
-                builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton("Xóa", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         customerDAO.deleteCustomer(customerList.get(position).getCustomerID());
                         customerList.remove(position);
                         notifyDataSetChanged();
+                        FragmentCustomer.checkCustomernull();
                     }
                 });
                 AlertDialog alertDialog = builder.create();

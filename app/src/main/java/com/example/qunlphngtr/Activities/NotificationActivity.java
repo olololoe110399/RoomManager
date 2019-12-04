@@ -32,6 +32,7 @@ public class NotificationActivity extends AppCompatActivity {
         initToolbar();
         initObject();
         updatestatus();
+        MainActivity.CheckcountNotification();
 
     }
 

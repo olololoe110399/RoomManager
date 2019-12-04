@@ -15,23 +15,34 @@
         card_view:cardMaxElevation="5dp">
 
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            >
 
             <ImageView
-                android:scaleType="fitCenter"
+                android:id="@+id/imgRoom"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
                 android:background="@drawable/icon_image"
                 android:padding="5dp"
-               />
+                android:scaleType="fitCenter" />
+            <TextView
+                android:id="@+id/tvStatusRoom"
+                android:layout_margin="5dp"
+                android:textColor="@color/ColorWhite"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp" />
 
 
             <RelativeLayout
+                android:layout_below="@+id/imgRoom"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -59,12 +70,12 @@
                     android:weightSum="2">
 
                     <TextView
-                        android:drawableLeft="@drawable/ic_money"
                         android:id="@+id/tvpriceroom"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/cell_shape"
+                        android:drawableLeft="@drawable/ic_money"
                         android:gravity="center"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
@@ -72,18 +83,19 @@
                         android:textSize="17dp"></TextView>
 
                     <TextView
-                        android:drawableLeft="@drawable/ic_person2"
                         android:id="@+id/tvpeolpe"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/cell_shape"
+                        android:drawableLeft="@drawable/ic_person2"
                         android:gravity="center"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:text="x 0"
                         android:textSize="17dp"></TextView>
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/line2"
                     android:layout_width="match_parent"
@@ -92,35 +104,36 @@
                     android:orientation="horizontal"
                     android:weightSum="2">
 
-                <TextView
-                    android:drawableLeft="@drawable/ic_acreage"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/tvacreage"
-                    android:background="@drawable/cell_shape"
-                    android:gravity="center"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:text="12 m\u00B2"
-                    android:textSize="17dp"></TextView>
+                    <TextView
+                        android:id="@+id/tvacreage"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/cell_shape"
+                        android:drawableLeft="@drawable/ic_acreage"
+                        android:gravity="center"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="12 m\u00B2"
+                        android:textSize="17dp"></TextView>
 
-                <TextView
-                    android:drawableLeft="@drawable/ic_car2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/tvvehical"
-                    android:background="@drawable/cell_shape"
-                    android:gravity="center"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:text="x 0"
-                    android:textSize="17dp"></TextView></LinearLayout>
+                    <TextView
+                        android:id="@+id/tvvehical"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/cell_shape"
+                        android:drawableLeft="@drawable/ic_car2"
+                        android:gravity="center"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="x 0"
+                        android:textSize="17dp"></TextView>
+                </LinearLayout>
             </RelativeLayout>
 
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
 

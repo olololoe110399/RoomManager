@@ -97,7 +97,7 @@ public class AdapterBill extends RecyclerView.Adapter<AdapterBill.ViewHolder> {
                 notifyItemRemoved(position);
                 notifyItemChanged(position);
                 notifyDataSetChanged();
-                BillActivity.checkbill();
+                BillActivity.checkBillNull();
 
             }
         });

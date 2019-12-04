@@ -170,11 +170,8 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
                 .setPositiveButton("Thanh toán", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         billDAO.addBill(bill);
-                        BillActivity.billList.add(bill);
-                        BillActivity.adapter.notifyDataSetChanged();
-                        BillActivity.checkbill();
                         finish();
-                        Animatoo.animateDiagonal(AddBillActivity.this);
+                        Animatoo.animateSlideRight(AddBillActivity.this);
                     }
                 })
                 .setNegativeButton("Không", new DialogInterface.OnClickListener() {
@@ -214,7 +211,7 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
             edtbillcustomername.setText(name);
             billServiceList = billServiceDAO.getsServiceBillByID(contract.getContractID());
             for (int i = 0; i < billServiceList.size(); i++) {
-                totalBillService = billServiceList.get(i).getServicePrice();
+                totalBillService =totalBillService+ billServiceList.get(i).getServicePrice();
             }
             tvbillservice.setText(StringServiceItem(billServiceList));
 

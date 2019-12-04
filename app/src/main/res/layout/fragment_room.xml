@@ -32,6 +32,7 @@
                 android:src="@drawable/icon_room"></ImageView>
 
             <TextView
+                android:id="@+id/tvsizeRoom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/tv1"
@@ -71,6 +72,7 @@
                 android:src="@drawable/icon_room_open"></ImageView>
 
             <TextView
+                android:id="@+id/tvNumberRoomNull"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/tv2"
@@ -109,6 +111,7 @@
                 android:src="@drawable/icon_person"></ImageView>
 
             <TextView
+                android:id="@+id/tvpeolpeNumberRoom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/tv3"
@@ -131,7 +134,15 @@
 
         </RelativeLayout>
     </LinearLayout>
-
+    <TextView
+        android:gravity="center"
+        android:id="@+id/tvroomNull"
+       android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Không có phòng nào. Hãy tạo phòng để quản lý"
+        android:textSize="18dp"
+        android:layout_margin="20dp"/>
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/srlroom"
         android:layout_width="match_parent"
