@@ -28,9 +28,11 @@
                 android:src="@color/Color1" />
 
             <ImageView
+                android:id="@+id/back_ic"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:background="@drawable/ic_back"></ImageView>
+                android:background="@drawable/ic_back">
+            </ImageView>
         </RelativeLayout>
 
         <TextView
@@ -49,17 +51,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/title"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:background="@drawable/bgradius"
             android:elevation="5dp"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="10dp">
 
             <RelativeLayout
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="7dp">
+                android:layout_margin="5dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/avatar"
@@ -76,11 +78,9 @@
                 android:id="@+id/tvid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center"
-                android:text="C01325"
+                android:text="Khách hàng"
                 android:textColor="@color/Color1"
                 android:textSize="20dp"
                 android:textStyle="bold" />
@@ -90,7 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="5dp"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
@@ -212,9 +212,9 @@
                 android:textColor="@color/colorBlack" />
 
             <RelativeLayout
+                android:id="@+id/layoutCMND"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:gravity="center">
 
                 <ImageView
@@ -251,8 +251,15 @@
                     android:layout_toRightOf="@+id/img_cmnd_before"
                     android:background="@color/Color3"
                     android:src="@drawable/ic_image_null" />
-
-
+                <Button
+                    android:id="@+id/btnSave"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/buttonbg"
+                    android:text="Cập nhật"
+                    android:layout_below="@+id/tv1"
+                    android:textColor="@color/ColorWhite"/>
             </RelativeLayout>
 
 

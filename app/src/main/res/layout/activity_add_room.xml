@@ -15,7 +15,8 @@
         android:background="@drawable/room_r1"
         android:layout_width="180dp"
         android:layout_height="180dp"
-        android:layout_below="@+id/app_bar" />
+        android:layout_below="@+id/app_bar"
+        android:layout_marginTop="10dp"/>
 
     <LinearLayout
         android:id="@+id/tvRoomID"
@@ -24,7 +25,8 @@
         android:layout_below="@+id/app_bar"
         android:layout_toRightOf="@id/imgRoom"
         android:background="#ECECEA"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:layout_marginTop="10dp">
 
         <TextView
             android:layout_width="match_parent"

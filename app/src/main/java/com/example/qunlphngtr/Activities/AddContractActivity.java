@@ -45,7 +45,7 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
     private SimpleDateFormat simpleDateFormat;
     private List<Service> billServiceList;
     private List<Service> serviceList;
-    private TextView tvbillservice;
+    private TextView tvbillservice, tvRoomName;
     private EditText edtdatebegin, edtdateend, edtmonthperiodic, edtdateterm, edtnumberelectric, edtnumberwater, edtpeople, edtvehical, edtdeposits;
     private boolean[] checkedItems;
     private ArrayList<String> mServiceItems;
@@ -76,6 +76,7 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void setupText() {
+        tvRoomName.setText(room.getRoomName());
         edtmonthperiodic.setText("1 tháng");
         monthperiodic = 1;
         edtdateterm.setText("1");
@@ -128,6 +129,7 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
         tvbillservice = findViewById(R.id.tvbillservice);
         edtdatebegin = findViewById(R.id.edtdatebegin);
         edtdateend = findViewById(R.id.edtdateend);
+        tvRoomName = findViewById(R.id.tvroomname);
     }
 
     private void setupOnclick() {

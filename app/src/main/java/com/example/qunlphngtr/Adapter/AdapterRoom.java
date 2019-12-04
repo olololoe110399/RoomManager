@@ -52,7 +52,8 @@ public class AdapterRoom extends RecyclerView.Adapter<AdapterRoom.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.name.setText(roomList.get(position).getRoomName());
         holder.acreage.setText(roomList.get(position).getRoomAcreage()+" m\u00B2");
-        holder.price.setText(roomList.get(position).getRoomPrice()/1000000+" tr");
+        double price=roomList.get(position).getRoomPrice();
+        holder.price.setText(price/1000000+" tr");
         holder.tvpeople.setText(contractDAO.getpeopleNumberRoom(roomList.get(position).getRoomID())+"");
         holder.tvvehical.setText(contractDAO.getvehicleNumberRoom(roomList.get(position).getRoomID())+"");
         if(contractDAO.getStatusRoom(roomList.get(position).getRoomID())>0){
@@ -69,6 +70,7 @@ public class AdapterRoom extends RecyclerView.Adapter<AdapterRoom.ViewHolder> {
                 Intent i=new Intent(context, RoomActivity.class);
                 i.putExtra("RoomName",roomList.get(position).getRoomName());
                 RoomActivity.room=roomList.get(position);
+                RoomActivity.pos=position;
                 context.startActivity(i);
                 Animatoo.animateSlideLeft(context);
             }
