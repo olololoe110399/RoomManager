@@ -211,7 +211,7 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
             edtbillcustomername.setText(name);
             billServiceList = billServiceDAO.getsServiceBillByID(contract.getContractID());
             for (int i = 0; i < billServiceList.size(); i++) {
-                totalBillService = billServiceList.get(i).getServicePrice();
+                totalBillService =totalBillService+ billServiceList.get(i).getServicePrice();
             }
             tvbillservice.setText(StringServiceItem(billServiceList));
 

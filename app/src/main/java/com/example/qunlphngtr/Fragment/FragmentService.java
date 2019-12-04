@@ -144,7 +144,7 @@ public class FragmentService extends Fragment {
                     service.setServicePrice(Integer.parseInt(edtServicePrice.getText().toString()));
                     if (serviceDAO.addService(service) > 0) {
                         Toast.makeText(getActivity(), R.string.successfully, Toast.LENGTH_SHORT).show();
-                        refreshRecyclerView();
+                        LoadRecyclerview();
                         checkServicelistNull();
                         dialog.dismiss();
                     } else {
