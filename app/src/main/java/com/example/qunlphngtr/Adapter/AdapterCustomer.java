@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -54,10 +55,10 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
         if (!(customerList.get(position).getCustomerImage() == null)) {
             startNewAsyncTask(customerList.get(position).getCustomerImage(), holder);
         }
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
+        holder.detailsCustomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // dialogdetail(position);
+               detailsCustomer(position);
             }
         });
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +88,53 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
         });
 
     }
+    private void detailsCustomer(final int position){
+        final Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialog_customer_detail);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation_2;
+        dialog.show();
+        //Todo back
+        ImageView backIcon = dialog.findViewById(R.id.back_ic);
+        backIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        //Todo show details
+        EditText edtCMND, edtPhone, edtName;
+        edtCMND = dialog.findViewById(R.id.edtcmnd);
+        edtName = dialog.findViewById(R.id.edtname);
+        edtPhone = dialog.findViewById(R.id.edtphone);
+        ImageView avatar = dialog.findViewById(R.id.avatar);
+        ImageView imgCMNDB = dialog.findViewById(R.id.img_cmnd_before);
+        ImageView imgCMNDA = dialog.findViewById(R.id.img_cmnd_after);
 
+        edtCMND.setText(customerList.get(position).getCustomerCMND()+"");
+        edtName.setText(customerList.get(position).getCustomerName());
+        edtPhone.setText(customerList.get(position).getCustomerPhone());
+        byte[] hinh = customerList.get(position).getCustomerImage();
+        byte[] hinh1 = customerList.get(position).getCustomerCMNDImgBefore();
+        byte[] hinh2 = customerList.get(position).getCustomerCMNdImgAfter();
+        Bitmap bitmap = BitmapFactory.decodeByteArray(hinh, 0, hinh.length);
+        Bitmap bitmap1 = BitmapFactory.decodeByteArray(hinh1, 0, hinh1.length);
+        Bitmap bitmap2 = BitmapFactory.decodeByteArray(hinh2, 0, hinh2.length);
+        avatar.setImageBitmap(bitmap);
+        imgCMNDB.setImageBitmap(bitmap1);
+        imgCMNDA.setImageBitmap(bitmap2);
+        //Todo Update Customer
+        Button btnUpdate = dialog.findViewById(R.id.btnSave);
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
+
+
+
+    }
     private void dialogdetail(final int position) {
         final Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -103,7 +150,7 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
         cmnd = dialog.findViewById(R.id.edtcmnd);
         phone = dialog.findViewById(R.id.edtphone);
         name = dialog.findViewById(R.id.edtname);
-        cmnd.setText(customerList.get(position).getCustomerCMND() + "");
+        cmnd.setText(customerList.get(position).getCustomerCMND()+"");
         id.setText(customerList.get(position).getCustomerID());
         phone.setText(customerList.get(position).getCustomerPhone());
         name.setText(customerList.get(position).getCustomerName());
@@ -117,7 +164,6 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
         btncancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 dialog.dismiss();
             }
         });
@@ -134,6 +180,7 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
         private TextView Name, Phone;
         private ImageView Img, imgDelete;
         private CardView cardView;
+        private RelativeLayout detailsCustomer;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -141,7 +188,9 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
             Phone = itemView.findViewById(R.id.tvcustomerphone);
             Img = itemView.findViewById(R.id.imgcustomer);
             cardView = itemView.findViewById(R.id.cardView);
+
             imgDelete = itemView.findViewById(R.id.imgDelete);
+            detailsCustomer = itemView.findViewById(R.id.detailsCustomer);
         }
     }
 

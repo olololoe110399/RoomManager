@@ -3,9 +3,13 @@ package com.example.qunlphngtr.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -78,7 +82,8 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.rlupdate:
-                Toast.makeText(this, "3", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, UpdateRoomActivity.class);
+                startActivity(intent);
                 break;
         }
     }
