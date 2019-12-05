@@ -9,13 +9,20 @@
     <include
         android:id="@+id/app_bar"
         layout="@layout/tool_bar"></include>
+    <Spinner
+        android:padding="5dp"
+        android:layout_below="@+id/app_bar"
+        android:id="@+id/spnBillFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_dropdown_light_frame"/>
+
 
     <RelativeLayout
         android:id="@+id/rlbillnull"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/app_bar">
-
+        android:layout_below="@+id/spnBillFilter">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,7 +45,7 @@
         android:id="@+id/srlbill"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/app_bar"
+        android:layout_below="@+id/spnBillFilter"
         >
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvbill"

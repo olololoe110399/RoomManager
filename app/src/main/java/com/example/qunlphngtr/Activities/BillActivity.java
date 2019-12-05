@@ -15,7 +15,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.qunlphngtr.Adapter.AdapterBill;
@@ -48,6 +52,9 @@ public class BillActivity extends AppCompatActivity {
     private FloatingActionButton fbbill;
     private ContractDAO contractDAO;
     private BillDAO billDAO;
+    public static Spinner spnBillFilter;
+    String[] categories = {"Tất cả", "Đã thanh toán", "Chưa thanh toán"};
+    public static List<Bill> billList2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +73,23 @@ public class BillActivity extends AppCompatActivity {
 
 
     private void initView() {
+        spnBillFilter = findViewById(R.id.spnBillFilter);
+        spnBillFilter.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, categories));
+        spnBillFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position >= 0 && position < categories.length) {
+                    getSelectedCategoryData(position);
+                } else {
+                    Toast.makeText(BillActivity.this, "Danh mục đã chọn không tồn tại!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         billDAO = new BillDAO(this);
         contractDAO = new ContractDAO(this);
         contractList = contractDAO.getAllContract(room.getRoomID());
@@ -74,6 +98,7 @@ public class BillActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rvbill);
         swipeRefreshLayout = findViewById(R.id.srlbill);
         billList = new ArrayList<>();
+        billList2 = new ArrayList<>();
         billList = billDAO.getBillByID(room.getRoomID());
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -119,11 +144,24 @@ public class BillActivity extends AppCompatActivity {
 
     }
 
+    public static void checkBill2Null() {
+        if (billList2.size() > 0) {
+            relativeLayout.setVisibility(View.GONE);
+            swipeRefreshLayout.setVisibility(View.VISIBLE);
+        } else {
+
+            relativeLayout.setVisibility(View.VISIBLE);
+            swipeRefreshLayout.setVisibility(View.GONE);
+        }
+
+
+    }
+
     private int checckContractlistStatus() {
-        int status=-1;
+        int status = -1;
         for (int i = 0; i < contractList.size(); i++) {
             if (contractList.get(i).getContractstatus() == 0) {
-                status=1;
+                status = 1;
                 break;
             }
         }
@@ -132,12 +170,12 @@ public class BillActivity extends AppCompatActivity {
 
     private void checkContract() {
         if (contractList.size() > 0) {
-            if(checckContractlistStatus()>0){
+            if (checckContractlistStatus() > 0) {
                 Intent intent = new Intent(this, AddBillActivity.class);
                 startActivity(intent);
                 Animatoo.animateSlideLeft(this);
 
-            }  else {
+            } else {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
                 mBuilder.setTitle("Thông báo");
                 mBuilder.setMessage("Chưa có hợp đồng nào đang ở. Vui lòng một tạo hợp đồng trước khi tạo hóa đơn!");
@@ -183,12 +221,39 @@ public class BillActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         loadRecycerview();
-        checkBillNull();
     }
 
     private void loadRecycerview() {
         billList.clear();
         billList.addAll(billDAO.getBillByID(room.getRoomID()));
         adapter.notifyDataSetChanged();
+    }
+
+    private void getSelectedCategoryData(int position) {
+        billList2.clear();
+        if (position == 0) {
+            billList.clear();
+            billList.addAll(billDAO.getBillByID(room.getRoomID()));
+            adapter = new AdapterBill(billList, this);
+            checkBillNull();
+        } else if (position == 1) {
+            for (Bill bill : billList) {
+                if (bill.getBillDebtsToPay() == 0) {
+                    billList2.add(bill);
+                }
+            }
+            adapter = new AdapterBill(billList2, this);
+            checkBill2Null();
+        } else {
+            for (Bill bill : billList) {
+                if (bill.getBIllTotal() == 0) {
+                    billList2.add(bill);
+                }
+            }
+            adapter = new AdapterBill(billList2, this);
+            checkBill2Null();
+        }
+        recyclerView.setAdapter(adapter);
+
     }
 }

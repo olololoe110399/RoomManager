@@ -154,6 +154,7 @@ public class AdapterBill extends RecyclerView.Adapter<AdapterBill.ViewHolder> {
                         notifyItemRangeChanged(pos, billList.size());
                         notifyItemInserted(pos);
                         notifyItemChanged(pos);
+                        BillActivity.spnBillFilter.setSelection(1);
                     }
                 })
                 .setNegativeButton("Nợ lại", new DialogInterface.OnClickListener() {

@@ -92,13 +92,13 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
 
             Bill bill = billLists.get(billLists.size() - 1);
             settextNewbill(bill.getBillDateEnd(), contract.getContractDateTerm(), contract.getContractMonthPeriodic(), contract.getCustomer().getCustomerName());
-            edtbillroomprice.setText(formatter.format(contract.getRoom().getRoomPrice()) + " VND");
+            edtbillroomprice.setText(formatter.format(contract.getRoom().getRoomPrice()*contract.getContractMonthPeriodic()) + " VND");
 
             for (int i = 0; i < billLists.size(); i++) {
                 sumnumberwater = sumnumberwater + billLists.get(i).getBillWaterNumber();
                 sumnumberelectric = sumnumberelectric + billLists.get(i).getBillElectricNumber();
             }
-            addBill(contract.getRoom().getRoomPrice(), contract.getContracNumberWaterBegin(), sumnumberwater, contract.getContracNumberElectricBegin(), sumnumberelectric, contract.getContractID());
+            addBill(contract.getRoom().getRoomPrice()*contract.getContractMonthPeriodic(), contract.getContracNumberWaterBegin(), sumnumberwater, contract.getContracNumberElectricBegin(), sumnumberelectric, contract.getContractID());
 
         } else {
             settextNewbill(contract.getContractDateBegin(), contract.getContractDateTerm(), contract.getContractMonthPeriodic(), contract.getCustomer().getCustomerName());
@@ -171,6 +171,8 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
                     public void onClick(DialogInterface dialog, int which) {
                         bill.setBillDebtsToPay(0);
                         billDAO.addBill(bill);
+                        BillActivity.spnBillFilter.setSelection(1);
+                        BillActivity.checkBill2Null();
                         finish();
                         Animatoo.animateSlideRight(AddBillActivity.this);
                     }
@@ -187,6 +189,8 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
                         bill.setBillDebtsToPay(bill.getBIllTotal());
                         bill.setBIllTotal(0);
                         billDAO.addBill(bill);
+                        BillActivity.spnBillFilter.setSelection(2);
+                        BillActivity.checkBill2Null();
                         finish();
                         Animatoo.animateSlideRight(AddBillActivity.this);
 
@@ -208,8 +212,8 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
             edtdateend.setText(simpleDateFormat.format(addMonth(calendar.getTime(), monthperiodic)));
             edtroomprice.setText(formatter.format(room.getRoomPrice()) + " VND");
             if (date == dateterm) {
-                billroomprice=contract.getRoom().getRoomPrice();
-                edtbillroomprice.setText(formatter.format(room.getRoomPrice()) + " VND");
+                billroomprice=contract.getRoom().getRoomPrice()*monthperiodic;
+                edtbillroomprice.setText(formatter.format(billroomprice) + " VND");
             } else {
 
                 double roompriceofdate = room.getRoomPrice() / getlenthmonth(calendar.getTime());

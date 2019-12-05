@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -84,7 +85,7 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
         if (contractList.get(position).getContractstatus() == 0) {
             holder.Id.setText("Còn hiệu lực");
 
-            holder.Id.setTextColor(ContextCompat.getColor(context, R.color.Color3));
+            holder.Id.setTextColor(ContextCompat.getColor(context, R.color.Color2));
         } else {
             holder.Id.setText("Đã thanh lý");
             holder.Id.setTextColor(ContextCompat.getColor(context, R.color.colorBlack2));
@@ -242,7 +243,10 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
                 @Override
                 public void onClick(View v) {
                     mBottomDialogNotificationAction.dismiss();
-                    dialogiquidation(pos);
+                    if(contractList.get(pos).getContractstatus()==0){
+                    dialogiquidation(pos);}else {
+                        Toast.makeText(context, "Hợp đồng đã thanh lý", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
             lndismiss.setOnClickListener(new View.OnClickListener() {
