@@ -169,6 +169,7 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
                 .setMessage("Tổng số tiền của hóa đơn là: " + formatter.format(bill.getBIllTotal()) + " VND")
                 .setPositiveButton("Thanh toán", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        bill.setBillDebtsToPay(0);
                         billDAO.addBill(bill);
                         finish();
                         Animatoo.animateSlideRight(AddBillActivity.this);
@@ -178,6 +179,17 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                    }
+                })
+                .setNeutralButton("Nợ", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        bill.setBillDebtsToPay(bill.getBIllTotal());
+                        bill.setBIllTotal(0);
+                        billDAO.addBill(bill);
+                        finish();
+                        Animatoo.animateSlideRight(AddBillActivity.this);
+
                     }
                 })
                 .show();

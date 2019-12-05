@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activities.UpdateCustomerActivity">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/tool_bar"></include>
+
+    <ScrollView
+        android:layout_below="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:padding="5dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:id="@+id/ln1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_1"
+                android:orientation="vertical"
+                android:padding="8dp">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imgCustomer"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/avatar"
+                    app:civ_border_color="@color/Color1"
+                    app:civ_border_width="2dp" />
+
+                <TextView
+                    android:id="@+id/tvImg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:gravity="center"
+                    android:text="Ảnh đại diện"
+                    android:textStyle="bold"
+                    android:textColor="@color/Color4" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Số điện thoại"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(*)"
+                        android:textColor="#FF0000"
+                        android:textSize="18dp" />
+                </LinearLayout>
+
+                <EditText
+                    android:inputType="number"
+                    android:textSize="18dp"
+                    android:paddingLeft="10dp"
+                    android:background="@drawable/edt_bg"
+                    android:id="@+id/edtPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Họ và tên"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(*)"
+                        android:textColor="#FF0000"
+                        android:textSize="18dp" />
+                </LinearLayout>
+
+                <EditText
+                    android:inputType="text"
+                    android:textSize="18dp"
+                    android:paddingLeft="10dp"
+                    android:background="@drawable/edt_bg"
+                    android:id="@+id/edtName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CMND"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(*)"
+                        android:textColor="#FF0000"
+                        android:textSize="18dp" />
+                </LinearLayout>
+
+                <EditText
+                    android:maxLength="9"
+                    android:inputType="number"
+                    android:textSize="18dp"
+                    android:paddingLeft="10dp"
+                    android:background="@drawable/edt_bg"
+                    android:id="@+id/edtCMND"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ảnh CMND mặt trước"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(*)"
+                        android:textColor="#FF0000"
+                        android:textSize="18dp" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlCMNDBefore"
+                    android:layout_width="51.36mm"
+                    android:layout_height="32.388mm"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_img">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="thêm ảnh"></TextView>
+
+                    <ImageView
+                        android:id="@+id/imgCMNDBefore"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:layout_margin="1dp"
+                        android:elevation="5dp" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ảnh CMND mặt sau"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(*)"
+                        android:textColor="#FF0000"
+                        android:textSize="18dp" />
+                </LinearLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/rlCMNDAfter"
+                    android:layout_width="51.36mm"
+                    android:layout_height="32.388mm"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_img">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="thêm ảnh"></TextView>
+
+                    <ImageView
+                        android:id="@+id/imgCMNDAfter"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:layout_margin="1dp"
+                        android:elevation="5dp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+
+            <Button
+                android:layout_marginTop="10dp"
+                android:id="@+id/btnSave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/buttonbg"
+                android:text="Cập nhật"
+                android:textColor="@color/ColorWhite" /></LinearLayout>
+    </ScrollView>
+</LinearLayout>

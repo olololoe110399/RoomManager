@@ -67,7 +67,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "\t\"contractID\"\tINTEGER\n" +
                 ");");
         db.execSQL("CREATE TABLE \"bill\" (\n" +
-                "\t\"billID\"\tINTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t\"billID\"\tINTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n" +
                 "\t\"roomID\"\tINTEGER,\n" +
                 "\t\"billCustomerName\"\tTEXT,\n" +
                 "\t\"billDateBegin\"\tTEXT,\n" +
@@ -76,7 +76,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "\t\"billElectricNumber\"\tINTEGER,\n" +
                 "\t\"billWaterNumber\"\tINTEGER,\n" +
                 "\t\"billPaymentDate\"\tDATE,\n" +
-                "\t\"billTotal\"\tDOUBLE\n" +
+                "\t\"billTotal\"\tDOUBLE,\n" +
+                "\t\"billDebtsToPay\"\tDOUBLE\n" +
                 ");");
 
     }

@@ -4,10 +4,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.example.qunlphngtr.Activities.UpdateCustomerActivity;
 import com.example.qunlphngtr.Database.CustomerDAO;
 import com.example.qunlphngtr.Fragment.FragmentCustomer;
 import com.example.qunlphngtr.Model.Customer;
@@ -56,10 +60,20 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
         if (!(customerList.get(position).getCustomerImage() == null)) {
             startNewAsyncTask(customerList.get(position).getCustomerImage(), holder);
         }
+        holder.imgEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UpdateCustomerActivity.pos=position;
+                Intent i=new Intent(context, UpdateCustomerActivity.class);
+                context.startActivity(i);
+                Animatoo.animateSlideLeft(context);
+            }
+        });
+
         holder.detailsCustomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               detailsCustomer(position);
+                detailsCustomer(position);
             }
         });
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +81,7 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
             public void onClick(View view) {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Lưu ý");
-                builder.setMessage("Bạn có muốn xóa khách thuê \""+customerList.get(position).getCustomerName()+"\" này?");
+                builder.setMessage("Bạn có muốn xóa khách thuê \"" + customerList.get(position).getCustomerName() + "\" này?");
                 builder.setCancelable(false);
                 builder.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
                     @Override
@@ -90,7 +104,8 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
         });
 
     }
-    private void detailsCustomer(final int position){
+
+    private void detailsCustomer(final int position) {
         final Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -114,64 +129,19 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
         ImageView imgCMNDB = dialog.findViewById(R.id.img_cmnd_before);
         ImageView imgCMNDA = dialog.findViewById(R.id.img_cmnd_after);
 
-        edtCMND.setText(customerList.get(position).getCustomerCMND()+"");
+        edtCMND.setText(customerList.get(position).getCustomerCMND() + "");
         edtName.setText(customerList.get(position).getCustomerName());
         edtPhone.setText(customerList.get(position).getCustomerPhone());
-        byte[] hinh = customerList.get(position).getCustomerImage();
-        byte[] hinh1 = customerList.get(position).getCustomerCMNDImgBefore();
-        byte[] hinh2 = customerList.get(position).getCustomerCMNdImgAfter();
-        Bitmap bitmap = BitmapFactory.decodeByteArray(hinh, 0, hinh.length);
-        Bitmap bitmap1 = BitmapFactory.decodeByteArray(hinh1, 0, hinh1.length);
-        Bitmap bitmap2 = BitmapFactory.decodeByteArray(hinh2, 0, hinh2.length);
-        avatar.setImageBitmap(bitmap);
-        imgCMNDB.setImageBitmap(bitmap1);
-        imgCMNDA.setImageBitmap(bitmap2);
-        //Todo Update Customer
-        Button btnUpdate = dialog.findViewById(R.id.btnSave);
-        btnUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
-
+        edtCMND.setEnabled(false);
+        edtName.setEnabled(false);
+        edtPhone.setEnabled(false);
+        avatar.setImageBitmap(LoadImgDetail(customerList.get(position).getCustomerImage()));
+        imgCMNDB.setImageBitmap(LoadImgDetail(customerList.get(position).getCustomerCMNDImgBefore()));
+        imgCMNDA.setImageBitmap(LoadImgDetail(customerList.get(position).getCustomerCMNdImgAfter()));
 
 
     }
-    private void dialogdetail(final int position) {
-        final Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(R.layout.dialog_customer_detail);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation_2;
-        RelativeLayout btncancel;
-        TextView id;
-        EditText cmnd, phone, name;
-        ImageView avatar;
-        avatar = dialog.findViewById(R.id.avatar);
-        id = dialog.findViewById(R.id.tvid);
-        cmnd = dialog.findViewById(R.id.edtcmnd);
-        phone = dialog.findViewById(R.id.edtphone);
-        name = dialog.findViewById(R.id.edtname);
-        cmnd.setText(customerList.get(position).getCustomerCMND()+"");
-        id.setText(customerList.get(position).getCustomerID());
-        phone.setText(customerList.get(position).getCustomerPhone());
-        name.setText(customerList.get(position).getCustomerName());
-        cmnd.setEnabled(false);
-        phone.setEnabled(false);
-        name.setEnabled(false);
-        byte[] hinh = customerList.get(position).getCustomerImage();
-        Bitmap bitmap = BitmapFactory.decodeByteArray(hinh, 0, hinh.length);
-        avatar.setImageBitmap(bitmap);
-        btncancel = dialog.findViewById(R.id.back);
-        btncancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
 
-    }
 
     @Override
     public int getItemCount() {
@@ -180,12 +150,13 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView Name, Phone;
-        private ImageView Img, imgDelete;
+        private ImageView Img, imgDelete, imgEdit;
         private CardView cardView;
         private RelativeLayout detailsCustomer;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            imgEdit = itemView.findViewById(R.id.imgEdit);
             Name = itemView.findViewById(R.id.tvcustomername);
             Phone = itemView.findViewById(R.id.tvcustomerphone);
             Img = itemView.findViewById(R.id.imgcustomer);
@@ -225,4 +196,7 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
         asyncTask.execute();
     }
 
+    private Bitmap LoadImgDetail(byte[] img) {
+        return BitmapFactory.decodeByteArray(img, 0, img.length);
+    }
 }

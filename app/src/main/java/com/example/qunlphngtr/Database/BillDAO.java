@@ -33,6 +33,7 @@ public class BillDAO {
         values.put("billWaterNumber", bill.getBillWaterNumber());
         values.put("billPaymentDate", new SimpleDateFormat("dd/MM/yyyy").format(bill.getBillPaymentDate()));
         values.put("billTotal", bill.getBIllTotal());
+        values.put("billDebtsToPay", bill.getBillDebtsToPay());
         if (db.insert(databaseHelper.TABLE_BILL, null, values) == -1) {
             return -1;
         }
@@ -61,12 +62,15 @@ public class BillDAO {
                 e.printStackTrace();
             }
             s.setBIllTotal(c.getDouble(9));
+            s.setBillDebtsToPay(c.getDouble(10));
             list.add(s);
             c.moveToNext();
         }
         c.close();
         return list;
-    } public List<Bill> getBillByContractID(int contractID) {
+    }
+
+    public List<Bill> getBillByContractID(int contractID) {
         List<Bill> list = new ArrayList<>();
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         String sSQL = "SELECT * FROM bill WHERE bill.contractID='" + contractID + "'";
@@ -88,10 +92,50 @@ public class BillDAO {
                 e.printStackTrace();
             }
             s.setBIllTotal(c.getDouble(9));
+            s.setBillDebtsToPay(c.getDouble(10));
+            list.add(s);
+            c.moveToNext();
+        }
+        c.close();
+        return list;
+    }    public List<Bill> getBillDebtsByContractID(int contractID) {
+        List<Bill> list = new ArrayList<>();
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        String sSQL = "SELECT * FROM bill WHERE bill.contractID='" + contractID + "' AND bill.billDebtsToPay > 0";
+        Bill s = null;
+        Cursor c = db.rawQuery(sSQL, null);
+        c.moveToFirst();
+        while (c.isAfterLast() == false) {
+            s = new Bill();
+            s.setBillID(c.getInt(0));
+            s.setBillCustomerName(c.getString(2));
+            s.setBillDateBegin(c.getString(3));
+            s.setBillDateEnd(c.getString(4));
+            s.setContractID(c.getInt(5));
+            s.setBillElectricNumber(c.getInt(6));
+            s.setBillWaterNumber(c.getInt(7));
+            try {
+                s.setBillPaymentDate(new SimpleDateFormat("dd/MM/yyyy").parse(c.getString(8)));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            s.setBIllTotal(c.getDouble(9));
+            s.setBillDebtsToPay(c.getDouble(10));
             list.add(s);
             c.moveToNext();
         }
         c.close();
         return list;
     }
+
+    public void updateBill(Bill bill) {
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("billTotal", bill.getBIllTotal());
+        values.put("billDebtsToPay", bill.getBillDebtsToPay());
+        values.put("billPaymentDate", new SimpleDateFormat("dd/MM/yyyy").format(bill.getBillPaymentDate()));
+        db.update(databaseHelper.TABLE_BILL, values, "billID" + "=?", new String[]{String.valueOf(bill.getBillID())});
+        db.close();
+    }
+
 }

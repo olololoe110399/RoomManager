@@ -48,7 +48,7 @@ AIzaSyAdYl5sPMCD1GC_A4yZsogPLoQo2lv9jSQ  </string>
     //Bill
     <string name="billcustomername"><u>Khách thuê:</u></string>
     <string name="bill"><u>Hóa đơn:</u></string>
-    <string name="billtotal"><u>Tổng tiền:</u></string>
+    <string name="billtotal"><u>Đã thanh toán:</u></string>
     //MonthPeriodic
     <string-array name="MonthPeriodic">
         <item>1 tháng</item>

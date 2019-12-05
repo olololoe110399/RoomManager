@@ -31,15 +31,20 @@ import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 
 import com.example.qunlphngtr.Activities.ContractActivity;
 import com.example.qunlphngtr.Activities.ContractDetailActivity;
+import com.example.qunlphngtr.Database.BillDAO;
 import com.example.qunlphngtr.Database.BillServiceDAO;
 import com.example.qunlphngtr.Database.ContractDAO;
+import com.example.qunlphngtr.Model.Bill;
 import com.example.qunlphngtr.Model.Contract;
 import com.example.qunlphngtr.Model.Customer;
 import com.example.qunlphngtr.Model.Service;
 import com.example.qunlphngtr.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHolder> implements View.OnClickListener {
@@ -49,6 +54,9 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
     ContractDAO contractDAO;
     BillServiceDAO billServiceDAO;
     List<Service> serviceList;
+    List<Bill> billList;
+    BillDAO billDAO;
+    NumberFormat formatter;
 
     public AdapterContract(List<Contract> contractList, Context context) {
         this.contractList = contractList;
@@ -56,6 +64,9 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
         contractDAO = new ContractDAO(context);
         billServiceDAO = new BillServiceDAO(context);
         serviceList = new ArrayList<>();
+        billList = new ArrayList<>();
+        billDAO = new BillDAO(context);
+        formatter = new DecimalFormat("#,###");
 
     }
 
@@ -126,9 +137,20 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
     }
 
     private void dialogdelete(final int position) {
+        String tvTotal = "";
+        billList = billDAO.getBillDebtsByContractID(contractList.get(position).getContractID());
+        double A = TotalDebsToPay() - contractList.get(position).getContractDeposits();
+        if (A >= 0) {
+            tvTotal = "Tổng nợ chưa thanh toán:" + formatter.format(TotalDebsToPay()) + " VND" +
+                    "\nTiền cọc của khách là: " + formatter.format(contractList.get(position).getContractDeposits()) + " VND" +
+                    "\nTổng tiền khách phải thanh toán là:" + formatter.format(A) + " VND";
+        } else {
+            tvTotal = "Tiền cọc phải trả lại cho khách là: " + formatter.format(contractList.get(position).getContractDeposits()) + " VND";
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Lưu ý");
-        builder.setMessage("Bạn chắc chắn muốn xóa hợp đồng này?");
+        builder.setMessage(tvTotal +
+                "\nBạn chắc chắn muốn xóa hợp đồng này?");
         builder.setCancelable(false);
         builder.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
             @Override
@@ -136,9 +158,14 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
                 dialogInterface.dismiss();
             }
         });
-        builder.setNegativeButton("Xóa", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Thanh toán và xóa", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                if (!(billList == null)) UpdateBillDebsToPay();
+                serviceList = billServiceDAO.getsServiceBillByID(contractList.get(position).getContractID());
+                for (int j = 0; j < serviceList.size(); j++) {
+                    billServiceDAO.deleteBillServiceByID(serviceList.get(j).getServiceID());
+                }
                 contractDAO.deleteContractByID(contractList.get(position).getContractID());
                 contractList.remove(position);
                 notifyItemRangeChanged(position, contractList.size());
@@ -155,9 +182,19 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
     }
 
     private void dialogiquidation(final int position) {
+        String tvTotal = "";
+        billList = billDAO.getBillDebtsByContractID(contractList.get(position).getContractID());
+        double A = TotalDebsToPay() - contractList.get(position).getContractDeposits();
+        if (A >= 0) {
+            tvTotal = "Tổng nợ chưa thanh toán:" + formatter.format(TotalDebsToPay()) + " VND" +
+                    "\nTiền cọc của khách là: " + formatter.format(contractList.get(position).getContractDeposits()) + " VND" +
+                    "\nTổng tiền khách phải thanh toán là:" + formatter.format(A) + " VND";
+        } else {
+            tvTotal = "Tiền cọc phải trả lại cho khách là: " + formatter.format(contractList.get(position).getContractDeposits()) + " VND";
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Lưu ý");
-        builder.setMessage("Tiền cọc phải trả lại cho khách là: " + contractList.get(position).getContractDeposits() +
+        builder.setMessage(tvTotal +
                 "\nBạn chắc chắn muốn thanh lý hợp đồng này?"
         );
         builder.setCancelable(false);
@@ -167,18 +204,15 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
                 dialogInterface.dismiss();
             }
         });
-        builder.setNegativeButton("có", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Thanh toán và thanh lý", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                if (!(billList == null)) UpdateBillDebsToPay();
                 contractDAO.updateContractStatus(contractList.get(position).getContractID());
                 contractList.get(position).setContractstatus(1);
                 notifyItemRangeChanged(position, contractList.size());
                 notifyItemInserted(position);
                 notifyItemChanged(position);
-                serviceList = billServiceDAO.getsServiceBillByID(contractList.get(position).getContractID());
-                for (int j = 0; j < serviceList.size(); j++) {
-                    billServiceDAO.deleteBillServiceByID(serviceList.get(j).getServiceID());
-                }
                 ContractActivity.checkContractHideAndShowFAB();
                 ContractActivity.checkContractlistNull();
                 mBottomDialogNotificationAction.dismiss();
@@ -226,6 +260,23 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
             });
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private double TotalDebsToPay() {
+        double TotalDebsToPay = 0;
+        for (int i = 0; i < billList.size(); i++) {
+            TotalDebsToPay += billList.get(i).getBillDebtsToPay();
+        }
+        return TotalDebsToPay;
+    }
+
+    private void UpdateBillDebsToPay() {
+        for (Bill bill : billList) {
+            bill.setBIllTotal(bill.getBillDebtsToPay());
+            bill.setBillPaymentDate(Calendar.getInstance().getTime());
+            bill.setBillDebtsToPay(0);
+            billDAO.updateBill(bill);
         }
     }
 

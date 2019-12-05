@@ -24,7 +24,6 @@ public class UpdateRoomActivity extends AppCompatActivity {
     private TextView tvRoomName;
     private EditText edtRoomPrice, edtRoomAceage, edtRoomWater, edtRoomElectric;
     private Room room;
-    private List<Room> roomList;
     private Button btnUpdate;
     private RoomDAO roomDAO;
 
@@ -51,6 +50,13 @@ public class UpdateRoomActivity extends AppCompatActivity {
         Animatoo.animateSlideRight(this);
         return true;
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Animatoo.animateSlideRight(this);
+    }
+
     public void ShowRoomDetails(){
         tvRoomName = findViewById(R.id.tvRoomName);
         edtRoomPrice = findViewById(R.id.edtRoomPrice);
@@ -86,6 +92,7 @@ public class UpdateRoomActivity extends AppCompatActivity {
                     RoomActivity.room=FragmentRoom.roomList.get(RoomActivity.pos);
                     Toast.makeText(UpdateRoomActivity.this, "Thành công!", Toast.LENGTH_SHORT).show();
                     finish();
+                    Animatoo.animateSlideRight(UpdateRoomActivity.this);
                 }
             }
         });

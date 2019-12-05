@@ -13,6 +13,16 @@ public class Bill {
     private int BillWaterNumber;
     private Date BillPaymentDate;
     private double BillTotal;
+    private double BillDebtsToPay;
+
+    public double getBillDebtsToPay() {
+        return BillDebtsToPay;
+    }
+
+    public void setBillDebtsToPay(double billDebtsToPay) {
+        BillDebtsToPay = billDebtsToPay;
+    }
+
     public String getBillCustomerName() {
         return BillCustomerName;
     }

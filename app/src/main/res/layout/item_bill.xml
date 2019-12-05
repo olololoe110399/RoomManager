@@ -24,19 +24,19 @@
             android:orientation="horizontal">
 
             <TextView
-                android:textStyle="bold"
                 android:id="@+id/tv1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_play"
                 android:text="@string/billcustomername"
-                android:textSize="18dp"></TextView>
+                android:textSize="18dp"
+                android:textStyle="bold"></TextView>
 
             <TextView
-                android:paddingLeft="5dp"
                 android:id="@+id/tvbillnamecustomer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
                 android:text="Nguyễn Ngọc Duy"
                 android:textSize="18dp"></TextView>
         </LinearLayout>
@@ -47,19 +47,19 @@
             android:orientation="horizontal">
 
             <TextView
-                android:textStyle="bold"
                 android:id="@+id/tv2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_play"
                 android:text="@string/bill"
-                android:textSize="18dp"></TextView>
+                android:textSize="18dp"
+                android:textStyle="bold"></TextView>
 
             <TextView
-                android:paddingLeft="5dp"
                 android:id="@+id/tvbilldatebeginandend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
                 android:text="Từ 11/12/2012 đến 11/12/2019"
                 android:textSize="18dp"></TextView>
         </LinearLayout>
@@ -70,22 +70,62 @@
             android:orientation="horizontal">
 
             <TextView
-                android:textStyle="bold"
                 android:id="@+id/tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_play"
                 android:text="@string/billtotal"
-                android:textSize="18dp"></TextView>
+                android:textSize="18dp"
+                android:textStyle="bold"></TextView>
+
             <TextView
-                android:paddingLeft="5dp"
                 android:id="@+id/tvTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
                 android:text="1000000000 VND"
                 android:textSize="18dp"></TextView>
         </LinearLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textStyle="bold"
+                android:paddingLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Trạng thái:"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/tvPaymentStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingLeft="5dp"
+                android:text="Chưa thanh toán"
+                android:textColor="@color/Color4"
+                android:textSize="20dp"></TextView>
+
+            <TextView
+                android:id="@+id/tvstatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btnPayment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/buttonbg_1"
+            android:text="Nộp tiền"
+            android:textColor="@color/ColorWhite" />
 
     </LinearLayout>
 

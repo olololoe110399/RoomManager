@@ -104,6 +104,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.rlupdate:
                 Intent intent = new Intent(this, UpdateRoomActivity.class);
                 startActivity(intent);
+                Animatoo.animateSlideLeft(this);
                 break;
         }
     }

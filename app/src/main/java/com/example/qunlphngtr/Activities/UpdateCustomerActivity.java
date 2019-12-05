@@ -11,7 +11,6 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,10 +28,8 @@ import android.widget.Toast;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.qunlphngtr.Database.CustomerDAO;
-import com.example.qunlphngtr.Database.RoomDAO;
 import com.example.qunlphngtr.Fragment.FragmentCustomer;
 import com.example.qunlphngtr.Model.Customer;
-import com.example.qunlphngtr.Model.Room;
 import com.example.qunlphngtr.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -40,7 +37,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-public class AddCustomerActivity extends AppCompatActivity implements View.OnClickListener {
+public class UpdateCustomerActivity extends AppCompatActivity implements View.OnClickListener {
     private Toolbar toolbar;
     private Button btnsave;
     private EditText edtCustomerPhone, edtCustomerName, edtCustomerCMND;
@@ -51,35 +48,26 @@ public class AddCustomerActivity extends AppCompatActivity implements View.OnCli
     private int REQUEST_CODE_PHOTO_IMG = 12, REQUEST_CODE_PHOTO_IMG_CMND_BEFORE = 22, REQUEST_CODE_PHOTO_IMG_CMND_AFTER = 32;
     private byte[] dataimgCustomer, dataimgCMNDBefore, dataimgCMNDAfter;
     private BottomSheetDialog mBottomDialogNotificationAction;
+    private Customer customer;
+    public static int pos = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_customer);
+        setContentView(R.layout.activity_update_customer);
         initToolbar();
         initView();
         setBtnOnclick();
+        setCustomerDetail();
     }
 
-    private void initToolbar() {
-        toolbar = findViewById(R.id.tool_bar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Thêm khách hàng");
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        finish();
-        Animatoo.animateSlideRight(this);
-        return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Animatoo.animateSlideRight(this);
+    private void setCustomerDetail() {
+        imgCustomer.setImageBitmap(convertImagesFromCustomer(customer.getCustomerImage()));
+        edtCustomerPhone.setText(customer.getCustomerPhone());
+        edtCustomerName.setText(customer.getCustomerName());
+        edtCustomerCMND.setText(customer.getCustomerCMND() + "");
+        imgCMNDBefore.setImageBitmap(convertImagesFromCustomer(customer.getCustomerCMNDImgBefore()));
+        imgCMNDAfter.setImageBitmap(convertImagesFromCustomer(customer.getCustomerCMNdImgAfter()));
     }
 
     private void setBtnOnclick() {
@@ -89,63 +77,51 @@ public class AddCustomerActivity extends AppCompatActivity implements View.OnCli
         imgCustomer.setOnClickListener(this);
     }
 
-    private void initView() {
-        btnsave = findViewById(R.id.btnSave);
-        customerDAO = new CustomerDAO(this);
-        edtCustomerPhone = findViewById(R.id.edtPhone);
-        edtCustomerName = findViewById(R.id.edtName);
-        edtCustomerCMND = findViewById(R.id.edtCMND);
-        imgCustomer = findViewById(R.id.imgCustomer);
-        imgCMNDBefore = findViewById(R.id.imgCMNDBefore);
-        imgCMNDAfter = findViewById(R.id.imgCMNDAfter);
-        rlCMNDBefore = findViewById(R.id.rlCMNDBefore);
-        rlCMNDAfter = findViewById(R.id.rlCMNDAfter);
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnSave:
+                UpdateCustomer();
+                break;
+            case R.id.imgCustomer:
+                menuImage(REQUEST_CODE_CAMERA_IMG, REQUEST_CODE_PHOTO_IMG);
+                break;
+            case R.id.rlCMNDBefore:
+                menuImage(REQUEST_CODE_CAMERA_IMG_CMND_BEFORE, REQUEST_CODE_PHOTO_IMG_CMND_BEFORE);
+                break;
+            case R.id.rlCMNDAfter:
+                menuImage(REQUEST_CODE_CAMERA_IMG_CMND_AFTER, REQUEST_CODE_PHOTO_IMG_CMND_AFTER);
+                break;
+        }
     }
 
-    private void AddCustomer() {
+    private void UpdateCustomer() {
         if (edtCustomerPhone.getText().toString().trim().equals("") || edtCustomerName.getText().toString().trim().equals("") || edtCustomerCMND.getText().toString().trim().equals("")) {
             Toast.makeText(this, "Không được bỏ trống", Toast.LENGTH_SHORT).show();
         } else {
-            if (dataimgCustomer==null||dataimgCMNDBefore==null||dataimgCustomer==null) {
-                dialogSuccessfully();
-            } else {
-                Customer customer = new Customer();
-                customer.setCustomerPhone(edtCustomerPhone.getText().toString().trim());
-                customer.setCustomerName(edtCustomerName.getText().toString().trim());
-                customer.setCustomerCMND(Integer.parseInt(edtCustomerCMND.getText().toString().trim()));
-                customer.setCustomerImage(dataimgCustomer);
-                customer.setCustomerCMNDImgBefore(dataimgCMNDBefore);
-                customer.setCustomerCMNdImgAfter(dataimgCMNDAfter);
-
-                if (customerDAO.addCustomer(customer) > 0) {
-                    Toast.makeText(this, "Thêm thành công", Toast.LENGTH_SHORT).show();
-                    FragmentCustomer.LoadRecyclerview();
-                    FragmentCustomer.checkCustomernull();
-                    finish();
-                    Animatoo.animateSlideRight(this);
-                } else {
-                    Toast.makeText(this, "Không thêm được", Toast.LENGTH_SHORT).show();
-                }
-
+            Customer customer1 = new Customer();
+            customer1.setCustomerID(customer.getCustomerID());
+            customer1.setCustomerPhone(edtCustomerPhone.getText().toString().trim());
+            customer1.setCustomerName(edtCustomerName.getText().toString().trim());
+            customer1.setCustomerCMND(Integer.parseInt(edtCustomerCMND.getText().toString().trim()));
+            if (dataimgCustomer == null) {
+               dataimgCustomer=customer.getCustomerImage();
+            }if (dataimgCMNDBefore == null) {
+                dataimgCMNDBefore=customer.getCustomerCMNDImgBefore();
+            }if (dataimgCMNDAfter == null) {
+                dataimgCMNDAfter=customer.getCustomerCMNdImgAfter();
             }
+            customer1.setCustomerImage(dataimgCustomer);
+            customer1.setCustomerCMNDImgBefore(dataimgCMNDBefore);
+            customer1.setCustomerCMNdImgAfter(dataimgCMNDAfter);
+            customerDAO.updateCustomer(customer1);
+            Toast.makeText(this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+            FragmentCustomer.LoadRecyclerview();
+            FragmentCustomer.checkCustomernull();
+            finish();
+            Animatoo.animateSlideRight(this);
         }
     }
-    private void dialogSuccessfully() {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
-        mBuilder.setTitle("Lưu ý");
-        mBuilder.setMessage("Không được bỏ trống hình đại diện và CMND để tiện cho việc liên hệ sau này!");
-        mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        AlertDialog mDialog = mBuilder.create();
-        mDialog.show();
-
-
-    }
-
 
     private void menuImage(int REQUEST_CODE_CAMERA, int REQUEST_CODE_PHOTO) {
         View view = getLayoutInflater().inflate(R.layout.dialog_menu_add_images_bottomsheet, null);
@@ -187,7 +163,7 @@ public class AddCustomerActivity extends AppCompatActivity implements View.OnCli
 
     private void choosePhoto(int REQUEST_CODE) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE);
         } else {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(intent, REQUEST_CODE);
@@ -204,22 +180,39 @@ public class AddCustomerActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    private void initToolbar() {
+        toolbar = findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Thông tin khách hàng");
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btnSave:
-                AddCustomer();
-                break;
-            case R.id.imgCustomer:
-                menuImage(REQUEST_CODE_CAMERA_IMG, REQUEST_CODE_PHOTO_IMG);
-                break;
-            case R.id.rlCMNDBefore:
-                menuImage(REQUEST_CODE_CAMERA_IMG_CMND_BEFORE, REQUEST_CODE_PHOTO_IMG_CMND_BEFORE);
-                break;
-            case R.id.rlCMNDAfter:
-                menuImage(REQUEST_CODE_CAMERA_IMG_CMND_AFTER, REQUEST_CODE_PHOTO_IMG_CMND_AFTER);
-                break;
-        }
+    public boolean onSupportNavigateUp() {
+        finish();
+        Animatoo.animateSlideRight(this);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Animatoo.animateSlideRight(this);
+    }
+
+    private void initView() {
+        customer=FragmentCustomer.customerList.get(pos);
+        btnsave = findViewById(R.id.btnSave);
+        customerDAO = new CustomerDAO(this);
+        edtCustomerPhone = findViewById(R.id.edtPhone);
+        edtCustomerName = findViewById(R.id.edtName);
+        edtCustomerCMND = findViewById(R.id.edtCMND);
+        imgCustomer = findViewById(R.id.imgCustomer);
+        imgCMNDBefore = findViewById(R.id.imgCMNDBefore);
+        imgCMNDAfter = findViewById(R.id.imgCMNDAfter);
+        rlCMNDBefore = findViewById(R.id.rlCMNDBefore);
+        rlCMNDAfter = findViewById(R.id.rlCMNDAfter);
     }
 
     @Override
@@ -339,5 +332,9 @@ public class AddCustomerActivity extends AppCompatActivity implements View.OnCli
             e.printStackTrace();
         }
         return byteArray.toByteArray();
+    }
+
+    private Bitmap convertImagesFromCustomer(byte[] img) {
+        return BitmapFactory.decodeByteArray(img, 0, img.length);
     }
 }

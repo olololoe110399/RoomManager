@@ -13,7 +13,7 @@
         android:paddingLeft="20dp"
         android:paddingTop="20dp"
         android:paddingRight="20dp"
-        android:paddingBottom="30dp">
+        android:paddingBottom="20dp">
 
         <RelativeLayout
             android:id="@+id/back"
@@ -31,8 +31,7 @@
                 android:id="@+id/back_ic"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:background="@drawable/ic_back">
-            </ImageView>
+                android:background="@drawable/ic_back"></ImageView>
         </RelativeLayout>
 
         <TextView
@@ -112,11 +111,12 @@
                             android:src="@color/Color4" />
 
                         <ImageView
-                            android:layout_centerInParent="true"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
+                            android:layout_centerInParent="true"
                             android:background="@drawable/phonewhite"></ImageView>
                     </RelativeLayout>
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -144,9 +144,9 @@
                             android:src="@color/Color4" />
 
                         <ImageView
-                            android:layout_centerInParent="true"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
+                            android:layout_centerInParent="true"
                             android:background="@drawable/ic_message"></ImageView>
                     </RelativeLayout>
 
@@ -214,55 +214,53 @@
             <RelativeLayout
                 android:id="@+id/layoutCMND"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center">
+                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/img_cmnd_before"
-                    android:layout_width="143dp"
-                    android:layout_height="100dp"
-                    android:background="@color/Color3"
-                    android:src="@drawable/ic_image_null" />
-
-                <TextView
-                    android:id="@+id/tv1"
+                <RelativeLayout
+                    android:layout_centerHorizontal="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/img_cmnd_before"
-                    android:layout_marginTop="5dp"
-                    android:text="1.Ảnh CMND mặt trước"
-                    android:textColor="@color/colorBlack" />
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/img_cmnd_after"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_toRightOf="@+id/img_cmnd_before"
-                    android:text="2.Ảnh CMND mặt sau."
-                    android:textColor="@color/colorBlack" />
+                    <TextView
 
-                <ImageView
-                    android:id="@+id/img_cmnd_after"
-                    android:layout_width="143dp"
-                    android:layout_height="100dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@+id/img_cmnd_before"
-                    android:background="@color/Color3"
-                    android:src="@drawable/ic_image_null" />
-                <Button
-                    android:id="@+id/btnSave"
-                    android:layout_marginTop="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@drawable/buttonbg"
-                    android:text="Cập nhật"
-                    android:layout_below="@+id/tv1"
-                    android:textColor="@color/ColorWhite"/>
+                        android:id="@+id/tv1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="1.Ảnh CMND mặt trước"
+                        android:textColor="@color/colorBlack" />
+
+                    <ImageView
+                        android:id="@+id/img_cmnd_before"
+                        android:layout_width="51.36mm"
+                        android:layout_height="32.388mm"
+                        android:layout_below="@+id/tv1"
+                        android:background="@drawable/bg_img"
+                        android:padding="1dp" />
+
+                    <TextView
+                        android:id="@+id/tv2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/img_cmnd_before"
+                        android:layout_marginTop="5dp"
+                        android:text="2.Ảnh CMND mặt sau."
+                        android:textColor="@color/colorBlack" />
+                    <ImageView
+                        android:layout_marginBottom="5dp"
+                        android:id="@+id/img_cmnd_after"
+                        android:layout_width="51.36mm"
+                        android:layout_height="32.388mm"
+                        android:layout_below="@+id/tv2"
+                        android:background="@drawable/bg_img"
+                        android:padding="1dp" />
+
+
+
+
+                </RelativeLayout>
+
             </RelativeLayout>
-
-
         </LinearLayout>
     </RelativeLayout>
 </ScrollView>
