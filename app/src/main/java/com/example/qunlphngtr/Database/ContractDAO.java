@@ -101,10 +101,7 @@ public class ContractDAO {
         Cursor c = db.rawQuery(sSQL, null);
         c.moveToFirst();
         while (c.isAfterLast() == false) {
-            if (c.getInt(11) == 0) {
                 contractID = c.getInt(0);
-                break;
-            }
             c.moveToNext();
         }
         c.close();

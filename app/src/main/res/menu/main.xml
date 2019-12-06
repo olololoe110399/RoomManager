@@ -5,19 +5,19 @@
     <item
         android:id="@+id/Home"
         android:icon="@drawable/ic_satatictical"
-        android:title="" />
+        android:title="Thống kê" />
 
 
     <item
         android:id="@+id/Room"
         android:icon="@drawable/ic_room"
-        android:title="" />
+        android:title="Phòng trọ" />
     <item
         android:id="@+id/Customer"
         android:icon="@drawable/ic_customer"
-        android:title="" />
+        android:title="Khách trọ" />
     <item
         android:id="@+id/Service"
         android:icon="@drawable/ic_room_service"
-        android:title="" />
+        android:title="Dịch vụ" />
 </menu>
