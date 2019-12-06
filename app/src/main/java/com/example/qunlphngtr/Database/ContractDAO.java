@@ -92,17 +92,20 @@ public class ContractDAO {
         return contractList;
     }
 
-    public int getContractByStatus(int status) {
+    public int getContractIDByStatus() {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 //WHERE clause
         int contractID = -1;
-        String sSQL = "SELECT contractID FROM contract WHERE contractStatus= '" + status + "'";
+        String sSQL = "SELECT contractID FROM contract WHERE contractStatus= 0";
 //WHERE clause arguments
         Cursor c = db.rawQuery(sSQL, null);
         c.moveToFirst();
         while (c.isAfterLast() == false) {
-            contractID = c.getInt(0);
-            break;
+            if (c.getInt(0) == 0) {
+                contractID = c.getInt(0);
+                break;
+            }
+            c.moveToNext();
         }
         c.close();
         return contractID;

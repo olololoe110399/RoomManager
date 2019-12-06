@@ -87,7 +87,6 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
             }
         }
         billLists = billDAO.getBillByContractID(contract.getContractID());
-
         if (billLists.size() > 0) {
 
             Bill bill = billLists.get(billLists.size() - 1);
@@ -215,7 +214,6 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
                 billroomprice=contract.getRoom().getRoomPrice()*monthperiodic;
                 edtbillroomprice.setText(formatter.format(billroomprice) + " VND");
             } else {
-
                 double roompriceofdate = room.getRoomPrice() / getlenthmonth(calendar.getTime());
                 Log.i("Addbill", "lenth: " + getlenthmonth(calendar.getTime()));
                 Date billdateend = addMonth(calendar.getTime(), monthperiodic);
