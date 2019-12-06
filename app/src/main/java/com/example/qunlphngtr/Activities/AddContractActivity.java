@@ -341,7 +341,9 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
                 contract.setContractstatus(0);
                 contract.setContractDeposits(Double.parseDouble(edtdeposits.getText().toString()));
                 if (contractDAO.addContract(contract) > 0) {
-                    addbillservice(contractDAO.getContractIDByStatus());
+
+                        addbillservice(contractDAO.getContractIDByStatus());
+
                 } else {
                     Toast.makeText(this, "Chưa thêm được!", Toast.LENGTH_SHORT).show();
                 }
