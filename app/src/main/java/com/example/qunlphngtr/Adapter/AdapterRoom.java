@@ -19,9 +19,11 @@ import com.example.qunlphngtr.Activities.RoomActivity;
 import com.example.qunlphngtr.Database.ContractDAO;
 import com.example.qunlphngtr.Database.RoomDAO;
 import com.example.qunlphngtr.Fragment.FragmentRoom;
+import com.example.qunlphngtr.Model.Contract;
 import com.example.qunlphngtr.Model.Room;
 import com.example.qunlphngtr.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,11 +32,13 @@ public class AdapterRoom extends RecyclerView.Adapter<AdapterRoom.ViewHolder> {
     Context context;
     RoomDAO roomDAO;
     ContractDAO contractDAO;
+    List<Contract> contractList;
     public AdapterRoom(List<Room> roomList, Context context) {
         this.roomList = roomList;
         this.context = context;
         this.roomDAO = new RoomDAO(context);
         contractDAO=new ContractDAO(context);
+        contractList=new ArrayList<>();
     }
 
     public AdapterRoom() {
@@ -78,28 +82,49 @@ public class AdapterRoom extends RecyclerView.Adapter<AdapterRoom.ViewHolder> {
         holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Lưu ý");
-                builder.setMessage("Bạn có muốn xóa \""+roomList.get(position).getRoomName()+"\" ?");
-                builder.setCancelable(false);
-                builder.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
-                builder.setNegativeButton("Xóa", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        roomDAO.deleteRoomByID(roomList.get(position).getRoomID());
-                        roomList.remove(position);
-                        notifyDataSetChanged();
-                        FragmentRoom.checkRoomListNull();
-                        FragmentRoom.setTextRoomManager();
-                    }
-                });
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
+                if(contractDAO.getStatusRoom(roomList.get(position).getRoomID())>0){
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Lưu ý");
+                    builder.setMessage("Phòng này còn người ở." +
+                            "\nThanh lý hoặc xóa hợp đồng trước khi xóa phòng này!");
+                    builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }else {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Lưu ý");
+                    builder.setMessage("Bạn chắc chắn muốn xóa \""+roomList.get(position).getRoomName()+"\" này?" +
+                        "\nMọi thông tin về phòng và hợp đồng đã thanh lý sẽ bị xóa!");
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+                    builder.setNegativeButton("Xóa", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            contractList=contractDAO.getAllContract(roomList.get(position).getRoomID());
+                            for (Contract contract:contractList){
+                                contractDAO.deleteContractByID(contract.getContractID());
+                            }
+                            roomDAO.deleteRoomByID(roomList.get(position).getRoomID());
+                            roomList.remove(position);
+                            notifyDataSetChanged();
+                            FragmentRoom.checkRoomListNull();
+                            FragmentRoom.setTextRoomManager();
+                        }
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
+
                 return true;
             }
         });
