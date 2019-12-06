@@ -16,11 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 
 import com.example.qunlphngtr.Activities.RoomActivity;
+import com.example.qunlphngtr.Database.BillServiceDAO;
 import com.example.qunlphngtr.Database.ContractDAO;
 import com.example.qunlphngtr.Database.RoomDAO;
 import com.example.qunlphngtr.Fragment.FragmentRoom;
 import com.example.qunlphngtr.Model.Contract;
 import com.example.qunlphngtr.Model.Room;
+import com.example.qunlphngtr.Model.Service;
 import com.example.qunlphngtr.R;
 
 import java.util.ArrayList;
@@ -33,12 +35,16 @@ public class AdapterRoom extends RecyclerView.Adapter<AdapterRoom.ViewHolder> {
     RoomDAO roomDAO;
     ContractDAO contractDAO;
     List<Contract> contractList;
+    List<Service > serviceList;
+    BillServiceDAO billServiceDAO;
     public AdapterRoom(List<Room> roomList, Context context) {
         this.roomList = roomList;
         this.context = context;
         this.roomDAO = new RoomDAO(context);
         contractDAO=new ContractDAO(context);
         contractList=new ArrayList<>();
+        serviceList=new ArrayList<>();
+        billServiceDAO=new BillServiceDAO(context);
     }
 
     public AdapterRoom() {
@@ -112,7 +118,12 @@ public class AdapterRoom extends RecyclerView.Adapter<AdapterRoom.ViewHolder> {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             contractList=contractDAO.getAllContract(roomList.get(position).getRoomID());
                             for (Contract contract:contractList){
+                                serviceList = billServiceDAO.getsServiceBillByID(contract.getContractID());
+                                for (int j = 0; j < serviceList.size(); j++) {
+                                    billServiceDAO.deleteBillServiceByID(serviceList.get(j).getServiceID());
+                                }
                                 contractDAO.deleteContractByID(contract.getContractID());
+
                             }
                             roomDAO.deleteRoomByID(roomList.get(position).getRoomID());
                             roomList.remove(position);
