@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+
 public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHolder> implements View.OnClickListener {
     List<Contract> contractList;
     Context context;
@@ -141,17 +142,19 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
         String tvTotal = "";
         billList = billDAO.getBillDebtsByContractID(contractList.get(position).getContractID());
         double A = TotalDebsToPay() - contractList.get(position).getContractDeposits();
-        if (A >= 0) {
+        if (A > 0) {
             tvTotal = "Tổng nợ chưa thanh toán:" + formatter.format(TotalDebsToPay()) + " VND" +
                     "\nTiền cọc của khách là: " + formatter.format(contractList.get(position).getContractDeposits()) + " VND" +
-                    "\nTổng tiền khách phải thanh toán là:" + formatter.format(A) + " VND";
+                    "\nTổng tiền khách phải thanh toán là:" + formatter.format(A) + " VND\n";
         } else {
-            tvTotal = "Tiền cọc phải trả lại cho khách là: " + formatter.format(contractList.get(position).getContractDeposits()) + " VND";
+            if (contractList.get(position).getContractDeposits() > 0) {
+                tvTotal = "Tiền cọc phải trả lại cho khách là: " + formatter.format(contractList.get(position).getContractDeposits()) + " VND\n";
+            }
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Lưu ý");
         builder.setMessage(tvTotal +
-                "\nBạn chắc chắn muốn xóa hợp đồng này?");
+                "Bạn chắc chắn muốn xóa hợp đồng này?");
         builder.setCancelable(false);
         builder.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
             @Override
@@ -162,7 +165,7 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
         builder.setNegativeButton("Thanh toán và xóa", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (!(billList == null)) UpdateBillDebsToPay();
+                if (!(billList == null)) UpdateBillDebsToPay(position);
                 serviceList = billServiceDAO.getsServiceBillByID(contractList.get(position).getContractID());
                 for (int j = 0; j < serviceList.size(); j++) {
                     billServiceDAO.deleteBillServiceByID(serviceList.get(j).getServiceID());
@@ -186,7 +189,7 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
         String tvTotal = "";
         billList = billDAO.getBillDebtsByContractID(contractList.get(position).getContractID());
         double A = TotalDebsToPay() - contractList.get(position).getContractDeposits();
-        if (A >= 0) {
+        if (A > 0) {
             tvTotal = "Tổng nợ chưa thanh toán:" + formatter.format(TotalDebsToPay()) + " VND" +
                     "\nTiền cọc của khách là: " + formatter.format(contractList.get(position).getContractDeposits()) + " VND" +
                     "\nTổng tiền khách phải thanh toán là:" + formatter.format(A) + " VND";
@@ -208,9 +211,11 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
         builder.setNegativeButton("Thanh toán và thanh lý", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (!(billList == null)) UpdateBillDebsToPay();
+                if (!(billList == null)) UpdateBillDebsToPay(position);
                 contractDAO.updateContractStatus(contractList.get(position).getContractID());
+                contractDAO.updateContractDeposits(contractList.get(position).getContractID());
                 contractList.get(position).setContractstatus(1);
+                contractList.get(position).setContractDeposits(0);
                 notifyItemRangeChanged(position, contractList.size());
                 notifyItemInserted(position);
                 notifyItemChanged(position);
@@ -243,8 +248,9 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
                 @Override
                 public void onClick(View v) {
                     mBottomDialogNotificationAction.dismiss();
-                    if(contractList.get(pos).getContractstatus()==0){
-                    dialogiquidation(pos);}else {
+                    if (contractList.get(pos).getContractstatus() == 0) {
+                        dialogiquidation(pos);
+                    } else {
                         Toast.makeText(context, "Hợp đồng đã thanh lý", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -275,9 +281,18 @@ public class AdapterContract extends RecyclerView.Adapter<AdapterContract.ViewHo
         return TotalDebsToPay;
     }
 
-    private void UpdateBillDebsToPay() {
+    private void UpdateBillDebsToPay(int p) {
+        int id=-1;
+        if (billList.size() > 0) {
+             id= billList.get(billList.size() - 1).getBillID();
+        }
+
         for (Bill bill : billList) {
-            bill.setBIllTotal(bill.getBillDebtsToPay());
+            if (id == bill.getBillID()&&billList.size()>0) {
+                bill.setBIllTotal(bill.getBillDebtsToPay() - contractList.get(p).getContractDeposits());
+            } else {
+                bill.setBIllTotal(bill.getBillDebtsToPay());
+            }
             bill.setBillPaymentDate(Calendar.getInstance().getTime());
             bill.setBillDebtsToPay(0);
             billDAO.updateBill(bill);

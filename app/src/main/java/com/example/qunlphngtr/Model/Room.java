@@ -8,6 +8,11 @@ public class Room {
     }
 
     private String RoomName;
+
+    public Room(String roomName) {
+        RoomName = roomName;
+    }
+
     private int RoomPrice;
     private int RoomAcreage;
     private int RoomWaterPrice;

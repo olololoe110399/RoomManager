@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.qunlphngtr.Database.ManagerUsers;
+import com.example.qunlphngtr.Fragment.FragmentBill;
 import com.example.qunlphngtr.Fragment.FragmentCustomer;
 import com.example.qunlphngtr.Fragment.FragmentHome;
 import com.example.qunlphngtr.Fragment.FragmentRoom;
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void addNotificationUpdateInformationUser() {
         if (managerUsers.checkInformatioNull(UserNameSp) > 0) {
             if (checkmessNotification() < 0) {
-                messnotification="Chúc mừng bạn vừa tạo tài khoản! Vui lòng cập nhật đầy đủ thông tin của bạn ! ";
+                messnotification="Xin chào "+UserNameSp+"! Vui lòng cập nhật đầy đủ thông tin của bạn ! ";
                 NotificationActivity.notificationList.add(new Notification(messnotification, simpleDateFormat.format(Calendar.getInstance().getTime()), true));
             }
         }
@@ -168,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     uncheckednavigation();
                     getSupportActionBar().setTitle("Thống kê");
-                    newPositon = 1;
+                    newPositon = 5;
                     fragment = new FragmentHome();
                     loadFragment(fragment, newPositon);
 
@@ -176,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 case R.id.Room:
                     uncheckednavigation();
                     getSupportActionBar().setTitle("Quản lý phòng trọ");
-                    newPositon = 2;
+                    newPositon = 6;
                     fragment = new FragmentRoom();
                     loadFragment(fragment, newPositon);
 
@@ -184,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 case R.id.Customer:
                     uncheckednavigation();
                     getSupportActionBar().setTitle("Quản lý khách trọ");
-                    newPositon = 3;
+                    newPositon = 7;
                     fragment = new FragmentCustomer();
                     loadFragment(fragment, newPositon);
 
@@ -192,12 +193,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 case R.id.Service:
                     uncheckednavigation();
                     getSupportActionBar().setTitle("Quản lý dịch vụ");
-                    newPositon = 4;
+                    newPositon = 8;
                     fragment = new FragmentService();
                     loadFragment(fragment, newPositon);
-
                     return true;
-
             }
             return false;
         }
@@ -222,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void setupNavigation() {
         navigationView.setNavigationItemSelectedListener(this);
-        loadFragment(new FragmentHome(), 1);
+        loadFragment(new FragmentHome(), 5);
     }
 
     @Override
@@ -308,8 +307,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_user:
                 menuitemid = menuItem.getItemId();
                 uncheckedbottomnavigation();
-                getSupportActionBar().setTitle("Người dùng");
-                newPositon = 5;
+                getSupportActionBar().setTitle("Trang cá nhân");
+                newPositon = 1;
                 fragment = new FragmentUser();
                 loadFragment(fragment, newPositon);
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -318,17 +317,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 menuitemid = menuItem.getItemId();
                 uncheckedbottomnavigation();
                 getSupportActionBar().setTitle("Hóa đơn");
+                newPositon = 2;
+                fragment = new FragmentBill();
+                loadFragment(fragment, newPositon);
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             case R.id.nav_message:
                 menuitemid = menuItem.getItemId();
                 uncheckedbottomnavigation();
                 getSupportActionBar().setTitle("Hộp thư");
+                newPositon = 3;
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             case R.id.nav_share:
                 menuitemid = menuItem.getItemId();
                 uncheckedbottomnavigation();
+                newPositon = 4;
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             case R.id.nav_changePass:

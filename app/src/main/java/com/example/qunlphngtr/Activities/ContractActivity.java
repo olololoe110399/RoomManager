@@ -89,7 +89,7 @@ public class ContractActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rvcontract);
         swipeRefreshLayout = findViewById(R.id.srlcontract);
         contractList = new ArrayList<>();
-        contractList = contractDAO.getAllContract(room.getRoomID());
+        contractList = contractDAO.getAllContractByID(room.getRoomID());
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -155,7 +155,7 @@ public class ContractActivity extends AppCompatActivity {
     }
     private void loadRecycerview(){
         contractList.clear();
-        contractList.addAll(contractDAO.getAllContract(room.getRoomID()));
+        contractList.addAll(contractDAO.getAllContractByID(room.getRoomID()));
         adapter.notifyDataSetChanged();
     }
 

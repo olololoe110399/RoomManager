@@ -116,7 +116,7 @@ public class AdapterRoom extends RecyclerView.Adapter<AdapterRoom.ViewHolder> {
                     builder.setNegativeButton("Xóa", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            contractList=contractDAO.getAllContract(roomList.get(position).getRoomID());
+                            contractList=contractDAO.getAllContractByID(roomList.get(position).getRoomID());
                             for (Contract contract:contractList){
                                 serviceList = billServiceDAO.getsServiceBillByID(contract.getContractID());
                                 for (int j = 0; j < serviceList.size(); j++) {

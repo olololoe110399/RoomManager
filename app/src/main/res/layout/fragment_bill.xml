@@ -6,15 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".Activities.ContractActivity">
 
-    <include
-        android:id="@+id/app_bar"
-        layout="@layout/tool_bar"></include>
 
     <Spinner
         android:id="@+id/spnBillFilter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/app_bar"
         android:background="@android:drawable/editbox_dropdown_light_frame"
         android:padding="5dp" />
 
@@ -52,15 +48,5 @@
         android:clipToPadding="false"
         android:padding="5dp" />
 
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fbbill"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="20dp"
-        android:src="@drawable/ic_add"
-        app:fabCustomSize="40dp"></com.google.android.material.floatingactionbutton.FloatingActionButton>
 
 </RelativeLayout>

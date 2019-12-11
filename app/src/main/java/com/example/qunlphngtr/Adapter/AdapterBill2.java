@@ -1,11 +1,9 @@
 package com.example.qunlphngtr.Adapter;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
@@ -14,17 +12,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.blogspot.atifsoftwares.animatoolib.Animatoo;
-import com.example.qunlphngtr.Activities.AddBillActivity;
 import com.example.qunlphngtr.Activities.BillActivity;
 import com.example.qunlphngtr.Database.BillDAO;
 import com.example.qunlphngtr.Fragment.FragmentBill;
@@ -36,15 +29,15 @@ import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.List;
 
-public class AdapterBill extends RecyclerView.Adapter<AdapterBill.ViewHolder> {
+public class AdapterBill2 extends RecyclerView.Adapter<AdapterBill2.ViewHolder> {
     List<Bill> billList;
     Context context;
     BillDAO billDAO;
 
-    public AdapterBill() {
+    public AdapterBill2() {
     }
 
-    public AdapterBill(List<Bill> billList, Context context) {
+    public AdapterBill2(List<Bill> billList, Context context) {
         this.billList = billList;
         this.context = context;
         billDAO = new BillDAO(context);
@@ -54,7 +47,7 @@ public class AdapterBill extends RecyclerView.Adapter<AdapterBill.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_bill, parent, false);
-        return new AdapterBill.ViewHolder(view);
+        return new AdapterBill2.ViewHolder(view);
     }
 
     @Override
@@ -159,8 +152,7 @@ public class AdapterBill extends RecyclerView.Adapter<AdapterBill.ViewHolder> {
                         notifyItemRangeChanged(pos, billList.size());
                         notifyItemInserted(pos);
                         notifyItemChanged(pos);
-                        BillActivity.spnBillFilter.setSelection(1);
-
+                        FragmentBill.spnBillFilter.setSelection(1);
 
                     }
                 })

@@ -51,6 +51,14 @@ public class ContractDAO {
         return 1;
     }
 
+    public void updateContractDeposits(int contractID) {
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("contractDeposits", 0);
+        db.update(databaseHelper.TABLE_CONTRACT, values, "contractID=?", new String[]{String.valueOf(contractID)});
+
+    }
+
     public int deleteContractByID(int contractID) {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         int result = db.delete(databaseHelper.TABLE_CONTRACT, "contractID=?", new String[]{String.valueOf(contractID)});
@@ -59,7 +67,7 @@ public class ContractDAO {
         return 1;
     }
 
-    public List<Contract> getAllContract(int roomID) {
+    public List<Contract> getAllContractByID(int roomID) {
         List<Contract> contractList = new ArrayList<>();
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
         String sSQL = "SELECT contractID,contractDateBegin,contractDateEnd,contractPeopleNumber,contractVehicleNumber," +
@@ -68,6 +76,38 @@ public class ContractDAO {
                 "contractMonthPeriodic,contractWaterNumberBegin,contractElectricNumberBegin,contractDateTerm,contractStatus,contractDeposits" +
                 " FROM contract INNER JOIN room ON contract.roomID = room.roomID INNER JOIN customer on contract.customerID=customer.customerID WHERE contract.roomID ='" +
                 roomID + "'";
+        Cursor cursor = db.rawQuery(sSQL, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Contract contract = new Contract();
+            contract.setContractID(cursor.getInt(0));
+            contract.setContractDateBegin(cursor.getString(1));
+            contract.setContractDateEnd(cursor.getString(2));
+            contract.setContractPeopleNumber(cursor.getInt(3));
+            contract.setContractVehicleNumber(cursor.getInt(4));
+            contract.setRoom(new Room(cursor.getInt(5), cursor.getString(6), cursor.getInt(7), cursor.getInt(8), cursor.getInt(9), cursor.getInt(10), cursor.getBlob(11)));
+            contract.setCustomer(new Customer(cursor.getInt(12), cursor.getBlob(13), cursor.getString(14), cursor.getString(15), cursor.getInt(16), cursor.getBlob(17), cursor.getBlob(18)));
+            contract.setContractMonthPeriodic(cursor.getInt(19));
+            contract.setContracNumberElectricBegin(cursor.getInt(20));
+            contract.setContracNumberWaterBegin(cursor.getInt(21));
+            contract.setContractDateTerm(cursor.getInt(22));
+            contract.setContractstatus(cursor.getInt(23));
+            contract.setContractDeposits(cursor.getInt(24));
+            contractList.add(contract);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return contractList;
+    }
+
+    public List<Contract> getAllContract() {
+        List<Contract> contractList = new ArrayList<>();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        String sSQL = "SELECT contractID,contractDateBegin,contractDateEnd,contractPeopleNumber,contractVehicleNumber," +
+                "room.roomID,room.roomName,room.roomPrice,room.roomAcreage,room.roomWaterPrice,room.roomElectricPrice,room.roomImage," +
+                "customer.customerID,customer.customerImage,customer.customerPhone,customer.customerName,customer.customerCMND,customer.customerCMNDImgBefore,customer.customerCMNdImgAfter," +
+                "contractMonthPeriodic,contractWaterNumberBegin,contractElectricNumberBegin,contractDateTerm,contractStatus,contractDeposits" +
+                " FROM contract INNER JOIN room ON contract.roomID = room.roomID INNER JOIN customer on contract.customerID=customer.customerID";
         Cursor cursor = db.rawQuery(sSQL, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -101,7 +141,7 @@ public class ContractDAO {
         Cursor c = db.rawQuery(sSQL, null);
         c.moveToFirst();
         while (c.isAfterLast() == false) {
-                contractID = c.getInt(0);
+            contractID = c.getInt(0);
             c.moveToNext();
         }
         c.close();
@@ -126,6 +166,23 @@ public class ContractDAO {
         }
         c.close();
         return status;
+    }public int getallStatusRoom() {
+
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+//WHERE clause
+        int number=0 ;
+        String sSQL = "SELECT * FROM contract";
+//WHERE clause arguments
+        Cursor c = db.rawQuery(sSQL, null);
+        c.moveToFirst();
+        while (c.isAfterLast() == false) {
+            if (c.getInt(11) == 0) {
+                number ++;
+            }
+            c.moveToNext();
+        }
+        c.close();
+        return number;
     }
 
     public int getpeopleNumberRoom(int roomID) {
@@ -205,4 +262,90 @@ public class ContractDAO {
         return status;
     }
 
+    public int getallNumberRoomNotNullbyIDroom(int id) {
+
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+//WHERE clause
+        int status = 0;
+        String sSQL = "SELECT * FROM contract WHERE contract.roomID='" + id + "'";
+//WHERE clause arguments
+        Cursor c = db.rawQuery(sSQL, null);
+        c.moveToFirst();
+        while (c.isAfterLast() == false) {
+            if (c.getInt(11) == 0) {
+                status = status + 1;
+            }
+            c.moveToNext();
+        }
+        c.close();
+        return status;
+    }
+
+    public int getallNumberRoom() {
+
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+//WHERE clause
+        int status = 0;
+        String sSQL = "SELECT * FROM contract ";
+//WHERE clause arguments
+        Cursor c = db.rawQuery(sSQL, null);
+        c.moveToFirst();
+        while (c.isAfterLast() == false) {
+            if (c.getInt(11) == 1) {
+                status = status + 1;
+            }
+            c.moveToNext();
+        }
+        c.close();
+        return status;
+    }
+
+    public int getallNumberRoombyRoomID(int ID) {
+
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+//WHERE clause
+        int status = 0;
+        String sSQL = "SELECT * FROM contract WHERE contract.roomID='" + ID + "'";
+//WHERE clause arguments
+        Cursor c = db.rawQuery(sSQL, null);
+        c.moveToFirst();
+        while (c.isAfterLast() == false) {
+            if (c.getInt(11) == 1) {
+                status = status + 1;
+            }
+            c.moveToNext();
+        }
+        c.close();
+        return status;
+    }
+
+    public double getAllSumDeposits() {
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        double SumDeposits = 0;
+        String sSQL = "SELECT SUM(contractDeposits) AS SumDeposits FROM contract ";
+        Cursor c = db.rawQuery(sSQL, null);
+        c.moveToFirst();
+        while (c.isAfterLast() == false) {
+            SumDeposits = c.getDouble(c.getColumnIndex("SumDeposits"));
+            c.moveToNext();
+        }
+        c.close();
+
+        return SumDeposits;
+    }
+
+    public double getAllSumDepositsbyRoomID(int id) {
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        double SumDeposits = 0;
+        String sSQL = "SELECT SUM(contractDeposits) AS SumDeposits FROM contract WHERE contract.roomID='" + id + "'";
+        Cursor c = db.rawQuery(sSQL, null);
+        c.moveToFirst();
+        while (c.isAfterLast() == false) {
+            SumDeposits = c.getDouble(c.getColumnIndex("SumDeposits"));
+            c.moveToNext();
+        }
+        c.close();
+
+        return SumDeposits;
+    }
 }

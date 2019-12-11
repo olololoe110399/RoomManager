@@ -45,7 +45,6 @@ public class BillActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     public static List<Bill> billList;
     public static AdapterBill adapter;
-    public static SwipeRefreshLayout swipeRefreshLayout;
     public static RelativeLayout relativeLayout;
     public static List<Contract> contractList = new ArrayList<>();
     private Room room = RoomActivity.room;
@@ -55,6 +54,8 @@ public class BillActivity extends AppCompatActivity {
     public static Spinner spnBillFilter;
     String[] categories = {"Tất cả", "Đã thanh toán", "Chưa thanh toán"};
     public static List<Bill> billList2;
+    public static int p=0;
+    public  static boolean status=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +71,13 @@ public class BillActivity extends AppCompatActivity {
             }
         });
     }
-
+    private void loadbilllist(int pos){
+        if (pos >= 0 && pos < categories.length) {
+            getSelectedCategoryData(pos);
+        } else {
+            Toast.makeText(BillActivity.this, "Danh mục đã chọn không tồn tại!", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     private void initView() {
         spnBillFilter = findViewById(R.id.spnBillFilter);
@@ -78,11 +85,7 @@ public class BillActivity extends AppCompatActivity {
         spnBillFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position >= 0 && position < categories.length) {
-                    getSelectedCategoryData(position);
-                } else {
-                    Toast.makeText(BillActivity.this, "Danh mục đã chọn không tồn tại!", Toast.LENGTH_SHORT).show();
-                }
+               loadbilllist(position);
             }
 
             @Override
@@ -92,22 +95,14 @@ public class BillActivity extends AppCompatActivity {
         });
         billDAO = new BillDAO(this);
         contractDAO = new ContractDAO(this);
-        contractList = contractDAO.getAllContract(room.getRoomID());
+        contractList = contractDAO.getAllContractByID(room.getRoomID());
         fbbill = findViewById(R.id.fbbill);
         relativeLayout = findViewById(R.id.rlbillnull);
         recyclerView = findViewById(R.id.rvbill);
-        swipeRefreshLayout = findViewById(R.id.srlbill);
         billList = new ArrayList<>();
         billList2 = new ArrayList<>();
         billList = billDAO.getBillByID(room.getRoomID());
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                loadRecycerview();
-                checkBillNull();
-                swipeRefreshLayout.setRefreshing(false);// set swipe refreshing
-            }
-        });
+
         recyclerView.setNestedScrollingEnabled(false);
         adapter = new AdapterBill(billList, this);
         recyclerView.setHasFixedSize(true);
@@ -134,11 +129,9 @@ public class BillActivity extends AppCompatActivity {
     public static void checkBillNull() {
         if (billList.size() > 0) {
             relativeLayout.setVisibility(View.GONE);
-            swipeRefreshLayout.setVisibility(View.VISIBLE);
         } else {
 
             relativeLayout.setVisibility(View.VISIBLE);
-            swipeRefreshLayout.setVisibility(View.GONE);
         }
 
 
@@ -147,11 +140,11 @@ public class BillActivity extends AppCompatActivity {
     public static void checkBill2Null() {
         if (billList2.size() > 0) {
             relativeLayout.setVisibility(View.GONE);
-            swipeRefreshLayout.setVisibility(View.VISIBLE);
+
         } else {
 
             relativeLayout.setVisibility(View.VISIBLE);
-            swipeRefreshLayout.setVisibility(View.GONE);
+
         }
 
 
@@ -221,6 +214,14 @@ public class BillActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         loadRecycerview();
+        loadbilllist(p);
+        status=true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        status=false;
     }
 
     private void loadRecycerview() {
@@ -230,10 +231,10 @@ public class BillActivity extends AppCompatActivity {
     }
 
     private void getSelectedCategoryData(int position) {
+        billList.clear();
+        billList.addAll(billDAO.getBillByID(room.getRoomID()));
         billList2.clear();
         if (position == 0) {
-            billList.clear();
-            billList.addAll(billDAO.getBillByID(room.getRoomID()));
             adapter = new AdapterBill(billList, this);
             checkBillNull();
         } else if (position == 1) {
@@ -255,5 +256,17 @@ public class BillActivity extends AppCompatActivity {
         }
         recyclerView.setAdapter(adapter);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        status=true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        status=false;
     }
 }

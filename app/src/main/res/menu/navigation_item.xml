@@ -5,7 +5,7 @@
         <item
             android:id="@+id/nav_user"
             android:icon="@drawable/ic_user"
-            android:title="Người dùng" />
+            android:title="Trang cá nhân" />
         <item
             android:id="@+id/nav_bill"
             android:icon="@drawable/ic_bill"

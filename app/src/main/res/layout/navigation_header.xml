@@ -29,13 +29,7 @@
         android:paddingTop="8dp"
         android:textStyle="bold"
         android:textColor="@color/colorBlack"
-        android:text="Đang cập nhật"
+        android:text="Chưa cập nhật"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
-    <TextView
-        android:id="@+id/tvProfile"
-        android:textColor="@color/colorBlack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Xem trang cá nhân của bạn"/>
 
 </LinearLayout>
