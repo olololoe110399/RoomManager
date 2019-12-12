@@ -28,6 +28,7 @@
             app:itemIconSize="27dp"
             app:itemIconTint="@color/select"
             app:labelVisibilityMode="labeled"
+            app:itemTextColor="@color/select"
             app:menu="@menu/main" />
     </RelativeLayout>
 

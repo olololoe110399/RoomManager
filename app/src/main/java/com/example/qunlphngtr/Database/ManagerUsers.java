@@ -120,22 +120,11 @@ public class ManagerUsers {
         return 1;
     }
 
-    public int updateInfoUser(String username, String phone, String name, String address) {
-        ContentValues values = new ContentValues();
-        values.put(UserPhone, phone);
-        values.put(UserFullName, name);
-        values.put(UserAddress, address);
-        int result = db.update(TABLE_NAME, values, UserName+"=?", new String[]{username});
-        if (result == 0) {
-            return -1;
-        }
-        return 1;
-    }
 
     public int updateUser(Users users) {
         ContentValues values = new ContentValues();
         values.put(UserPhone, users.getUserPhone());
-        values.put(UserFullName, users.getUserName());
+        values.put(UserFullName, users.getUserFullName());
         values.put(UserAddress, users.getUserAddress());
         values.put(UserAvater, users.getUserAvater());
         int result = db.update(TABLE_NAME, values, UserName+"=?", new String[]{users.getUserName()});

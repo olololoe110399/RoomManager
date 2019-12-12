@@ -57,17 +57,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private BottomNavigationView bottomnavigation;
-    private View headerView;
+    public static View headerView;
     private AccessToken token;
-    private ManagerUsers managerUsers;
-    private Users users;
+    public static ManagerUsers managerUsers;
+    public static Users users;
     private SharedPreferences pref;
-    private String UserNameSp,messnotification;
+    private String messnotification;
+    public static String UserNameSp;
     private TextView textNotificationItemCount;
-    int  menuitemid, startingPosition;
+    int menuitemid, startingPosition;
     public static int mNotificationItemCount;
     private SimpleDateFormat simpleDateFormat;
-
 
 
     @Override
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void addNotificationUpdateInformationUser() {
         if (managerUsers.checkInformatioNull(UserNameSp) > 0) {
             if (checkmessNotification() < 0) {
-                messnotification="Xin chào "+UserNameSp+"! Vui lòng cập nhật đầy đủ thông tin của bạn ! ";
+                messnotification = "Xin chào " + UserNameSp + "! Vui lòng cập nhật đầy đủ thông tin của bạn ! ";
                 NotificationActivity.notificationList.add(new Notification(messnotification, simpleDateFormat.format(Calendar.getInstance().getTime()), true));
             }
         }
@@ -219,9 +219,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return false;
     }
 
+    private void addFragment(Fragment fragment) {
+        if (fragment != null) {
+            getSupportFragmentManager().beginTransaction().add(R.id.container_main, fragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+        }
+    }
+
     public void setupNavigation() {
         navigationView.setNavigationItemSelectedListener(this);
-        loadFragment(new FragmentHome(), 5);
+        addFragment(new FragmentHome());
+        startingPosition = 5;
     }
 
     @Override
@@ -316,7 +323,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_bill:
                 menuitemid = menuItem.getItemId();
                 uncheckedbottomnavigation();
-                getSupportActionBar().setTitle("Hóa đơn");
+                getSupportActionBar().setTitle("Tất cả hóa đơn");
                 newPositon = 2;
                 fragment = new FragmentBill();
                 loadFragment(fragment, newPositon);
@@ -332,6 +339,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_share:
                 menuitemid = menuItem.getItemId();
                 uncheckedbottomnavigation();
+                getSupportActionBar().setTitle("Chia sẻ");
                 newPositon = 4;
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
@@ -476,7 +484,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void setProfileSqlite() {
+    public static void setProfileSqlite() {
         users = managerUsers.getUserById(UserNameSp);
         TextView tvUserFullName = headerView.findViewById(R.id.tvUserFullName);
         ImageView imgAvater = headerView.findViewById(R.id.imgAvatar);
@@ -492,7 +500,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    private Bitmap LoadingImgArayByte(byte[] img) {
+    public static Bitmap LoadingImgArayByte(byte[] img) {
         return BitmapFactory.decodeByteArray(img, 0, img.length);
     }
 

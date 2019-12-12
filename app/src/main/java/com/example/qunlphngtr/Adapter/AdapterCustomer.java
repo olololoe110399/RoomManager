@@ -92,6 +92,7 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
                 builder.setNegativeButton("Xóa", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
                         customerDAO.deleteCustomer(customerList.get(position).getCustomerID());
                         customerList.remove(position);
                         notifyDataSetChanged();
