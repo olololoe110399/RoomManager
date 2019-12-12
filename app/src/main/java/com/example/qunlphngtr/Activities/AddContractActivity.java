@@ -34,9 +34,11 @@ import com.example.qunlphngtr.Model.Service;
 import com.example.qunlphngtr.R;
 
 import java.io.ByteArrayOutputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class AddContractActivity extends AppCompatActivity implements View.OnClickListener {
@@ -178,13 +180,6 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    private byte[] LoadingImg(int IDImg) {
-        Drawable drawable = getDrawable(IDImg);
-        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        return stream.toByteArray();
-    }
 
     private void dialogchoosedayterm() {
         int checkedItem = -1;
@@ -327,30 +322,60 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
             if (customer == null) {
                 dialogNotificationAddCustomer();
             } else {
-                Contract contract = new Contract();
-                contract.setContractDateBegin(edtdatebegin.getText().toString());
-                contract.setContractDateEnd(edtdateend.getText().toString());
-                contract.setContractMonthPeriodic(monthperiodic);
-                contract.setContractDateTerm(dateterm);
-                contract.setContracNumberElectricBegin(Integer.parseInt(edtnumberelectric.getText().toString()));
-                contract.setContracNumberWaterBegin(Integer.parseInt(edtnumberwater.getText().toString()));
-                contract.setRoom(room);
-                contract.setCustomer(customer);
-                contract.setContractPeopleNumber(Integer.parseInt(edtpeople.getText().toString()));
-                contract.setContractVehicleNumber(Integer.parseInt(edtvehical.getText().toString()));
-                contract.setContractstatus(0);
-                contract.setContractDeposits(Double.parseDouble(edtdeposits.getText().toString()));
-                if (contractDAO.addContract(contract) > 0) {
+                int month = 0;
+                try {
+                    Date datebegin = simpleDateFormat.parse(edtdatebegin.getText().toString());
+                    Date dateend = simpleDateFormat.parse(edtdateend.getText().toString());
+                    month = monthsBetween(datebegin, dateend);
+                    Log.i("Month", "addContract: " + month);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                if (monthperiodic >= month) {
+                    dialogMonth();
+                } else {
+                    Contract contract = new Contract();
+                    contract.setContractDateBegin(edtdatebegin.getText().toString());
+                    contract.setContractDateEnd(edtdateend.getText().toString());
+                    contract.setContractMonthPeriodic(monthperiodic);
+                    contract.setContractDateTerm(dateterm);
+                    contract.setContracNumberElectricBegin(Integer.parseInt(edtnumberelectric.getText().toString()));
+                    contract.setContracNumberWaterBegin(Integer.parseInt(edtnumberwater.getText().toString()));
+                    contract.setRoom(room);
+                    contract.setCustomer(customer);
+                    contract.setContractPeopleNumber(Integer.parseInt(edtpeople.getText().toString()));
+                    contract.setContractVehicleNumber(Integer.parseInt(edtvehical.getText().toString()));
+                    contract.setContractstatus(0);
+                    contract.setContractDeposits(Double.parseDouble(edtdeposits.getText().toString()));
+                    if (contractDAO.addContract(contract) > 0) {
 
                         addbillservice(contractDAO.getContractIDByStatus());
 
-                } else {
-                    Toast.makeText(this, "Chưa thêm được!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Chưa thêm được!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
 
         }
+    }
+
+    static int monthsBetween(Date a, Date b) {
+        Calendar cal = Calendar.getInstance();
+        if (a.before(b)) {
+            cal.setTime(a);
+        } else {
+            cal.setTime(b);
+            b = a;
+        }
+        int c = 0;
+        while (cal.getTime().before(b)) {
+            cal.add(Calendar.MONTH, 1);
+            c++;
+        }
+        return c;
     }
 
     private void addbillservice(int contractID) {
@@ -384,7 +409,9 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
         mDialog.show();
 
 
-    } private void dialogNotificationAddCustomer() {
+    }
+
+    private void dialogNotificationAddCustomer() {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         mBuilder.setTitle("Lưu ý");
         mBuilder.setMessage("Bạn phải tạo khách thuê trước khi tạo hợp đồng!");
@@ -393,6 +420,22 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
             public void onClick(DialogInterface dialog, int which) {
                 finish();
                 Animatoo.animateCard(AddContractActivity.this);
+            }
+        });
+        AlertDialog mDialog = mBuilder.create();
+        mDialog.show();
+
+
+    }
+
+    private void dialogMonth() {
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+        mBuilder.setTitle("Lưu ý");
+        mBuilder.setMessage("Vui lòng chọn thời hạn hợp đồng dài hơn chu kì trả tiền phòng");
+        mBuilder.setPositiveButton("Tôi biết rồi", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
             }
         });
         AlertDialog mDialog = mBuilder.create();

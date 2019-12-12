@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.qunlphngtr.Database.BillDAO;
 import com.example.qunlphngtr.Database.BillServiceDAO;
+import com.example.qunlphngtr.Database.ContractDAO;
 import com.example.qunlphngtr.Model.Bill;
 import com.example.qunlphngtr.Model.Contract;
 import com.example.qunlphngtr.Model.Customer;
@@ -55,6 +56,7 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
     private List<Service> billServiceList;
     private BillServiceDAO billServiceDAO;
     private String item = "";
+    private ContractDAO contractDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,7 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
 
 
     private void initObject() {
+        contractDAO = new ContractDAO(this);
         billLists = new ArrayList<>();
         billServiceList = new ArrayList<>();
         billServiceDAO = new BillServiceDAO(this);
@@ -82,22 +85,39 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
         int sumnumberelectric = 0;
         for (int i = 0; i < BillActivity.contractList.size(); i++) {
             if (BillActivity.contractList.get(i).getContractstatus() == 0) {
-                Log.i(TAG, "checkBilllist: trạng thái hợp đồng là có");
                 contract = BillActivity.contractList.get(i);
             }
         }
         billLists = billDAO.getBillByContractID(contract.getContractID());
+        for (int i = 0; i < billLists.size(); i++) {
+            sumnumberwater = sumnumberwater + billLists.get(i).getBillWaterNumber();
+            sumnumberelectric = sumnumberelectric + billLists.get(i).getBillElectricNumber();
+        }
         if (billLists.size() > 0) {
-
             Bill bill = billLists.get(billLists.size() - 1);
-            settextNewbill(bill.getBillDateEnd(), contract.getContractDateTerm(), contract.getContractMonthPeriodic(), contract.getCustomer().getCustomerName());
-            edtbillroomprice.setText(formatter.format(contract.getRoom().getRoomPrice() * contract.getContractMonthPeriodic()) + " VND");
-
-            for (int i = 0; i < billLists.size(); i++) {
-                sumnumberwater = sumnumberwater + billLists.get(i).getBillWaterNumber();
-                sumnumberelectric = sumnumberelectric + billLists.get(i).getBillElectricNumber();
+            Date billDateEnd = null;
+            Date contractDateEnd = null;
+            try {
+                billDateEnd = simpleDateFormat.parse(bill.getBillDateEnd());
+                contractDateEnd = simpleDateFormat.parse(contract.getContractDateEnd());
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-            addBill(contract.getRoom().getRoomPrice() * contract.getContractMonthPeriodic(), contract.getContracNumberWaterBegin(), sumnumberwater, contract.getContracNumberElectricBegin(), sumnumberelectric, contract.getContractID());
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(billDateEnd);
+            cal.add(Calendar.MONTH, contract.getContractMonthPeriodic());
+            if (cal.getTime().before(contractDateEnd)) {
+                settextNewbill(bill.getBillDateEnd(), contract.getContractDateTerm(), contract.getContractMonthPeriodic(), contract.getCustomer().getCustomerName());
+                edtbillroomprice.setText(formatter.format(contract.getRoom().getRoomPrice() * contract.getContractMonthPeriodic()) + " VND");
+                addBill(contract.getRoom().getRoomPrice() * contract.getContractMonthPeriodic(), contract.getContracNumberWaterBegin(), sumnumberwater, contract.getContracNumberElectricBegin(), sumnumberelectric, contract.getContractID());
+            } else {
+                cal.add(Calendar.MONTH, -contract.getContractMonthPeriodic());
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(contractDateEnd);
+                settextNewbill(bill.getBillDateEnd(), calendar.get(Calendar.DATE), calendar.get(Calendar.MONTH) - cal.get(Calendar.MONTH), contract.getCustomer().getCustomerName());
+                addBill(billroomprice, contract.getContracNumberWaterBegin(), sumnumberwater, contract.getContracNumberElectricBegin(), sumnumberelectric, contract.getContractID());
+            }
 
         } else {
             settextNewbill(contract.getContractDateBegin(), contract.getContractDateTerm(), contract.getContractMonthPeriodic(), contract.getCustomer().getCustomerName());
@@ -107,6 +127,7 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
 
 
     }
+
 
     private void addBill(final double billroomprice, final int numberwaterbegin, final int numberwatersum, final int numberelectricbegin, final int numberelctricsum, final int contractID) {
 
@@ -162,17 +183,35 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
 
 
     private void dialogTotal(final Bill bill) {
+        String mes = "";
+        Date billDateEnd = null;
+        Date contractDateEnd = null;
+        try {
+            billDateEnd = simpleDateFormat.parse(bill.getBillDateEnd());
+            contractDateEnd = simpleDateFormat.parse(contract.getContractDateEnd());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (billDateEnd.compareTo(contractDateEnd) == 0) {
+            mes = "\nVì đây là hóa đơn cuối của hợp đồng" +
+                    "\n Tiền cọc trả lại khách là:" + formatter.format(contract.getContractDeposits()) + " VND" +
+                    "\nNên tổng tiền thanh toán là:" + formatter.format(bill.getBIllTotal() - contract.getContractDeposits()) + " VND";
+
+        }
         new AlertDialog.Builder(this)
                 .setTitle("Total")
                 .setCancelable(false)
-                .setMessage("Tổng số tiền của hóa đơn là: " + formatter.format(bill.getBIllTotal()) + " VND")
+                .setMessage("Tổng số tiền của hóa đơn là: " + formatter.format(bill.getBIllTotal()) + " VND" + mes)
                 .setPositiveButton("Thanh toán", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        bill.setBIllTotal(bill.getBIllTotal() - contract.getContractDeposits());
                         bill.setBillDebtsToPay(0);
                         billDAO.addBill(bill);
                         BillActivity.p = 1;
                         BillActivity.spnBillFilter.setSelection(1);
                         BillActivity.checkBill2Null();
+                        contractDAO.updateContractStatus(contract.getContractID());
+                        contractDAO.updateContractDeposits(contract.getContractID());
                         finish();
                         Animatoo.animateSlideRight(AddBillActivity.this);
                     }
@@ -186,12 +225,14 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
                 .setNeutralButton("Nợ", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        bill.setBillDebtsToPay(bill.getBIllTotal());
+                        bill.setBillDebtsToPay(bill.getBIllTotal() - contract.getContractDeposits());
                         bill.setBIllTotal(0);
                         billDAO.addBill(bill);
                         BillActivity.p = 2;
                         BillActivity.spnBillFilter.setSelection(2);
                         BillActivity.checkBill2Null();
+                        contractDAO.updateContractStatus(contract.getContractID());
+                        contractDAO.updateContractDeposits(contract.getContractID());
                         finish();
                         Animatoo.animateSlideRight(AddBillActivity.this);
 
@@ -200,11 +241,11 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
                 .show();
     }
 
-    private void settextNewbill(String datebegin, int dateterm, int monthperiodic, String name) {
-        edtdatebegin.setText(datebegin);
+    private void settextNewbill(String Date, int dateterm, int monthperiodic, String name) {
+        edtdatebegin.setText(Date);
         try {
             Calendar calendar = Calendar.getInstance();
-            Date billdatebegin = simpleDateFormat.parse(datebegin);
+            Date billdatebegin = simpleDateFormat.parse(Date);
             calendar.setTime(billdatebegin);
             int month = calendar.get(Calendar.MONTH);
             int year = calendar.get(Calendar.YEAR);
@@ -213,21 +254,26 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
             edtdateend.setText(simpleDateFormat.format(addMonth(calendar.getTime(), monthperiodic)));
             edtroomprice.setText(formatter.format(room.getRoomPrice()) + " VND");
             if (date == dateterm) {
-                billroomprice = contract.getRoom().getRoomPrice() * monthperiodic;
+                if (monthperiodic == 0) {
+                    billroomprice = contract.getRoom().getRoomPrice();
+                } else
+                    billroomprice = contract.getRoom().getRoomPrice() * monthperiodic;
                 edtbillroomprice.setText(formatter.format(billroomprice) + " VND");
             } else {
-                double roompriceofdate = room.getRoomPrice() / getlenthmonth(calendar.getTime());
-                Log.i("Addbill", "lenth: " + getlenthmonth(calendar.getTime()));
-                Date billdateend = addMonth(calendar.getTime(), monthperiodic);
-                long day = (billdateend.getTime() - billdatebegin.getTime()) / (24 * 60 * 60 * 1000);
-                billroomprice = (roompriceofdate * day);
+                if (monthperiodic == 0) {
+                    billroomprice = RoomPricenull(billdatebegin, dateterm, room.getRoomPrice());
+                } else
+                    billroomprice = RoomPrice(billdatebegin, monthperiodic, dateterm, room.getRoomPrice());
                 edtbillroomprice.setText(formatter.format(billroomprice) + " VND");
-                Log.i("Addbill", "settextNewbill: " + roompriceofdate + "," + day);
             }
             edtbillcustomername.setText(name);
             billServiceList = billServiceDAO.getsServiceBillByID(contract.getContractID());
             for (int i = 0; i < billServiceList.size(); i++) {
-                totalBillService = totalBillService + billServiceList.get(i).getServicePrice()*monthperiodic;
+                if (monthperiodic == 0) {
+                    totalBillService = totalBillService + billServiceList.get(i).getServicePrice();
+                } else {
+                    totalBillService = totalBillService + billServiceList.get(i).getServicePrice() * monthperiodic;
+                }
             }
             tvbillservice.setText(StringServiceItem(billServiceList));
 
@@ -235,6 +281,47 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    private double RoomPrice(Date start, int monthperiodic, int dayterm, double roomPrice) {
+        double price = 0;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(start);
+        for (int i = 1; i <= monthperiodic; i++) {
+            if (i == monthperiodic) {
+                cal.add(Calendar.MONTH, i - 1);
+                Date date1 = cal.getTime();
+                cal.add(Calendar.MONTH, 1);
+                int month = cal.get(Calendar.MONTH);
+                int year = cal.get(Calendar.YEAR);
+                cal.set(year, month, dayterm);
+                Date date2 = cal.getTime();
+                long day = (date2.getTime() - date1.getTime()) / (24 * 60 * 60 * 1000);
+                double roomprice = roomPrice / getlenthmonth(date1);
+                price = price + roomprice * day;
+                Log.i("Day", "RoomPrice: " + simpleDateFormat.format(date2) + " " + simpleDateFormat.format(date1) + " " + getlenthmonth(date1) + " " + day + " " + roomprice);
+            } else {
+                price = price + roomPrice;
+            }
+
+        }
+        return price;
+    }
+
+    private double RoomPricenull(Date start, int dayterm, double roomPrice) {
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(start);
+        int month = cal.get(Calendar.MONTH);
+        int year = cal.get(Calendar.YEAR);
+        cal.set(year, month, dayterm);
+        Date date2 = cal.getTime();
+        long day = (date2.getTime() - start.getTime()) / (24 * 60 * 60 * 1000);
+        double roomprice = roomPrice / getlenthmonth(start);
+        double price = roomprice * day;
+        Log.i("Day", "RoomPrice: " + simpleDateFormat.format(date2) + " " + simpleDateFormat.format(start) + " " + getlenthmonth(start) + " " + day + " " + roomprice);
+
+        return price;
     }
 
     public static Date addMonth(Date date, int i) {

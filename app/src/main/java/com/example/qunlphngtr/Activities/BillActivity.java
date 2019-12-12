@@ -51,11 +51,12 @@ public class BillActivity extends AppCompatActivity {
     private FloatingActionButton fbbill;
     private ContractDAO contractDAO;
     private BillDAO billDAO;
+    private Contract contract;
     public static Spinner spnBillFilter;
     String[] categories = {"Tất cả", "Đã thanh toán", "Chưa thanh toán"};
     public static List<Bill> billList2;
-    public static int p=0;
-    public  static boolean status=false;
+    public static int p = 0;
+    public static boolean status = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,8 @@ public class BillActivity extends AppCompatActivity {
             }
         });
     }
-    private void loadbilllist(int pos){
+
+    private void loadbilllist(int pos) {
         if (pos >= 0 && pos < categories.length) {
             getSelectedCategoryData(pos);
         } else {
@@ -80,12 +82,13 @@ public class BillActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        contract = new Contract();
         spnBillFilter = findViewById(R.id.spnBillFilter);
         spnBillFilter.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, categories));
         spnBillFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-               loadbilllist(position);
+                loadbilllist(position);
             }
 
             @Override
@@ -155,6 +158,7 @@ public class BillActivity extends AppCompatActivity {
         for (int i = 0; i < contractList.size(); i++) {
             if (contractList.get(i).getContractstatus() == 0) {
                 status = 1;
+                contract = contractList.get(i);
                 break;
             }
         }
@@ -215,13 +219,13 @@ public class BillActivity extends AppCompatActivity {
         super.onResume();
         loadRecycerview();
         loadbilllist(p);
-        status=true;
+        status = true;
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        status=false;
+        status = false;
     }
 
     private void loadRecycerview() {
@@ -261,12 +265,12 @@ public class BillActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        status=true;
+        status = true;
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        status=false;
+        status = false;
     }
 }
