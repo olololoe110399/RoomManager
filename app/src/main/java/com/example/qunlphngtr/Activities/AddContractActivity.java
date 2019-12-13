@@ -332,7 +332,7 @@ public class AddContractActivity extends AppCompatActivity implements View.OnCli
                     e.printStackTrace();
                 }
 
-                if (monthperiodic >= month) {
+                if (monthperiodic+1 >= month) {
                     dialogMonth();
                 } else {
                     Contract contract = new Contract();
