@@ -10,12 +10,15 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -23,6 +26,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -346,6 +351,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_changePass:
                 menuitemid = menuItem.getItemId();
                 uncheckedbottomnavigation();
+                dialogChangePass();
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             case R.id.nav_logout:
@@ -360,6 +366,59 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         return false;
+    }
+
+    private void dialogChangePass() {
+        Users users = managerUsers.getUserById(UserNameSp);
+        final Dialog dialog = new Dialog(this);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialog_change_pass);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation_2;
+        dialog.setCancelable(false);
+        EditText edtoldpass, edtnewpass, edtreplacepass;
+        Button btnadd, btnback;
+        edtnewpass = dialog.findViewById(R.id.edtnewpass);
+        edtoldpass = dialog.findViewById(R.id.edtoldpass);
+        edtreplacepass = dialog.findViewById(R.id.edtreplacepass);
+        btnadd = dialog.findViewById(R.id.btnadd);
+        btnback = dialog.findViewById(R.id.btnback);
+        btnback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uncheckednavigation();
+                dialog.dismiss();
+            }
+        });
+        btnadd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edtoldpass.getText().toString().equals("") || edtnewpass.getText().toString().equals("") || edtreplacepass.getText().toString().equals("")) {
+                    Toast.makeText(MainActivity.this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (!(edtoldpass.getText().toString().trim().equals(users.getUserPassword()))) {
+                        Toast.makeText(MainActivity.this, "Mật khẩu cũ không đúng", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        if (!(edtnewpass.getText().toString().trim().equals(edtreplacepass.getText().toString().trim()))) {
+                            Toast.makeText(MainActivity.this, R.string.error_password_match, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Users user = new Users();
+                            user.setUserName(UserNameSp);
+                            user.setUserPassword(edtnewpass.getText().toString().trim());
+                            if (managerUsers.changePasswordUser(user) > 0) {
+                                uncheckednavigation();
+                                dialog.dismiss();
+                                Toast.makeText(MainActivity.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(MainActivity.this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                    }
+                }
+            }
+        });
+        dialog.show();
     }
 
     private void dialoglogout() {

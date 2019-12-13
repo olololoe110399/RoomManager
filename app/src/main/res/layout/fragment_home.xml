@@ -70,10 +70,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
+                        android:textColor="@color/colorBlack"
                         android:textSize="50dp"
                         android:textStyle="bold" />
 
                     <TextView
+                        android:textColor="@color/colorBlack"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Phòng trống"
@@ -94,10 +96,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
+                        android:textColor="@color/colorBlack"
                         android:textSize="50dp"
                         android:textStyle="bold" />
 
                     <TextView
+                        android:textColor="@color/colorBlack"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Phòng đang ở"
@@ -140,6 +144,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:text="Đã thanh toán"
+                            android:textColor="@color/colorBlack"
                             android:textSize="18dp" />
 
                         <TextView
@@ -148,6 +153,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:text="0 VND"
+                            android:textColor="@color/colorBlack"
                             android:textSize="18dp"
                             android:textStyle="bold" />
                     </RelativeLayout>
@@ -167,6 +173,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:text="Chưa thanh toán"
+                            android:textColor="@color/colorBlack"
                             android:textSize="18dp" />
 
                         <TextView
@@ -175,6 +182,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:text="0 VND"
+                            android:textColor="@color/colorBlack"
                             android:textSize="18dp"
                             android:textStyle="bold" />
                     </RelativeLayout>
@@ -217,6 +225,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:text="Tổng số điện"
+                            android:textColor="@color/colorBlack"
                             android:textSize="18dp" />
 
                         <TextView
@@ -225,6 +234,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:text="0"
+                            android:textColor="@color/colorBlack"
                             android:textSize="18dp"
                             android:textStyle="bold" />
                     </RelativeLayout>
@@ -244,6 +254,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:text="Tổng số nước"
+                            android:textColor="@color/colorBlack"
                             android:textSize="18dp" />
 
                         <TextView
@@ -252,6 +263,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:text="0"
+                            android:textColor="@color/colorBlack"
                             android:textSize="18dp"
                             android:textStyle="bold" />
                     </RelativeLayout>
@@ -293,6 +305,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:text="Tổng doanh thu"
+                            android:textColor="@color/colorBlack"
                             android:textSize="18dp" />
 
                         <TextView
@@ -301,6 +314,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:text="0 VND"
+                            android:textColor="@color/colorBlack"
                             android:textSize="18dp"
                             android:textStyle="bold" />
                     </RelativeLayout>
@@ -320,6 +334,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:text="Tổng cọc khách"
+                            android:textColor="@color/colorBlack"
                             android:textSize="18dp" />
 
                         <TextView
@@ -328,6 +343,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:text="0 VND"
+                            android:textColor="@color/colorBlack"
                             android:textSize="18dp"
                             android:textStyle="bold" />
                     </RelativeLayout>
@@ -369,6 +385,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:text="Còn hiệu lực"
+                            android:textColor="@color/colorBlack"
                             android:textSize="18dp" />
 
                         <TextView
@@ -377,6 +394,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:text="0"
+                            android:textColor="@color/colorBlack"
                             android:textSize="18dp"
                             android:textStyle="bold" />
                     </RelativeLayout>
@@ -396,6 +414,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:text="Đã thanh lý"
+                            android:textColor="@color/colorBlack"
                             android:textSize="18dp" />
 
                         <TextView
@@ -404,6 +423,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:text="0"
+                            android:textColor="@color/colorBlack"
                             android:textSize="18dp"
                             android:textStyle="bold" />
                     </RelativeLayout>

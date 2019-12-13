@@ -115,6 +115,7 @@ public class FragmentUser extends Fragment {
                     tvUserFullName.setText(object.getString("name"));
                     tvUserEmail.setText(object.getString("email"));
                     tvUserAdress.setText(object.getString("location"));
+                    tvUserAdress.setText(object.getJSONObject("location").getString("name"));
                     tvUserPhone.setText("Không thể xem");
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -182,9 +183,12 @@ public class FragmentUser extends Fragment {
         imgbtnedit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                lndetail.setVisibility(View.GONE);
-                lnupdate.setVisibility(View.VISIBLE);
-                setProfileSqliteUpdate();
+                if (token == null) {
+                    lndetail.setVisibility(View.GONE);
+                    lnupdate.setVisibility(View.VISIBLE);
+                    setProfileSqliteUpdate();
+                } else
+                    Toast.makeText(getActivity(), "Không thể sửa thông tin Facrbook ở đây!", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -320,7 +324,7 @@ public class FragmentUser extends Fragment {
 
     private void choosePhoto(int REQUEST_CODE) {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
+           requestPermissions( new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
         } else {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(intent, REQUEST_CODE);
@@ -329,13 +333,15 @@ public class FragmentUser extends Fragment {
 
     private void photoLibrary(int REQUEST_CODE) {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
         } else {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
             startActivityForResult(intent, REQUEST_CODE);
         }
+
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -360,7 +366,6 @@ public class FragmentUser extends Fragment {
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
