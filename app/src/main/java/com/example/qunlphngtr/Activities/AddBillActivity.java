@@ -198,7 +198,7 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
                 mes1 = "\nNên tổng tiền thanh toán là:" + formatter.format(bill.getBIllTotal() - contract.getContractDeposits()) + " VND";
 
             } else if ((bill.getBIllTotal() - contract.getContractDeposits()) == 0) {
-                mes1 = "";
+                mes1 = "\nNên tổng tiền thanh toán là:" + formatter.format(bill.getBIllTotal() - contract.getContractDeposits()) + " VND";
 
             } else {
                 mes1 = "\nNên tổng tiền trả lại khách là:" + formatter.format(contract.getContractDeposits() - bill.getBIllTotal()) + " VND";
@@ -253,9 +253,9 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
                         BillActivity.p = 2;
                         BillActivity.spnBillFilter.setSelection(2);
                         BillActivity.checkBill2Null();
-
                         finish();
                         Animatoo.animateSlideRight(AddBillActivity.this);
+
 
                     }
                 })
