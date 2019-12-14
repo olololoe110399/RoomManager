@@ -145,10 +145,19 @@ public class AdapterBill extends RecyclerView.Adapter<AdapterBill.ViewHolder> {
 
     private void dialogTotal(final int pos) {
         NumberFormat formatter = new DecimalFormat("#,###");
+        String mes="";
+        if(billList.get(pos).getBillDebtsToPay()>0){
+            mes="Tổng số tiền khách phải trả là: " + formatter.format(billList.get(pos).getBillDebtsToPay()) + " VND";
+        }else if(billList.get(pos).getBillDebtsToPay()<0){
+            mes="Tổng số tiền phải trả khách là: " + formatter.format(-billList.get(pos).getBillDebtsToPay()) + " VND";
+        }else {
+            mes="Tổng số tiền phải trả là: " + formatter.format(billList.get(pos).getBillDebtsToPay()) + " VND";
+        }
+
         new AlertDialog.Builder(context)
                 .setTitle("Total")
                 .setCancelable(false)
-                .setMessage("Tổng số tiền phải trả là: " + formatter.format(billList.get(pos).getBillDebtsToPay()) + " VND")
+                .setMessage(mes)
                 .setPositiveButton("Thanh toán", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Bill bill = billList.get(pos);
