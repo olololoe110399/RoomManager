@@ -68,6 +68,8 @@ public class BillActivity extends AppCompatActivity {
         fbbill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                contractList.clear();
+                contractList.addAll(contractList = contractDAO.getAllContractByID(room.getRoomID()));
                 checkContract();
             }
         });
@@ -98,7 +100,7 @@ public class BillActivity extends AppCompatActivity {
         });
         billDAO = new BillDAO(this);
         contractDAO = new ContractDAO(this);
-        contractList = contractDAO.getAllContractByID(room.getRoomID());
+
         fbbill = findViewById(R.id.fbbill);
         relativeLayout = findViewById(R.id.rlbillnull);
         recyclerView = findViewById(R.id.rvbill);

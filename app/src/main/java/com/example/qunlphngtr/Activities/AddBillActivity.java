@@ -193,25 +193,42 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
             e.printStackTrace();
         }
         if (billDateEnd.compareTo(contractDateEnd) == 0) {
+            String mes1 = "";
+            if ((bill.getBIllTotal() - contract.getContractDeposits()) > 0) {
+                mes1 = "\nNên tổng tiền thanh toán là:" + formatter.format(bill.getBIllTotal() - contract.getContractDeposits()) + " VND";
+
+            } else if ((bill.getBIllTotal() - contract.getContractDeposits()) == 0) {
+                mes1 = "";
+
+            } else {
+                mes1 = "\nNên tổng tiền trả lại khách là:" + formatter.format(contract.getContractDeposits() - bill.getBIllTotal()) + " VND";
+            }
             mes = "\nVì đây là hóa đơn cuối của hợp đồng" +
                     "\n Tiền cọc trả lại khách là:" + formatter.format(contract.getContractDeposits()) + " VND" +
-                    "\nNên tổng tiền thanh toán là:" + formatter.format(bill.getBIllTotal() - contract.getContractDeposits()) + " VND";
+                    mes1;
 
         }
+        Date finalBillDateEnd = billDateEnd;
+        Date finalContractDateEnd = contractDateEnd;
         new AlertDialog.Builder(this)
                 .setTitle("Total")
                 .setCancelable(false)
                 .setMessage("Tổng số tiền của hóa đơn là: " + formatter.format(bill.getBIllTotal()) + " VND" + mes)
                 .setPositiveButton("Thanh toán", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        bill.setBIllTotal(bill.getBIllTotal() - contract.getContractDeposits());
+                        bill.setBIllTotal(bill.getBIllTotal());
+                        if (finalBillDateEnd.compareTo(finalContractDateEnd) == 0) {
+                            contractDAO.updateContractStatus(contract.getContractID());
+                            contractDAO.updateContractDeposits(contract.getContractID());
+                            bill.setBIllTotal(bill.getBIllTotal() - contract.getContractDeposits());
+                        }
+
                         bill.setBillDebtsToPay(0);
                         billDAO.addBill(bill);
                         BillActivity.p = 1;
                         BillActivity.spnBillFilter.setSelection(1);
                         BillActivity.checkBill2Null();
-                        contractDAO.updateContractStatus(contract.getContractID());
-                        contractDAO.updateContractDeposits(contract.getContractID());
+
                         finish();
                         Animatoo.animateSlideRight(AddBillActivity.this);
                     }
@@ -225,14 +242,18 @@ public class AddBillActivity extends AppCompatActivity implements View.OnClickLi
                 .setNeutralButton("Nợ", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        bill.setBillDebtsToPay(bill.getBIllTotal() - contract.getContractDeposits());
+                        bill.setBillDebtsToPay(bill.getBIllTotal());
+                        if (finalBillDateEnd.compareTo(finalContractDateEnd) == 0) {
+                            contractDAO.updateContractStatus(contract.getContractID());
+                            contractDAO.updateContractDeposits(contract.getContractID());
+                            bill.setBillDebtsToPay(bill.getBIllTotal() - contract.getContractDeposits());
+                        }
                         bill.setBIllTotal(0);
                         billDAO.addBill(bill);
                         BillActivity.p = 2;
                         BillActivity.spnBillFilter.setSelection(2);
                         BillActivity.checkBill2Null();
-                        contractDAO.updateContractStatus(contract.getContractID());
-                        contractDAO.updateContractDeposits(contract.getContractID());
+
                         finish();
                         Animatoo.animateSlideRight(AddBillActivity.this);
 
