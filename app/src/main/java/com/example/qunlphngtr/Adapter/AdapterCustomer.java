@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.qunlphngtr.Activities.UpdateCustomerActivity;
+import com.example.qunlphngtr.Database.ContractDAO;
 import com.example.qunlphngtr.Database.CustomerDAO;
 import com.example.qunlphngtr.Fragment.FragmentCustomer;
 import com.example.qunlphngtr.Model.Customer;
@@ -38,10 +39,12 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
     List<Customer> customerList;
     Context context;
     CustomerDAO customerDAO;
+    ContractDAO contractDAO;
 
     public AdapterCustomer(List<Customer> customerList, Context context) {
         this.customerList = customerList;
         this.context = context;
+        contractDAO=new ContractDAO(context);
         this.customerDAO = new CustomerDAO(context);
     }
 
@@ -63,8 +66,8 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
         holder.imgEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UpdateCustomerActivity.pos=position;
-                Intent i=new Intent(context, UpdateCustomerActivity.class);
+                UpdateCustomerActivity.pos = position;
+                Intent i = new Intent(context, UpdateCustomerActivity.class);
                 context.startActivity(i);
                 Animatoo.animateSlideLeft(context);
             }
@@ -79,28 +82,44 @@ public class AdapterCustomer extends RecyclerView.Adapter<AdapterCustomer.ViewHo
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Lưu ý");
-                builder.setMessage("Bạn có muốn xóa khách thuê \"" + customerList.get(position).getCustomerName() + "\" này?");
-                builder.setCancelable(false);
-                builder.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
-                builder.setNegativeButton("Xóa", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                if (contractDAO.getStatusCustomer(customerList.get(position).getCustomerID())>0) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Lưu ý");
+                    builder.setMessage("Bạn phải xóa những hợp đồng liên quan đến khách \"" + customerList.get(position).getCustomerName() + "\" trước khi xóa!");
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("Tôi biết rồi", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                } else {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Lưu ý");
+                    builder.setMessage("Bạn có muốn xóa khách thuê \"" + customerList.get(position).getCustomerName() + "\" này?");
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+                    builder.setNegativeButton("Xóa", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
 
-                        customerDAO.deleteCustomer(customerList.get(position).getCustomerID());
-                        customerList.remove(position);
-                        notifyDataSetChanged();
-                        FragmentCustomer.checkCustomernull();
-                    }
-                });
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
+                            customerDAO.deleteCustomer(customerList.get(position).getCustomerID());
+                            customerList.remove(position);
+                            notifyDataSetChanged();
+                            FragmentCustomer.checkCustomernull();
+                        }
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
+
             }
         });
 

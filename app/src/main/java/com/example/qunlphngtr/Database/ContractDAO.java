@@ -166,18 +166,39 @@ public class ContractDAO {
         }
         c.close();
         return status;
-    }public int getallStatusRoom() {
+    }
+
+    public int getStatusCustomer(int CustomerID) {
 
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 //WHERE clause
-        int number=0 ;
+        int status = -1;
+        String sSQL = "SELECT customerID FROM contract WHERE customerID = '" + CustomerID + "'";
+//WHERE clause arguments
+        Cursor c = db.rawQuery(sSQL, null);
+
+        if (c.getCount() > 0) {
+            c.moveToNext();
+            status = 1;
+            c.close();
+        }
+
+
+        return status;
+    }
+
+    public int getallStatusRoom() {
+
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+//WHERE clause
+        int number = 0;
         String sSQL = "SELECT * FROM contract";
 //WHERE clause arguments
         Cursor c = db.rawQuery(sSQL, null);
         c.moveToFirst();
         while (c.isAfterLast() == false) {
             if (c.getInt(11) == 0) {
-                number ++;
+                number++;
             }
             c.moveToNext();
         }
